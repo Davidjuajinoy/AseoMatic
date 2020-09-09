@@ -575,7 +575,7 @@ if(location.search =='?c=Administradores&m=showNews'){
         trTableAllNews.append(td3TableAllNews);
 
         const td4TableAllNews =document.createElement('TD');
-        td4TableAllNews.textContent = `${datos.fk_usuario}`;
+        td4TableAllNews.textContent = `${datos.nombres} ${datos.apellidos}`;
 
         trTableAllNews.append(td4TableAllNews);
 
@@ -597,7 +597,7 @@ if(location.search =='?c=Administradores&m=showNews'){
         i2Td5.setAttribute('data-toggle','modal');
         i2Td5.setAttribute('data-target','#ModalUpdateNews');
 
-        td5TableAllNews.append(i2TD5);
+        td5TableAllNews.append(i2Td5);
 
         let i3Td5 =document.createElement('I');
         i3Td5.id=`${datos.id_noticia}`;
@@ -608,7 +608,7 @@ if(location.search =='?c=Administradores&m=showNews'){
         td5TableAllNews.append(i3Td5);
         trTableAllNews.append(td5TableAllNews);
 
-        fragment.append(trTableAllNewss);
+        fragment.append(trTableAllNews);
         return fragment;
 
     }
@@ -632,6 +632,94 @@ if(location.search =='?c=Administradores&m=showNews'){
 
         }).catch( console.log);
     }
+
+
+    const imgNew =document.getElementById('new_img');
+    const prevImg =document.getElementById('prev-img');
+
+
+    imgNew.addEventListener('change', () =>{
+        validarImgNoticiasForm();
+
+    })
+
+    //? funcion que previsualiza la img selecciona y valida si es formato adecuado
+    const validarImgNoticiasForm= () =>{
+        const img=imgNew.files[0];
+        if(img["type"] != "image/jpeg" && img["type"] != "image/png" && img["type"] != "image/jpeg")
+        {
+            imgNew.value="";
+            const msg ='la imagen debe ser png o jpeg';
+            msgError(msg);
+            prevImg.src='';
+            return false;
+        }
+        else if(img["size"] > 2000000)
+        {
+            imgNew.value="";
+            const msg='la imagen debe ser menor a 2mb';
+            msgError(msg);
+            prevImg.src='';
+            return false;
+        
+        }
+        else{
+             prevImg.src='';
+             const datosImagen = new FileReader; 
+             datosImagen.readAsDataURL(img);
+             datosImagen.addEventListener('load', (e) =>{
+                 //obtiene la img en formato base64
+                let rutaImagen = e.target.result;
+                prevImg.src=rutaImagen;
+             });
+             return true;         
+        }
+    }
+
+
+    const btnSubmitFormNews=document.getElementById('GuardarNoticia');
+    btnSubmitFormNews.addEventListener('click',(e)=>{
+        e.preventDefault();
+        let validar =validarFormNews('titulo_noticia','descripcion_noticia','fk_usuario','new_img');
+        if(validar ===  true)
+        {
+            
+        }
+     
+
+    })
+
+    const validarFormNews= (title,description,user,img) =>{
+        const tituloNoticia= document.getElementById(title);
+        const descripcionNoticia= document.getElementById(description);
+        const fkUsuario= document.getElementById(user);
+        const imgNoticia= document.getElementById(img);
+   
+        if(tituloNoticia.value =="")
+        {
+            const msg = 'Ingrese el titulo de la Noticia';
+            tituloNoticia.focus();
+            msgError(msg);
+        }else if(descripcionNoticia.value ==''){
+            const msg = 'Ingrese la descripcion de la Noticia';
+            descripcionNoticia.focus();
+            msgError(msg);
+        }else if(fkUsuario.value ==''){
+            const msg = 'Ingrese el autor de la Noticia';
+            fkUsuario.focus();
+            msgError(msg);
+        }else if(imgNoticia.value ==''){
+            const msg = 'Ingrese la imagen de la Noticia';
+            imgNoticia.focus();
+            msgError(msg);
+        }else{
+            return true;
+        }
+
+    }
+    
+
+    showAllNews();
 
 
 }

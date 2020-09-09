@@ -102,6 +102,39 @@ class AdministradoresController extends Administrador{
         require_once 'views/administrador/noticias.php';
     }
 
+    function storeNew()
+    {
+        // funcion img
+        $directorio = "assets/uploud/";
+        $archivo= $directorio.basename($_FILES["new_img"]["name"]);
+        //info de ext(jpg,png,etc)
+        $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
+        //verifica que el archivo tenga dimensiones(w,h) 
+        $DimensionesImg =getimagesize($_FILES['new_img']['tmp_name']);
+        
+        if($DimensionesImg == true)
+        {
+            $tamañoImg = $_FILES['new_img']["size"];
+            if($tamañoImg > 1000000)
+            {
+                echo "El archivo tiene que ser menor a 1m";
+            }
+            else{
+                if($tipoArchivo == "jpg" || $tipoArchivo == "png" || $tipoArchivo == "jpeg" )
+                {
+                    move_uploaded_file($_FILES["new_img"]["tmp_name"],$archivo);
+                }
+                else{
+                    echo "la extension del archivo no es valida";
+                }
+            }
+        }else{
+            echo "el documento no es una img";
+        }
+
+        
+    }
+
 
     // ! End CRUD Noticias
 

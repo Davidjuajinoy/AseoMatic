@@ -26,7 +26,7 @@
                                         <div class="img-profile w-75">
                                             <img src="assets/svg/avatarMale.svg" class="img-fluid" alt="">
                                             <div class="text-center d-flex justify-content-center align-items-center mt-3 mb-4 ">
-                                                <label data-hover="Cambiar Foto" for="change_img" class=" w-75  text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg" >Cambiar Foto</label>
+                                                <label data-hover="Cambiar Foto" for="change_img" class=" w-75 text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg" >Cambiar Foto</label>
                                                 <input type="file" name="change_img" id="change_img" class="img-profile__input-file"  >
                                             </div>
                                         </div>

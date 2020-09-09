@@ -95,4 +95,22 @@ class Administrador extends DataBase
             die('Murio AllUsers'.$e->getMessage());
         }
     }
+
+    public function storeAddNew($tituloNoticia,$descripcionNoticia,$imgNew,$newUser)
+    {
+        try {
+            $stm = parent::conectar()->prepare("INSERT INTO noticias(titulo_noticia,descripcion_noticia,fecha_publicado,imagen_noticia,fk_usuario) VALUES(?,?,CURRENT_TIME(),?,?)");
+            $stm->bindParam(1,$tituloNoticia,PDO::PARAM_STR);
+            $stm->bindParam(2,$descripcionNoticia,PDO::PARAM_STR);
+            $stm->bindParam(3,$imgNew,PDO::PARAM_STR);
+            $stm->bindParam(4,$newUser,PDO::PARAM_STR);
+            $stm->execute();
+            
+        } catch (Exception $e) {
+            die('Error StoreUser'.$e->getMessage());
+        }
+    }
+
+   
+    //? End Crud Noticias
 }

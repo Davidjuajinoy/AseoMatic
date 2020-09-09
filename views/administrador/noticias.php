@@ -15,7 +15,7 @@
               <th colspan="2">Fecha de Publicación</th>
               <th>Autor</th>
               <th>Opciones</th>
-              <th class="th-opacity b-custom"><i class="fa fa-plus" data-toggle="modal" data-target="#ModalAddUser"></i></th>
+              <th class="th-opacity b-custom"><i class="fa fa-plus" data-toggle="modal" data-target="#ModalAddNew"></i></th>
             </tr>
           </thead>
 
@@ -33,128 +33,60 @@
 </main>
 
 <!-- ? Modal Create-->
-<div class="modal fade" id="ModalAddUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAddNew" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content  bg-dark text-white">
       <div class="modal-header border-0 b-custom">
         <h5 class="modal-title text-center h4 font-weight-bold text-shadow-1
-              text-white" id="informationModal">Agregar Usuario</h5>
-        <button type="button" id="cerrarModalUsuario" class="close" data-dismiss="modal" aria-label="Close">
+              text-white" id="informationModal">Agregar Noticia</h5>
+        <button type="button" id="cerrarModalNoticia" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
           <div class="row">
-            <div class="col-md-6 col-sm-12">
-              <div class="form-group">
-                <label for="nombres" class="text-shadow-1 text-custom">Nombres</label>
-                <input type="text" class="form-control bg-white input-custom" name="nombres" placeholder="pepito" id="nombres">
-              </div>
+            <div class=" col-sm-12">
+                <div class="form-group">
+                  <label for="titulo_noticia" class="text-shadow-1 text-custom text-capitalize">Titulo de Noticia</label>
+                  <input type="text" class="form-control bg-white input-custom" name="titulo_noticia" placeholder="Juanito salio a pescar y salio Pescado" id="titulo_noticia">
+                </div>
 
-              <div class="form-group">
-                <label for="correo" class="text-shadow-1 text-custom">Correo</label>
-                <input type="email" class="form-control bg-white input-custom" name="correo" placeholder="pepito@gmail.com" id="correo">
-              </div>
+                <div class="form-group">
+                  <label for="descripcion_noticia" class="text-shadow-1 text-custom text-capitalize">descripcion De noticia</label>
+                  <!-- <input type="email" class="form-control bg-white input-custom" name="descripcion_noticia" placeholder="pepito@gmail.com" id="descripcion_noticia"> -->
+                  <textarea name="descripcion_noticia" id="descripcion_noticia" class="form-control" cols="20" rows="4" placeholder="Juanito salio a pescar y salio Pescado xd"></textarea>
+                </div>
+              
+
+                <div class="form-group">
+                  <label for="fk_usuario" class="text-shadow-1 text-custom text-capitalize">Autor</label>
+                  <select name="fk_usuario" id="fk_usuario" class="form-control ">
+                    <option value="" selected="true">-- Seleccione --</option>
+                    <?php foreach (parent::allTable('usuarios') as $user) { ?>
+                      <option value="<?php echo $user->id_usuario ?>"><?php echo $user->nombres." ".$user->apellidos ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
+
+            </div>
+            <div class="form-group col-5 d-flex align-items-center">
+                  <label data-hover="Seleccionar Img" for="new_img" class="w-100 text-center text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg text-capitalize">Seleccionar Imagen</label>
+                   <input type="file" name="new_img" id="new_img" class="img-profile__input-file">
             </div>
 
-            <div class="col-md-6 col-sm-12">
-              <div class="form-group">
-                <label for="apellidos" class="text-shadow-1 text-custom">Apellidos</label>
-                <input type="text" class="form-control bg-white input-custom" name="apellidos" placeholder="perez" id="apellidos">
-              </div>
-
-              <div class="form-group">
-                <label for="password" class="text-shadow-1 text-custom">Clave</label>
-                <input type="password" class="form-control bg-white input-custom" name="clave" placeholder="12345" id="clave">
-              </div>
+            <div class="form-group col-7 text-center">
+                 <img  id="prev-img" class="img-fluid img-thumbnail" alt="">
             </div>
 
-
+         
 
           </div>
-
-          <div class="row">
-            <div class="col-md-8 col-lg-8 col-sm-12">
-              <div class="form-group">
-                <label for="cedula" class="text-shadow-1 text-custom">Número
-                  Documento</label>
-                <input type="text" class="form-control bg-white input-custom" placeholder="1234567890" name="numero_documento" id="numero_documento">
-              </div>
-            </div>
-
-            <div class="col-md-4 col-lg-4 col-sm-12">
-              <div class="form-group">
-                <label for="tipo_documento" class="text-shadow-1 text-custom">Tipo
-                  Documento</label>
-                <select name="tipo_documento" id="tipo_documento" class="form-control bg-white">
-                  <option value="" selected="true">-- Seleccione --</option>
-                  <?php foreach (parent::allTable('tipos_documentos') as $documento) { ?>
-                    <option value="<?php echo $documento->id_tipo_documento ?>"><?php echo $documento->tipo_documento ?></option>
-                  <?php } ?>
-                </select>
-              </div>
-            </div>
-          </div>
-
-
-          <div class="row">
-            <div class="form-group col-md-6 col-lg-3 col-sm-12">
-              <label for="cargo" class="text-shadow-1 text-custom">Cargo</label>
-              <select name="cargo" id="cargo" class="form-control bg-white">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('cargos') as $cargo) { ?>
-                  <option value="<?php echo $cargo->id_cargo ?>"><?php echo $cargo->nombre_cargo ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-            <div class="form-group col-md-6 col-lg-3 col-sm-12">
-              <label for="eps" class="text-shadow-1 text-custom">EPS</label>
-              <select name="eps" id="eps" class="form-control bg-white">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('eps') as $eps) { ?>
-                  <option value="<?php echo $eps->id_eps ?>"><?php echo $eps->nombre_eps ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-            <div class="form-group col-md-6 col-lg-3 col-sm-12">
-              <label for="fondo_pension" class="text-shadow-1 text-custom">Fondo
-                de Pensión</label>
-              <select name="fondo_pension" id="fondo_pension" class="form-control bg-white">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('fondos_pension') as $fondo_pension) { ?>
-                  <option value="<?php echo $fondo_pension->id_fondo_pension ?>"><?php echo $fondo_pension->nombre_fondo_pension ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-            <div class="form-group col-md-6 col-lg-3 col-sm-12">
-              <label for="rol" class="text-shadow-1 text-custom">Rol</label>
-              <select name="rol" id="rol" class="form-control bg-white">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('roles') as $rol) { ?>
-                  <option value="<?php echo $rol->id_rol ?>"><?php echo $rol->nombre_rol ?></option>
-                <?php } ?>
-              </select>
-            </div>
-          </div>
-
-          <input type="hidden" name="updated_at" value="<?php echo date("Y-m-d")  ?>">
-
-
-
 
           <div class="text-right">
-            <!-- <button type="submit" id="" class="mr-3 btn-custom b-r-custom
-                      text-decoration-none font-weight-bold b-custom text-white
-                      rounded-lg">Aceptar</button> -->
-            <button id="GuardarUsuario" class="mr-3 btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg">Aceptar</button>
-
-
-            <button type="button" id="CancelarUsuario" class="btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" data-dismiss="modal">Cancelar</button>
+            <button id="GuardarNoticia" class="mr-3 btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg">Aceptar</button>
+           <button type="button" id="CancelarNoticia" class="btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" data-dismiss="modal">Cancelar</button>
           </div>
         </form>
       </div>
@@ -164,7 +96,7 @@
 <!-- ? Modal End Create-->
 
 <!-- ? Modal Update-->
-<div class="modal fade w-100" id="ModalUpdateUser" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade w-100" id="ModalUpdateNews" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
   <div class="modal-dialog modal-lg ">
   
