@@ -29,7 +29,7 @@
                 <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Administrar Nominas</a>
                 <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Administrar Certificados</a>
                 <a href="?c=Administradores&m=showNews" class="list-group-item list-group-item-action bg-dark text-white">Administrar Noticias</a>
-                <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Administrar Eventos</a>
+                <a href="?c=Administradores&m=showEvents" class="list-group-item list-group-item-action bg-dark text-white">Administrar Eventos</a>
                 <a href="?c=Login&m=destroy" class="list-group-item list-group-item-action bg-dark text-white">Salir</a>
               </div>
             </div>
