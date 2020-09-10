@@ -106,7 +106,7 @@ class AdministradoresController extends Administrador{
     {
         $fecha = new DateTime();
         // funcion img
-        $directorio = "assets/uploud/";
+        $directorio = "assets/uploud/news/";
         $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["new_img"]["name"]);
         //info de ext(jpg,png,etc)
         $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
@@ -161,7 +161,7 @@ class AdministradoresController extends Administrador{
             //? Update Img
             $fecha = new DateTime();
             // funcion img
-            $directorio = "assets/uploud/";
+            $directorio = "assets/uploud/news/";
             $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["update_new_img"]["name"]);
             //info de ext(jpg,png,etc)
             $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
@@ -230,7 +230,7 @@ class AdministradoresController extends Administrador{
       {
           $fecha = new DateTime();
           // funcion img
-          $directorio = "assets/uploud/";
+          $directorio = "assets/uploud/events/";
           $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["event_img"]["name"]);
           //info de ext(jpg,png,etc)
           $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
@@ -285,7 +285,7 @@ class AdministradoresController extends Administrador{
               //? Update Img
               $fecha = new DateTime();
               // funcion img
-              $directorio = "assets/uploud/";
+              $directorio = "assets/uploud/events/";
               $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["update_event_img"]["name"]);
               //info de ext(jpg,png,etc)
               $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));

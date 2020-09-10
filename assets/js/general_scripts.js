@@ -590,96 +590,96 @@ if(location.search =='?c=Administradores&m=showNews'){
     
         }
 
-        //? funcion de mostrar datos en la #ModalShowNews
-        const showNewIdCard= (noticia) => {
-            console.log(noticia);
-            const tituloNoticia= document.getElementById('show_titulo_noticia').textContent=`${noticia.titulo_noticia}`;
-            const descripcionNoticia= document.getElementById('show_descripcion_noticia').textContent=`${noticia.descripcion_noticia}`;
-            const fechaNoticia= document.getElementById('show_fecha_noticia').textContent=`${noticia.nombres} ${noticia.apellidos} ${noticia.fecha_publicado}`;
-            const prevImgNoticia= document.getElementById('show_prev_img').src=`${noticia.imagen_noticia}`;
-            // const idNoticia= document.getElementById('show_id_noticia').value=`${noticia.id_noticia}`;
+    //? funcion de mostrar datos en la #ModalShowNews
+    const showNewIdCard= (noticia) => {
+        console.log(noticia);
+        const tituloNoticia= document.getElementById('show_titulo_noticia').textContent=`${noticia.titulo_noticia}`;
+        const descripcionNoticia= document.getElementById('show_descripcion_noticia').textContent=`${noticia.descripcion_noticia}`;
+        const fechaNoticia= document.getElementById('show_fecha_noticia').textContent=`${noticia.nombres} ${noticia.apellidos} ${noticia.fecha_publicado}`;
+        const prevImgNoticia= document.getElementById('show_prev_img').src=`${noticia.imagen_noticia}`;
+        // const idNoticia= document.getElementById('show_id_noticia').value=`${noticia.id_noticia}`;
+
+    }
+
+    const updateImgNew=document.getElementById('update_new_img');
+    const updatePrevImgNew=document.getElementById('update_prev-img');
+
+    updateImgNew.addEventListener('change', () =>{
+        validarImgNoticiasForm(updateImgNew,updatePrevImgNew,);
+    })
     
-        }
+    const btnSubmitFormUpdateNews = document.getElementById('ActualizarNoticia');
 
-        const updateImgNew=document.getElementById('update_new_img');
-        const updatePrevImgNew=document.getElementById('update_prev-img');
+    btnSubmitFormUpdateNews.addEventListener('click',(e) =>{
+        e.preventDefault();
+        const tituloNoticia= document.getElementById('update_titulo_noticia');
+        const descripcionNoticia= document.getElementById('update_descripcion_noticia');
+        const fechaNoticia= document.getElementById('update_fecha_noticia');
+        const fkUsuario= document.getElementById('update_fk_usuario');
+        const idNoticia= document.getElementById('update_id_noticia');
 
-        updateImgNew.addEventListener('change', () =>{
-            validarImgNoticiasForm(updateImgNew,updatePrevImgNew,);
-        })
-        
-        const btnSubmitFormUpdateNews = document.getElementById('ActualizarNoticia');
+        const img=updateImgNew.files[0];
+        let validar =validarFormNews(tituloNoticia,descripcionNoticia,fkUsuario,updatePrevImgNew);
 
-        btnSubmitFormUpdateNews.addEventListener('click',(e) =>{
-            e.preventDefault();
-            const tituloNoticia= document.getElementById('update_titulo_noticia');
-            const descripcionNoticia= document.getElementById('update_descripcion_noticia');
-            const fechaNoticia= document.getElementById('update_fecha_noticia');
-            const fkUsuario= document.getElementById('update_fk_usuario');
-            const idNoticia= document.getElementById('update_id_noticia');
-
-            const img=updateImgNew.files[0];
-            let validar =validarFormNews(tituloNoticia,descripcionNoticia,fkUsuario,updatePrevImgNew);
-
-            if(validar == true)
+        if(validar == true)
+        {
+            const data = new FormData();
+            data.append('update_id_noticia',idNoticia.value);
+            data.append('update_titulo_noticia',tituloNoticia.value);
+            data.append('update_descripcion_noticia',descripcionNoticia.value);
+            data.append('update_fecha_noticia',fechaNoticia.value);
+            data.append('update_fk_usuario',fkUsuario.value);
+            data.append('update_new_img',img);
+            fetch('?c=Administradores&m=updateNews',
             {
-                const data = new FormData();
-                data.append('update_id_noticia',idNoticia.value);
-                data.append('update_titulo_noticia',tituloNoticia.value);
-                data.append('update_descripcion_noticia',descripcionNoticia.value);
-                data.append('update_fecha_noticia',fechaNoticia.value);
-                data.append('update_fk_usuario',fkUsuario.value);
-                data.append('update_new_img',img);
-                fetch('?c=Administradores&m=updateNews',
-                {
-                    method: 'POST',
-                    body: data
-                })
-                .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al actualizar noticia')))
-                .then(resp => resp.text())
-                .then(data => {
-                    $("#ModalUpdateNews").modal('hide');
-                    const msg ='La noticia se ha actualizado correctamente';
-                    msgSuccess(msg);
-                    showAllNews();
-                })
-            }
-
-        })
-
-        //? funcion De Mensaje modal y callback de eliminar(deleteUser(id));
-        const msgQuestion = (message, id) => {
-            Swal.fire({
-                icon: 'warning',
-                html: `<p class="text-white h4 mb-3 text-capitalize">Desea borrar la noticia</p><p class="text-danger text-capitalize h6">${message}</p>`,
-                focusConfirm:true,
-                background : '#343a40',
-                confirmButtonText: 'Entendido',
-                confirmButtonColor: '#6C63FF',
-                showCancelButton: true,
-                cancelButtonText: 'Cancelar',
-                cancelButtonColor: '#6C63FF'
-              }).then((result) => {
-                if (result.value) {
-                  const msg = "El usuarios ha sido eliminado";
-                  msgSuccess(msg);
-                  deleteNew(id);
-        
-                };
+                method: 'POST',
+                body: data
+            })
+            .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al actualizar noticia')))
+            .then(resp => resp.text())
+            .then(data => {
+                $("#ModalUpdateNews").modal('hide');
+                const msg ='La noticia se ha actualizado correctamente';
+                msgSuccess(msg);
+                showAllNews();
             })
         }
+
+    })
+
+    //? funcion De Mensaje modal y callback de eliminar(deleteUser(id));
+    const msgQuestion = (message, id) => {
+        Swal.fire({
+            icon: 'warning',
+            html: `<p class="text-white h4 mb-3 text-capitalize">Desea borrar la noticia</p><p class="text-danger text-capitalize h6">${message}</p>`,
+            focusConfirm:true,
+            background : '#343a40',
+            confirmButtonText: 'Entendido',
+            confirmButtonColor: '#6C63FF',
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            cancelButtonColor: '#6C63FF'
+            }).then((result) => {
+            if (result.value) {
+                const msg = "El usuarios ha sido eliminado";
+                msgSuccess(msg);
+                deleteNew(id);
     
-        //? funcion de eliminar noticia
-        const deleteNew = (id) =>{
-            fetch(`?c=Administradores&m=destroyNew&id=${id}`,{
-            }).then( resp =>  (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo el delete')))
-            .then( resp => resp.text())
-            .then((data) =>{
-                // se actualiza la tabla
-                showAllNews();
-            }).catch(console.log);
-        
-        }
+            };
+        })
+    }
+
+    //? funcion de eliminar noticia
+    const deleteNew = (id) =>{
+        fetch(`?c=Administradores&m=destroyNew&id=${id}`,{
+        }).then( resp =>  (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo el delete')))
+        .then( resp => resp.text())
+        .then((data) =>{
+            // se actualiza la tabla
+            showAllNews();
+        }).catch(console.log);
+    
+    }
 
 
     //? Funcion del HTML de la tabla ShowNews
@@ -1136,6 +1136,11 @@ if(location.search == '?c=Administradores&m=showEvents')
         }
      
 
+    })
+
+    const btnCancelNew =document.getElementById('CancelarEvento');
+    btnCancelNew.addEventListener('click',() => {
+        resetValueForm('titulo_evento','descripcion_evento','fecha_evento','fk_usuario','event_img','prev-img');
     })
 
 
