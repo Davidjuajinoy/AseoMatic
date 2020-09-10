@@ -546,8 +546,142 @@ if(location.search =='?c=Administradores&m=showNews'){
     //? Guarda todos los datos de la tabla noticias (DB) 
     let allNewsData = [];
 
-
+    //? Selecciona el tr donde se mostraran los campos (id,noticia,etc);
     const thBodyNews= document.getElementById('tablaAllNews');
+
+  
+    //? Manda la id y muestra los datos por id sin hacer peticion SQL 
+    thBodyNews.addEventListener('click', (e) =>{
+
+        const id = e.target;
+        
+        if( id.getAttribute('id'))
+        {
+            const newId = id.getAttribute('id');
+            // buscar el id que coincida con el id obtenido del evento
+            const newIdFilter=allNewsData.filter( noticia => noticia.id_noticia == newId)[0];
+            // console.log(newIdFilter);
+        
+            if(id.getAttribute('data-target') == '#ModalUpdateNews')
+            {
+                showNewId(newIdFilter);
+            }
+            else if(id.getAttribute('data-target') == '#ModalDeleteNews')
+            {
+                const message= `${newIdFilter.titulo_noticia} del autor ${newIdFilter.nombres} ${newIdFilter.apellidos}`
+                msgQuestion(message, newIdFilter.id_noticia);
+            }
+            else if(id.getAttribute('data-target') == '#ModalShowNews'){
+                showNewIdCard(newIdFilter);
+            }
+        
+        }
+        
+    })
+
+        //? funcion de mostrar datos en la #ModalUpdateNews
+        const showNewId= (noticia) => {
+            console.log(noticia);
+            const tituloNoticia= document.getElementById('update_titulo_noticia').value=`${noticia.titulo_noticia}`;
+            const descripcionNoticia= document.getElementById('update_descripcion_noticia').textContent=`${noticia.descripcion_noticia}`;
+            const fkUsuario= document.getElementById('update_fk_usuario').value=`${noticia.fk_usuario}`;
+            const prevImgNoticia= document.getElementById('update_prev-img').src=`${noticia.imagen_noticia}`;
+            const idNoticia= document.getElementById('update_id_noticia').value=`${noticia.id_noticia}`;
+    
+        }
+
+        //? funcion de mostrar datos en la #ModalShowNews
+        const showNewIdCard= (noticia) => {
+            console.log(noticia);
+            const tituloNoticia= document.getElementById('show_titulo_noticia').textContent=`${noticia.titulo_noticia}`;
+            const descripcionNoticia= document.getElementById('show_descripcion_noticia').textContent=`${noticia.descripcion_noticia}`;
+            const fechaNoticia= document.getElementById('show_fecha_noticia').textContent=`${noticia.nombres} ${noticia.apellidos} ${noticia.fecha_publicado}`;
+            const prevImgNoticia= document.getElementById('show_prev_img').src=`${noticia.imagen_noticia}`;
+            // const idNoticia= document.getElementById('show_id_noticia').value=`${noticia.id_noticia}`;
+    
+        }
+
+        const updateImgNew=document.getElementById('update_new_img');
+        const updatePrevImgNew=document.getElementById('update_prev-img');
+
+        updateImgNew.addEventListener('change', () =>{
+            validarImgNoticiasForm(updateImgNew,updatePrevImgNew,);
+        })
+        
+        const btnSubmitFormUpdateNews = document.getElementById('ActualizarNoticia');
+
+        btnSubmitFormUpdateNews.addEventListener('click',(e) =>{
+            e.preventDefault();
+            const tituloNoticia= document.getElementById('update_titulo_noticia');
+            const descripcionNoticia= document.getElementById('update_descripcion_noticia');
+            const fechaNoticia= document.getElementById('update_fecha_noticia');
+            const fkUsuario= document.getElementById('update_fk_usuario');
+            const idNoticia= document.getElementById('update_id_noticia');
+
+            const img=updateImgNew.files[0];
+            let validar =validarFormNews(tituloNoticia,descripcionNoticia,fkUsuario,updatePrevImgNew);
+
+            if(validar == true)
+            {
+                const data = new FormData();
+                data.append('update_id_noticia',idNoticia.value);
+                data.append('update_titulo_noticia',tituloNoticia.value);
+                data.append('update_descripcion_noticia',descripcionNoticia.value);
+                data.append('update_fecha_noticia',fechaNoticia.value);
+                data.append('update_fk_usuario',fkUsuario.value);
+                data.append('update_new_img',img);
+                fetch('?c=Administradores&m=updateNews',
+                {
+                    method: 'POST',
+                    body: data
+                })
+                .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al actualizar noticia')))
+                .then(resp => resp.text())
+                .then(data => {
+                    $("#ModalUpdateNews").modal('hide');
+                    const msg ='La noticia se ha actualizado correctamente';
+                    msgSuccess(msg);
+                    showAllNews();
+                })
+            }
+
+        })
+
+        //? funcion De Mensaje modal y callback de eliminar(deleteUser(id));
+        const msgQuestion = (message, id) => {
+            Swal.fire({
+                icon: 'warning',
+                html: `<p class="text-white h4 mb-3 text-capitalize">Desea borrar la noticia</p><p class="text-danger text-capitalize h6">${message}</p>`,
+                focusConfirm:true,
+                background : '#343a40',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#6C63FF',
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                cancelButtonColor: '#6C63FF'
+              }).then((result) => {
+                if (result.value) {
+                  const msg = "El usuarios ha sido eliminado";
+                  msgSuccess(msg);
+                  deleteNew(id);
+        
+                };
+            })
+        }
+    
+        //? funcion de eliminar noticia
+        const deleteNew = (id) =>{
+            fetch(`?c=Administradores&m=destroyNew&id=${id}`,{
+            }).then( resp =>  (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo el delete')))
+            .then( resp => resp.text())
+            .then((data) =>{
+                // se actualiza la tabla
+                showAllNews();
+            }).catch(console.log);
+        
+        }
+
+
     //? Funcion del HTML de la tabla ShowNews
     const createAllNewsTable = (datos,count) =>{
 
@@ -602,8 +736,8 @@ if(location.search =='?c=Administradores&m=showNews'){
         let i3Td5 =document.createElement('I');
         i3Td5.id=`${datos.id_noticia}`;
         i3Td5.classList.add('delete-svg');
-        i3Td5.setAttribute('data-toggle','modal');
-        i3Td5.setAttribute('data-target','#DeleteNews');
+        // i3Td5.setAttribute('data-toggle','modal');
+        i3Td5.setAttribute('data-target','#ModalDeleteNews');
 
         td5TableAllNews.append(i3Td5);
         trTableAllNews.append(td5TableAllNews);
@@ -639,78 +773,123 @@ if(location.search =='?c=Administradores&m=showNews'){
 
 
     imgNew.addEventListener('change', () =>{
-        validarImgNoticiasForm();
+        validarImgNoticiasForm(imgNew,prevImg);
 
     })
 
-    //? funcion que previsualiza la img selecciona y valida si es formato adecuado
-    const validarImgNoticiasForm= () =>{
-        const img=imgNew.files[0];
+    //? funcion que previsualiza la img selecciona y valida si es formato adecuado require la el INPUT(FILE) y un img(visualizar)
+    const validarImgNoticiasForm= (imgNoticia,prevImgNew) =>{
+        const img=imgNoticia.files[0];
         if(img["type"] != "image/jpeg" && img["type"] != "image/png" && img["type"] != "image/jpeg")
         {
-            imgNew.value="";
+            imgNoticia.value="";
             const msg ='la imagen debe ser png o jpeg';
             msgError(msg);
-            prevImg.src='';
+            prevImgNew.src='';
+            prevImgNew.alt ='image not found';
             return false;
         }
         else if(img["size"] > 2000000)
         {
-            imgNew.value="";
+            imgNoticia.value="";
             const msg='la imagen debe ser menor a 2mb';
             msgError(msg);
-            prevImg.src='';
+            prevImgNew.src="";
+            prevImgNew.alt ='image not found';
             return false;
         
         }
         else{
-             prevImg.src='';
+             prevImgNew.src='';
              const datosImagen = new FileReader; 
              datosImagen.readAsDataURL(img);
              datosImagen.addEventListener('load', (e) =>{
                  //obtiene la img en formato base64
                 let rutaImagen = e.target.result;
-                prevImg.src=rutaImagen;
+                prevImgNew.src=rutaImagen;
              });
              return true;         
         }
     }
 
+    //? Resetear valores en #ModalAddNews
+    const resetValueForm= (titulo_noticia,descripcion_noticia,fecha_noticia,fk_usuario,img_noticia,prev_img_noticia) =>{
+        const tituloNoticia= document.getElementById(titulo_noticia).value="";
+        const descripcionNoticia= document.getElementById(descripcion_noticia).value="";
+        const fechaNoticia= document.getElementById(fecha_noticia).value="";
+        const fkUsuario= document.getElementById(fk_usuario).value="";
+        const imgNoticia= document.getElementById(img_noticia).value="";
+        const PrevimgNoticia= document.getElementById(prev_img_noticia).src="";
+    }
+
+
+    const btnCancelNew =document.getElementById('CancelarNoticia');
+    btnCancelNew.addEventListener('click',() => {
+        resetValueForm('titulo_noticia','descripcion_noticia','fecha_noticia','fk_usuario','new_img','prev-img');
+    })
 
     const btnSubmitFormNews=document.getElementById('GuardarNoticia');
     btnSubmitFormNews.addEventListener('click',(e)=>{
         e.preventDefault();
-        let validar =validarFormNews('titulo_noticia','descripcion_noticia','fk_usuario','new_img');
+        const tituloNoticia= document.getElementById('titulo_noticia');
+        const descripcionNoticia= document.getElementById('descripcion_noticia');
+        const fechaNoticia= document.getElementById('fecha_noticia');
+        const fkUsuario= document.getElementById('fk_usuario');
+        const img=imgNew.files[0];
+        //prevImg = es igual a img.src
+
+
+        let validar =validarFormNews(tituloNoticia,descripcionNoticia,fkUsuario,prevImg);
         if(validar ===  true)
         {
-            
+          
+            const data = new FormData();
+            data.append('titulo_noticia',tituloNoticia.value);
+            data.append('descripcion_noticia',descripcionNoticia.value);
+            data.append('fecha_noticia',fechaNoticia.value);
+            data.append('new_img',img);
+            data.append('fk_usuario',fkUsuario.value);
+
+            fetch('?c=Administradores&m=storeNew',{
+                method: 'POST',
+                body: data
+            })
+            .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Fallo la insercion')) )
+            .then( resp => resp.text())
+            .then(data => {
+
+                $("#ModalAddNew").modal('hide');
+                // se llama la funcion resetear valores del formulario y se les pasa la id
+                resetValueForm('titulo_noticia','descripcion_noticia','fecha_noticia','fk_usuario','new_img','prev-img');
+                let message = 'Noticia Agregada Correctamente';
+                // se llama la funcion de !=error
+                msgSuccess(message);
+                // se llama a la funcion de mostrar usuarios html
+                showAllNews();
+            }).catch(console.log);
         }
      
 
     })
 
     const validarFormNews= (title,description,user,img) =>{
-        const tituloNoticia= document.getElementById(title);
-        const descripcionNoticia= document.getElementById(description);
-        const fkUsuario= document.getElementById(user);
-        const imgNoticia= document.getElementById(img);
    
-        if(tituloNoticia.value =="")
+        if(title.value =="")
         {
             const msg = 'Ingrese el titulo de la Noticia';
-            tituloNoticia.focus();
+            title.focus();
             msgError(msg);
-        }else if(descripcionNoticia.value ==''){
+        }else if(description.value ==''){
             const msg = 'Ingrese la descripcion de la Noticia';
-            descripcionNoticia.focus();
+            description.focus();
             msgError(msg);
-        }else if(fkUsuario.value ==''){
+        }else if(user.value ==''){
             const msg = 'Ingrese el autor de la Noticia';
-            fkUsuario.focus();
+            user.focus();
             msgError(msg);
-        }else if(imgNoticia.value ==''){
+        }else if(img.src =='' || img.alt == 'image not found'){
             const msg = 'Ingrese la imagen de la Noticia';
-            imgNoticia.focus();
+            img.focus();
             msgError(msg);
         }else{
             return true;

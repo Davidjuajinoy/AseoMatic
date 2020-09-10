@@ -55,7 +55,6 @@
 
                 <div class="form-group">
                   <label for="descripcion_noticia" class="text-shadow-1 text-custom text-capitalize">descripcion De noticia</label>
-                  <!-- <input type="email" class="form-control bg-white input-custom" name="descripcion_noticia" placeholder="pepito@gmail.com" id="descripcion_noticia"> -->
                   <textarea name="descripcion_noticia" id="descripcion_noticia" class="form-control" cols="20" rows="4" placeholder="Juanito salio a pescar y salio Pescado xd"></textarea>
                 </div>
               
@@ -77,10 +76,10 @@
             </div>
 
             <div class="form-group col-7 text-center">
-                 <img  id="prev-img" class="img-fluid img-thumbnail" alt="">
+                 <img  id="prev-img" class="img-fluid img-thumbnail" >
             </div>
 
-         
+            <input type="hidden" name="fecha_noticia" id="fecha_noticia"value="<?php echo date("Y-m-d") ?>">
 
           </div>
 
@@ -98,128 +97,58 @@
 <!-- ? Modal Update-->
 <div class="modal fade w-100" id="ModalUpdateNews" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-  <div class="modal-dialog modal-lg ">
+  <div class="modal-dialog modal-lg  modal-dialog-scrollable">
   
     <div class="modal-content  bg-dark text-white">
       <div class="modal-header border-0 b-custom">
         <h5 class="modal-title text-center h4 font-weight-bold text-shadow-1
-        text-white" id="informationModal">Actualizar Usuario</h5>
-        <button type="button" id="cerrarModalUpdateUsuario" class="close" data-dismiss="modal" aria-label="Close">
+        text-white" id="UpdateNewModal">Actualizar Usuario</h5>
+        <button type="button" id="cerrarModalUpdateNew" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="?c=Administradores&m=store" method="POST">
+      <form action="" method="POST" enctype="multipart/form-data">
           <div class="row">
-            <div class="col-md-6 col-sm-12">
-              <div class="form-group">
+            <div class=" col-sm-12">
+            <input type="hidden" name="update_id_noticia" id="update_id_noticia">
+                <div class="form-group">
+                  <label for="update_titulo_noticia" class="text-shadow-1 text-custom text-capitalize">Titulo de Noticia</label>
+                  <input type="text" class="form-control bg-white input-custom" name="update_titulo_noticia" placeholder="Juanito salio a pescar y salio Pescado" id="update_titulo_noticia">
+                </div>
 
+                <div class="form-group">
+                  <label for="update_descripcion_noticia" class="text-shadow-1 text-custom text-capitalize">descripcion De noticia</label>
+                  <textarea name="update_descripcion_noticia" id="update_descripcion_noticia" class="form-control" cols="20" rows="4"></textarea>
+                </div>
+              
 
-                <input type="hidden" name="update_id" id="update_id">
-
-
-                <label for="update_nombres" class="text-shadow-1 text-custom">Nombres</label>
-                <input type="text" class="form-control bg-white text-capitalize input-custom" name="update_nombres" id="update_nombres">
-              </div>
+                <div class="form-group">
+                  <label for="update_fk_usuario" class="text-shadow-1 text-custom text-capitalize">Autor</label>
+                  <select name="update_fk_usuario" id="update_fk_usuario" class="form-control ">
+                    <?php foreach (parent::allTable('usuarios') as $user) { ?>
+                      <option value="<?php echo $user->id_usuario ?>"><?php echo $user->nombres." ".$user->apellidos ?></option>
+                    <?php } ?>
+                  </select>
+                </div>
 
             </div>
-
-
-
-            <div class="col-md-6 col-sm-12">
-
-              <div class="form-group">
-                <label for="update_apellidos" class="text-shadow-1 text-custom">Apellidos</label>
-                <input type="text" class="form-control bg-white text-capitalize input-custom" name="update_apellidos" id="update_apellidos">
-              </div>
-
-
+            <div class="form-group col-5 d-flex align-items-center">
+                  <label data-hover="Seleccionar Img" for="update_new_img" class="w-100 text-center text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg text-capitalize">Seleccionar Imagen</label>
+                   <input type="file" name="update_new_img" id="update_new_img" class="img-profile__input-file">
             </div>
 
-            <div class="form-group col-12">
-              <label for="update_correo" class="text-shadow-1 text-custom">Correo</label>
-              <input type="email" class="form-control bg-white input-custom" name="update_correo" id="update_correo">
-
-              <label for="update_clave" class="text-shadow-1 text-custom">Clave</label>
-              <input type="password" class="form-control bg-white input-custom" name="update_clave" id="update_clave">
+            <div class="form-group col-7 text-center">
+                 <img  id="update_prev-img" class="img-fluid img-thumbnail" alt="">
             </div>
 
-            <div class="form-group col-md-8 col-sm-12">
-              <label for="update_numero_documento" class="text-shadow-1 text-custom">Número Documento</label>
-              <input type="text" class="form-control bg-white input-custom" name="update_numero_documento" id="update_numero_documento">
-            </div>
-
-            <div class="form-group col-md-4 col-sm-12">
-              <label for="update_tipo_documento" class="text-shadow-1 text-custom">Tipo Documento</label>
-              <select name="update_tipo_documento" id="update_tipo_documento" class="form-control bg-white text-capitalize">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('tipos_documentos') as $documento) { ?>
-                  <option value="<?php echo $documento->id_tipo_documento ?>"><?php echo $documento->tipo_documento ?></option>
-                <?php } ?>
-              </select>
-            </div>
+            <input type="hidden" name="update_fecha_noticia" id="update_fecha_noticia"value="<?php echo date("Y-m-d") ?>">
 
           </div>
 
-          <div class="row">
-
-
-
-            <div class="form-group  col-sm-12 col-lg-3 col-md-6">
-              <label for="update_rol" class="text-shadow-1 text-custom">Rol</label>
-              <select name="update_rol" id="update_rol" class="form-control bg-white text-capitalize">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('roles') as $rol) { ?>
-                  <option value="<?php echo $rol->id_rol ?>"><?php echo $rol->nombre_rol ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-
-            <div class="form-group  col-sm-12 col-lg-3 col-md-6">
-              <label for="update_cargo" class="text-shadow-1 text-custom">Cargo</label>
-              <select name="update_cargo" id="update_cargo" class="form-control bg-white text-capitalize">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('cargos') as $cargo) { ?>
-                  <option value="<?php echo $cargo->id_cargo ?>"><?php echo $cargo->nombre_cargo ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-            <div class="form-group  col-sm-12 col-lg-3 col-md-6">
-              <label for="update_eps" class="text-shadow-1 text-custom">EPS</label>
-              <select name="update_eps" id="update_eps" class="form-control bg-white text-capitalize">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('eps') as $eps) { ?>
-                  <option value="<?php echo $eps->id_eps ?>"><?php echo $eps->nombre_eps ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-            <div class="form-group  col-sm-12 col-lg-3 col-md-6">
-              <label for="update_fondo_pension" class="text-shadow-1 text-custom">Fondo de Pensión</label>
-              <select name="update_fondo_pension" id="update_fondo_pension" class="form-control bg-white text-capitalize">
-                <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('fondos_pension') as $fondo_pension) { ?>
-                  <option value="<?php echo $fondo_pension->id_fondo_pension ?>"><?php echo $fondo_pension->nombre_fondo_pension ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-          </div>
-
-
-
-          <input type="hidden" name="updated_at" id="updated_at" value="<?php echo date("Y-m-d")  ?>">
-
-
-
-          <div class="d-flex justify-content-start align-items-center">
-
-            <button id="EditarUsuario" class="mr-3 btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg">Aceptar</button>
-
-
-            <button type="button" id="CancelarUpdateUsuario" class="btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" data-dismiss="modal">Cancelar</button>
+          <div class="text-right">
+            <button id="ActualizarNoticia" class="mr-3 btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg">Aceptar</button>
+           <button type="button" id="CancelarActualizarNoticia" class="btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" data-dismiss="modal">Cancelar</button>
           </div>
         </form>
       </div>
@@ -230,121 +159,37 @@
 
 
 <!-- ? Modal Show-->
-<div class="modal fade w-100" id="ModalShowUser" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade w-100" id="ModalShowNews" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-  <div class="modal-dialog ">
+  <div class="modal-dialog   modal-dialog-scrollable">
   
     <div class="modal-content  bg-dark text-white">
       <div class="modal-header border-0 b-custom">
         <h5 class="modal-title text-center h4 font-weight-bold text-shadow-1
-        text-white" id="showModal">Informacion del Usuario</h5>
+        text-white" id="showModal">Noticia</h5>
         <button type="button" id="cerrarModalShowUsuario" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6  col-6">
-              <div class="form-group">
-                <label for="update_nombres" class="text-shadow-1 text-custom">Nombres</label>
-                <p id="show_nombres" class="d-block text-capitalize"></p>
-               
-              </div>
-
-            </div>
-
-            <div class="col-md-6 col-6">
-
-              <div class="form-group">
-                <label class="text-shadow-1 text-custom">Apellidos</label>
-                  <p id="show_apellidos" class="d-block text-capitalize"></p>
-              </div>
-
-            </div>
-
-            <div class="form-group col-6">
-              <label class="text-shadow-1 text-custom">Correo</label>
-              <p id="show_correo" class="d-block"></p>
-            </div>
-
-            <div class="form-group  col-6 col-md-6">
-              <label  class="text-shadow-1 text-custom">Cargo</label>
-              <select id="show_cargo" class="bg-white d-block text-capitalize" disabled>
-                <?php foreach (parent::allTable('cargos') as $cargo) { ?>
-                  <option value="<?php echo $cargo->id_cargo ?>"><?php echo $cargo->nombre_cargo ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-            <div class="form-group col-md-6 col-sm-6 col-6">
-              <label class="text-shadow-1 text-custom">Número Documento</label>
-              <p id="show_numero_documento" class="d-block"></p>
-            </div>
-
-            <div class="form-group col-md-6 col-sm-6 col-6">
-              <label class="text-shadow-1 text-custom">Tipo Documento</label>
-              <select id="show_tipo_documento" class="bg-white d-block" text-capitalize  disabled>
-                <?php foreach (parent::allTable('tipos_documentos') as $documento) { ?>
-                  <option class="bg-white" value="<?php echo $documento->id_tipo_documento ?>"><?php echo $documento->tipo_documento ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-          </div>
-
-          <div class="row">
-
-
-
+                      
        
-
-         
-
-            <div class="form-group  col-6 col-sm-4">
-              <label  class="text-shadow-1 text-custom">Eps</label>
-              <select id="show_eps" class="d-block bg-white text-capitalize" disabled>
-                <?php foreach (parent::allTable('eps') as $eps) { ?>
-                  <option value="<?php echo $eps->id_eps ?>"><?php echo $eps->nombre_eps ?></option>
-                <?php } ?>
-              </select>
+          <div class="card mb-3">
+            <img  id="show_prev_img" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title text-body font-weight-bold" id="show_titulo_noticia"></h5>
+              <p class="card-text text-secondary" id="show_descripcion_noticia"></p>
+              
+              <small class="text-muted" id="show_fecha_noticia"></small>
             </div>
-
-            <div class="form-group  col-12 col-sm-4 order-2 order-sm-1">
-              <label class="text-shadow-1 text-custom">Fondo de Pensión</label>
-              <select id="show_fondo_pension" class="bg-white d-block text-capitalize" disabled>
-                <?php foreach (parent::allTable('fondos_pension') as $fondo_pension) { ?>
-                  <option value="<?php echo $fondo_pension->id_fondo_pension ?>"><?php echo $fondo_pension->nombre_fondo_pension ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-            <div class="form-group  col-6 col-sm-4 order-1 order-sm-1">
-              <label  class="text-shadow-1 text-custom">Rol</label>
-              <select id="show_rol"  class="bg-white d-block"  disabled>
-                <?php foreach (parent::allTable('roles') as $rol) { ?>
-                  <option value="<?php echo $rol->id_rol ?>"><?php echo $rol->nombre_rol ?></option>
-                <?php } ?>
-              </select>
-            </div>
-
-
           </div>
-
-
-
-          <input type="hidden" name="updated_at" id="updated_at" value="<?php echo date("Y-m-d")  ?>">
-
 
 
 
           <div class="d-flex justify-content-end align-items-center">
-
-
-
-              <button type="button" id="CancelarShowUsuario" class="btn-custom b-r-custom
-                  text-decoration-none font-weight-bold b-custom text-white
-                  rounded-lg" data-dismiss="modal">Cerrar</button>
+                <button type="button" id="CancelarShowUsuario" class="btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" data-dismiss="modal">Cerrar</button>
           </div>
+
  
       </div>
     </div>
