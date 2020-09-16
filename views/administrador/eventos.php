@@ -63,7 +63,7 @@
                   <label for="fk_usuario" class="text-shadow-1 text-custom text-capitalize">Autor</label>
                   <select name="fk_usuario" id="fk_usuario" class="form-control ">
                     <option value="" selected="true">-- Seleccione --</option>
-                    <?php foreach (parent::allTable('usuarios') as $user) { ?>
+                    <?php foreach (Administrador::allTable('usuarios') as $user) { ?>
                       <option value="<?php echo $user->id_usuario ?>"><?php echo $user->nombres." ".$user->apellidos ?></option>
                     <?php } ?>
                   </select>
@@ -126,7 +126,7 @@
                 <div class="form-group">
                   <label for="update_fk_usuario" class="text-shadow-1 text-custom text-capitalize">Autor</label>
                   <select name="update_fk_usuario" id="update_fk_usuario" class="form-control ">
-                    <?php foreach (parent::allTable('usuarios') as $user) { ?>
+                    <?php foreach (Administrador::allTable('usuarios') as $user) { ?>
                       <option value="<?php echo $user->id_usuario ?>"><?php echo $user->nombres." ".$user->apellidos ?></option>
                     <?php } ?>
                   </select>

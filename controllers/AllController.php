@@ -12,7 +12,7 @@ class AllController{
             $this->seguridad->seguridad();
         }catch(Exception $e)
         {
-            die('Error de Instacia');
+            die('Error de Instancia');
         }
 
     }

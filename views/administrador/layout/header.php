@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-    <!-- <link rel="stylesheet" href="assets/css/fontawesome.css"> -->
     <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
 
@@ -25,11 +24,11 @@
                 <p class="diplay-6  text-white my-3 px-2 size-sm text-center">David Andres Hernandez Juajinoy</p>
               </div>
               <div class="menu-settings text-capitalize">
-                <a href="?c=Administradores&m=show" class="list-group-item list-group-item-action bg-dark text-white">Administrar Usuarios</a>
+                <a href="?c=Usuarios&m=show" class="list-group-item list-group-item-action bg-dark text-white">Administrar Usuarios</a>
                 <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Administrar Nominas</a>
                 <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Administrar Certificados</a>
-                <a href="?c=Administradores&m=showNews" class="list-group-item list-group-item-action bg-dark text-white">Administrar Noticias</a>
-                <a href="?c=Administradores&m=showEvents" class="list-group-item list-group-item-action bg-dark text-white">Administrar Eventos</a>
+                <a href="?c=Noticias&m=showNews" class="list-group-item list-group-item-action bg-dark text-white">Administrar Noticias</a>
+                <a href="?c=Eventos&m=showEvents" class="list-group-item list-group-item-action bg-dark text-white">Administrar Eventos</a>
                 <a href="?c=Login&m=destroy" class="list-group-item list-group-item-action bg-dark text-white">Salir</a>
               </div>
             </div>

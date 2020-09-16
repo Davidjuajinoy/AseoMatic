@@ -94,7 +94,7 @@
                   Documento</label>
                 <select name="tipo_documento" id="tipo_documento" class="form-control bg-white">
                   <option value="" selected="true">-- Seleccione --</option>
-                  <?php foreach (parent::allTable('tipos_documentos') as $documento) { ?>
+                  <?php foreach (Administrador::allTable('tipos_documentos') as $documento) { ?>
                     <option value="<?php echo $documento->id_tipo_documento ?>"><?php echo $documento->tipo_documento ?></option>
                   <?php } ?>
                 </select>
@@ -108,7 +108,7 @@
               <label for="cargo" class="text-shadow-1 text-custom">Cargo</label>
               <select name="cargo" id="cargo" class="form-control bg-white">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('cargos') as $cargo) { ?>
+                <?php foreach (Administrador::allTable('cargos') as $cargo) { ?>
                   <option value="<?php echo $cargo->id_cargo ?>"><?php echo $cargo->nombre_cargo ?></option>
                 <?php } ?>
               </select>
@@ -118,7 +118,7 @@
               <label for="eps" class="text-shadow-1 text-custom">EPS</label>
               <select name="eps" id="eps" class="form-control bg-white">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('eps') as $eps) { ?>
+                <?php foreach (Administrador::allTable('eps') as $eps) { ?>
                   <option value="<?php echo $eps->id_eps ?>"><?php echo $eps->nombre_eps ?></option>
                 <?php } ?>
               </select>
@@ -129,7 +129,7 @@
                 de Pensión</label>
               <select name="fondo_pension" id="fondo_pension" class="form-control bg-white">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('fondos_pension') as $fondo_pension) { ?>
+                <?php foreach (Administrador::allTable('fondos_pension') as $fondo_pension) { ?>
                   <option value="<?php echo $fondo_pension->id_fondo_pension ?>"><?php echo $fondo_pension->nombre_fondo_pension ?></option>
                 <?php } ?>
               </select>
@@ -139,7 +139,7 @@
               <label for="rol" class="text-shadow-1 text-custom">Rol</label>
               <select name="rol" id="rol" class="form-control bg-white">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('roles') as $rol) { ?>
+                <?php foreach (Administrador::allTable('roles') as $rol) { ?>
                   <option value="<?php echo $rol->id_rol ?>"><?php echo $rol->nombre_rol ?></option>
                 <?php } ?>
               </select>
@@ -220,7 +220,7 @@
               <label for="update_tipo_documento" class="text-shadow-1 text-custom">Tipo Documento</label>
               <select name="update_tipo_documento" id="update_tipo_documento" class="form-control bg-white text-capitalize">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('tipos_documentos') as $documento) { ?>
+                <?php foreach (Administrador::allTable('tipos_documentos') as $documento) { ?>
                   <option value="<?php echo $documento->id_tipo_documento ?>"><?php echo $documento->tipo_documento ?></option>
                 <?php } ?>
               </select>
@@ -236,7 +236,7 @@
               <label for="update_rol" class="text-shadow-1 text-custom">Rol</label>
               <select name="update_rol" id="update_rol" class="form-control bg-white text-capitalize">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('roles') as $rol) { ?>
+                <?php foreach (Administrador::allTable('roles') as $rol) { ?>
                   <option value="<?php echo $rol->id_rol ?>"><?php echo $rol->nombre_rol ?></option>
                 <?php } ?>
               </select>
@@ -247,7 +247,7 @@
               <label for="update_cargo" class="text-shadow-1 text-custom">Cargo</label>
               <select name="update_cargo" id="update_cargo" class="form-control bg-white text-capitalize">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('cargos') as $cargo) { ?>
+                <?php foreach (Administrador::allTable('cargos') as $cargo) { ?>
                   <option value="<?php echo $cargo->id_cargo ?>"><?php echo $cargo->nombre_cargo ?></option>
                 <?php } ?>
               </select>
@@ -257,7 +257,7 @@
               <label for="update_eps" class="text-shadow-1 text-custom">EPS</label>
               <select name="update_eps" id="update_eps" class="form-control bg-white text-capitalize">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('eps') as $eps) { ?>
+                <?php foreach (Administrador::allTable('eps') as $eps) { ?>
                   <option value="<?php echo $eps->id_eps ?>"><?php echo $eps->nombre_eps ?></option>
                 <?php } ?>
               </select>
@@ -267,7 +267,7 @@
               <label for="update_fondo_pension" class="text-shadow-1 text-custom">Fondo de Pensión</label>
               <select name="update_fondo_pension" id="update_fondo_pension" class="form-control bg-white text-capitalize">
                 <option value="" selected="true">-- Seleccione --</option>
-                <?php foreach (parent::allTable('fondos_pension') as $fondo_pension) { ?>
+                <?php foreach (Administrador::allTable('fondos_pension') as $fondo_pension) { ?>
                   <option value="<?php echo $fondo_pension->id_fondo_pension ?>"><?php echo $fondo_pension->nombre_fondo_pension ?></option>
                 <?php } ?>
               </select>
@@ -337,7 +337,7 @@
             <div class="form-group  col-6 col-md-6">
               <label  class="text-shadow-1 text-custom">Cargo</label>
               <select id="show_cargo" class="bg-white d-block text-capitalize" disabled>
-                <?php foreach (parent::allTable('cargos') as $cargo) { ?>
+                <?php foreach (Administrador::allTable('cargos') as $cargo) { ?>
                   <option value="<?php echo $cargo->id_cargo ?>"><?php echo $cargo->nombre_cargo ?></option>
                 <?php } ?>
               </select>
@@ -351,7 +351,7 @@
             <div class="form-group col-md-6 col-sm-6 col-6">
               <label class="text-shadow-1 text-custom">Tipo Documento</label>
               <select id="show_tipo_documento" class="bg-white d-block" text-capitalize  disabled>
-                <?php foreach (parent::allTable('tipos_documentos') as $documento) { ?>
+                <?php foreach (Administrador::allTable('tipos_documentos') as $documento) { ?>
                   <option class="bg-white" value="<?php echo $documento->id_tipo_documento ?>"><?php echo $documento->tipo_documento ?></option>
                 <?php } ?>
               </select>
@@ -370,7 +370,7 @@
             <div class="form-group  col-6 col-sm-4">
               <label  class="text-shadow-1 text-custom">Eps</label>
               <select id="show_eps" class="d-block bg-white text-capitalize" disabled>
-                <?php foreach (parent::allTable('eps') as $eps) { ?>
+                <?php foreach (Administrador::allTable('eps') as $eps) { ?>
                   <option value="<?php echo $eps->id_eps ?>"><?php echo $eps->nombre_eps ?></option>
                 <?php } ?>
               </select>
@@ -379,7 +379,7 @@
             <div class="form-group  col-12 col-sm-4 order-2 order-sm-1">
               <label class="text-shadow-1 text-custom">Fondo de Pensión</label>
               <select id="show_fondo_pension" class="bg-white d-block text-capitalize" disabled>
-                <?php foreach (parent::allTable('fondos_pension') as $fondo_pension) { ?>
+                <?php foreach (Administrador::allTable('fondos_pension') as $fondo_pension) { ?>
                   <option value="<?php echo $fondo_pension->id_fondo_pension ?>"><?php echo $fondo_pension->nombre_fondo_pension ?></option>
                 <?php } ?>
               </select>
@@ -388,7 +388,7 @@
             <div class="form-group  col-6 col-sm-4 order-1 order-sm-1">
               <label  class="text-shadow-1 text-custom">Rol</label>
               <select id="show_rol"  class="bg-white d-block"  disabled>
-                <?php foreach (parent::allTable('roles') as $rol) { ?>
+                <?php foreach (Administrador::allTable('roles') as $rol) { ?>
                   <option value="<?php echo $rol->id_rol ?>"><?php echo $rol->nombre_rol ?></option>
                 <?php } ?>
               </select>

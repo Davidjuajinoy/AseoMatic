@@ -7,7 +7,7 @@
     <script src="assets/js/bootstrap.min.js" ></script>
     <script src="assets/js/owl.carousel.min.js"></script>
     <script src="assets/js/sweetalert2.all.min.js"></script>
-    <script src="assets/js/general_scripts.js"></script>
+    <script src="assets/js/modulos.js"></script>
     <script src="assets/js/main.js"></script>
 </body>
 

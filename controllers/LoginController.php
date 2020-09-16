@@ -2,33 +2,11 @@
 
 class LoginController extends Login{
   
-    // private $usuario;
-
-    // public function __construct()
-    // {
-    //     try
-    //     {
-    //         $this->usuario = new Login();
-    //     }catch(Exception $e)
-    //     {
-    //         die('murio');
-    //     }
-
-    // }
-  
-
     public function auth()
-    {
-    //   require_once('views/all/index.php');
-       
+    {     
         $nombre_usuario = $_POST['nombre_usuario'];
         $password = md5($_POST['password']);
-        // var_dump($nombre_usuario,$password);
-        // $usuario = $this->usuario->verificarLogin($nombre_usuario,$password);
         $usuario = parent::verificarLogin($nombre_usuario,$password);
-        // var_dump($usuario);
-      
-      
 
         if( $nombre_usuario == $usuario->correo  && $password == $usuario->clave)
         {
@@ -45,7 +23,7 @@ class LoginController extends Login{
             }
         }else if( $nombre_usuario == $usuario->correo && $password != $usuario->clave )
         {
-            // require_once('views/all/index.php');
+
             echo "<script src="."assets/js/jquery-3.5.1.slim.min.js"."></script>
             <script src="."assets/js/sweetalert2.all.min.js"."></script>
             <script src="."assets/js/general_scripts.js"."></script>";
