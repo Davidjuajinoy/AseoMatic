@@ -37,14 +37,14 @@
 </main>
 
 <!-- ? Modal Create-->
-<div class="modal fade" id="ModalAddUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalAddUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
 
   <div class="modal-dialog modal-lg">
     <div class="modal-content  bg-dark text-white">
       <div class="modal-header border-0 b-custom">
         <h5 class="modal-title text-center h4 font-weight-bold text-shadow-1
               text-white" id="informationModal">Agregar Usuario</h5>
-        <button type="button" id="cerrarModalUsuario" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" id="cerrarModalUsuario" tabindex="-1" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -53,25 +53,25 @@
           <div class="row">
             <div class="col-md-6 col-sm-12">
               <div class="form-group">
-                <label for="nombres" class="text-shadow-1 text-custom">Nombres</label>
-                <input type="text" class="form-control bg-white input-custom" name="nombres" placeholder="pepito" id="nombres">
+                <label for="nombres"  class="text-shadow-1 text-custom">Nombres</label>
+                <input type="text" tabindex="1" class="form-control bg-white input-custom" name="nombres" placeholder="pepito" id="nombres">
               </div>
 
               <div class="form-group">
                 <label for="correo" class="text-shadow-1 text-custom">Correo</label>
-                <input type="email" class="form-control bg-white input-custom" name="correo" placeholder="pepito@gmail.com" id="correo">
+                <input type="email" tabindex="3" class="form-control bg-white input-custom" name="correo" placeholder="pepito@gmail.com" id="correo">
               </div>
             </div>
 
             <div class="col-md-6 col-sm-12">
               <div class="form-group">
                 <label for="apellidos" class="text-shadow-1 text-custom">Apellidos</label>
-                <input type="text" class="form-control bg-white input-custom" name="apellidos" placeholder="perez" id="apellidos">
+                <input type="text" tabindex="2" class="form-control bg-white input-custom" name="apellidos" placeholder="perez" id="apellidos">
               </div>
 
               <div class="form-group">
                 <label for="password" class="text-shadow-1 text-custom">Clave</label>
-                <input type="password" class="form-control bg-white input-custom" name="clave" placeholder="12345" id="clave">
+                <input type="password" tabindex="4" class="form-control bg-white input-custom" name="clave" placeholder="12345" id="clave">
               </div>
             </div>
 
@@ -84,7 +84,7 @@
               <div class="form-group">
                 <label for="cedula" class="text-shadow-1 text-custom">Número
                   Documento</label>
-                <input type="text" class="form-control bg-white input-custom" placeholder="1234567890" name="numero_documento" id="numero_documento">
+                <input type="text" tabindex="5" class="form-control bg-white input-custom" placeholder="1234567890" name="numero_documento" id="numero_documento">
               </div>
             </div>
 
@@ -92,8 +92,8 @@
               <div class="form-group">
                 <label for="tipo_documento" class="text-shadow-1 text-custom">Tipo
                   Documento</label>
-                <select name="tipo_documento" id="tipo_documento" class="form-control bg-white">
-                  <option value="" selected="true">-- Seleccione --</option>
+                <select name="tipo_documento" tabindex="6" id="tipo_documento" class="form-control bg-white">
+                  <option value=""   selected="true">-- Seleccione --</option>
                   <?php foreach (Administrador::allTable('tipos_documentos') as $documento) { ?>
                     <option value="<?php echo $documento->id_tipo_documento ?>"><?php echo $documento->tipo_documento ?></option>
                   <?php } ?>
@@ -106,8 +106,8 @@
           <div class="row">
             <div class="form-group col-md-6 col-lg-3 col-sm-12">
               <label for="cargo" class="text-shadow-1 text-custom">Cargo</label>
-              <select name="cargo" id="cargo" class="form-control bg-white">
-                <option value="" selected="true">-- Seleccione --</option>
+              <select name="cargo" id="cargo" tabindex="7"class="form-control bg-white">
+                <option value=""  selected="true">-- Seleccione --</option>
                 <?php foreach (Administrador::allTable('cargos') as $cargo) { ?>
                   <option value="<?php echo $cargo->id_cargo ?>"><?php echo $cargo->nombre_cargo ?></option>
                 <?php } ?>
@@ -116,7 +116,7 @@
 
             <div class="form-group col-md-6 col-lg-3 col-sm-12">
               <label for="eps" class="text-shadow-1 text-custom">EPS</label>
-              <select name="eps" id="eps" class="form-control bg-white">
+              <select name="eps" id="eps" tabindex="8" class="form-control bg-white">
                 <option value="" selected="true">-- Seleccione --</option>
                 <?php foreach (Administrador::allTable('eps') as $eps) { ?>
                   <option value="<?php echo $eps->id_eps ?>"><?php echo $eps->nombre_eps ?></option>
@@ -127,7 +127,7 @@
             <div class="form-group col-md-6 col-lg-3 col-sm-12">
               <label for="fondo_pension" class="text-shadow-1 text-custom">Fondo
                 de Pensión</label>
-              <select name="fondo_pension" id="fondo_pension" class="form-control bg-white">
+              <select name="fondo_pension" tabindex="9" id="fondo_pension" class="form-control bg-white">
                 <option value="" selected="true">-- Seleccione --</option>
                 <?php foreach (Administrador::allTable('fondos_pension') as $fondo_pension) { ?>
                   <option value="<?php echo $fondo_pension->id_fondo_pension ?>"><?php echo $fondo_pension->nombre_fondo_pension ?></option>
@@ -137,7 +137,7 @@
 
             <div class="form-group col-md-6 col-lg-3 col-sm-12">
               <label for="rol" class="text-shadow-1 text-custom">Rol</label>
-              <select name="rol" id="rol" class="form-control bg-white">
+              <select name="rol" id="rol" tabindex="10" class="form-control bg-white">
                 <option value="" selected="true">-- Seleccione --</option>
                 <?php foreach (Administrador::allTable('roles') as $rol) { ?>
                   <option value="<?php echo $rol->id_rol ?>"><?php echo $rol->nombre_rol ?></option>
@@ -152,7 +152,7 @@
 
 
           <div class="text-right">
-            <button id="GuardarUsuario" class="mr-3 btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg">Aceptar</button>
+            <button id="GuardarUsuario" class="mr-3 btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" type="submit">Aceptar</button>
             <button type="button" id="CancelarUsuario" class="btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" data-dismiss="modal">Cancelar</button>
           </div>
         </form>

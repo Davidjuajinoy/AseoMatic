@@ -39,3 +39,8 @@ $('.owl-carousel').owlCarousel({
 $('.carousel').carousel({
     interval: 4000
   })
+
+
+
+
+

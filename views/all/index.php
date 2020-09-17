@@ -650,7 +650,7 @@
         <div class="modal-body w-100 mx-auto">
             <div class="modal-title text-center my-3" id=""><img  class="img-animation img-login" src="assets/svg/login.svg" alt=""></div>
             
-            <form action="?c=Login&m=auth" method="POST" class="mb-3">
+            <form  method="POST" class="mb-3">
                 <div class="form-group">
                   <label for="nombre_usuario">Nombre de Usuario</label>
                   <input type="text " name="nombre_usuario" id="nombre_usuario" class="form-control bg-grey-dark" placeholder="david@mail.com" >
@@ -665,8 +665,8 @@
 
                <a href="" class="text-decoration-none my-2 d-block text-white"> ¿ olvido su constraseña ?</a>
               
-                  <label for="login_index" class="font-weight-bold w-100 p-2  btn-custom-default text-center">Login</label>
-                <input  name="login_index" type="submit" id="login_index" class="input-login">
+                  <label for="loginBtn" class="font-weight-bold w-100 p-2  btn-custom-default text-center">Login</label>
+                <input  name="loginBtn" id="loginBtn" class="input-login">
 
                 
             </form>

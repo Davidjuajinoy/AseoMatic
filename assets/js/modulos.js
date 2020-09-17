@@ -1,14 +1,12 @@
 // ? Modal for Error and Success
-
 const msgError =(message) => {
     Swal.fire({
         icon: 'error',
-        // titleText: `<p class="text-white h4">Error de validacion de datos</p>`,
         html: `<p class="text-white h4 mb-3 text-capitalize">Error de validacion de datos en</p><p class="text-danger text-capitalize h6">${message}</p>`,
+        focusConfirm:true,
         background : '#343a40',
         confirmButtonText: 'Entendido',
-        confirmButtonColor: '#6C63FF'
-
+        confirmButtonColor: '#6C63FF',
       });
 }
 
@@ -21,6 +19,28 @@ const msgSuccess= (message) =>{
         confirmButtonText: 'Entendido',
         confirmButtonColor: '#6C63FF'
       });
+}
+
+//? Funcion de Expresiones Regulares Para Email
+const validateEmail = (email) => {
+    const emailRegex = /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+    if(emailRegex.test(email)) return true //console.log('email válido')
+    else return false
+    // console.log('email incorrecto')
+}
+
+const validatePasswordModerate = (password) => {
+    // Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.
+    const passwordRegex = /(?=(.*[0-9]))((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.{8,}$/
+    if(passwordRegex.test(password)) return true//console.log('password válido')
+    else return false //console.log('password incorrecto')
+}
+
+const validateDocumentNumber = (documentNumber) => {
+    const documentNumberRegex = /^((\d{8})|(\d{10}))?$/
+    if(documentNumberRegex.test(documentNumber)) return true//console.log('documento válido')
+    else return false //console.log('documento incorrecto')
 }
 
 
@@ -244,14 +264,6 @@ if(location.search == '?c=Usuarios&m=show')
         const fk_rol = document.getElementById('rol').value="";
     }
 
-    //? Funcion de Expresiones Regulares Para Email
-    const validateEmail = (email) => {
-        const emailRegex = /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-        if(emailRegex.test(email)) return true //console.log('email válido')
-        else return false
-        // console.log('email incorrecto')
-    }
 
     //? Funcion de Seguridad verificar el estado de la funcion formIsValid() 
     const validateForm = () => {
@@ -269,62 +281,74 @@ if(location.search == '?c=Usuarios&m=show')
      {
          // tiene que ser parametro id "#ejemplo"
          if(paramNombre.value == ""){
+             paramNombre.focus();
              const message = "Ingresar nombres del usuario";
              msgError(message);
-             paramNombre.focus();
          }
          else if(paramApellido.value == ""){
+             paramApellido.focus();
              const message = "Ingresar apellidos del usuario";
              msgError(message);
-             paramApellido.focus();
          }
          else if(paramCorreo.value == ""){
+             paramCorreo.focus();
              const message = "Ingresar correo del usuario";
              msgError(message);
-             paramCorreo.focus();
          }
          else if(validateEmail(paramCorreo.value) == false)
          {
+             paramCorreo.focus();
              const message = "El Correo Ingresado No es Valido";
              msgError(message);
-             paramCorreo.focus();
          } 
          else if(paramClave.value == ""){
+             paramClave.focus();
              const message = "Ingresar clave del usuario";
              msgError(message);
+         }
+         else if(validatePasswordModerate(paramClave.value) == false)
+         {
              paramClave.focus();
+            const message = "Clave no valida Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.";
+            msgError(message);
          }      
          else if(paramNumeroDocumento.value == ""){
+             paramNumeroDocumento.focus();
              const message = "Ingresar numero documento";
              msgError(message);
-             paramNumeroDocumento.focus();
          }
-         else if(paramFkRol.value == ""){
-             const message = "Seleccionar el tipo de Rol";
-             msgError(message);
-             paramFkRol.focus();          
-         }
-         else if(paramFondoPension.value == ""){
-             const message = "Seleccionar el fondo de pensiones";
-             msgError(message);
-             paramFondoPension.focus();            
-         }
-         else if(paramCargo.value == ""){
-             const message = "Seleccionar el cargo";
-             msgError(message);
-             paramCargo.focus();     
-         }
+         else if(validateDocumentNumber(paramNumeroDocumento.value) != true)
+         {
+            paramNumeroDocumento.focus();
+            const message = "Numero documento no valido";
+            msgError(message);
+         }    
          else if(paramTipoDocumento.value == ""){
+             paramTipoDocumento.focus();    
              const message = "Seleccionar el tipo de documento";
              msgError(message);
-             paramTipoDocumento.focus();    
          }
-         else if(paramEps.value == ""){
-             const message = "Seleccionar la eps";
-             msgError(message);
-             paramEps.focus();
- 
-         }else{
+         else if(paramCargo.value == ""){
+            paramCargo.focus();     
+            const message = "Seleccionar el cargo";
+            msgError(message);
+        }
+        else if(paramEps.value == ""){
+            paramEps.focus();
+            const message = "Seleccionar la eps";
+            msgError(message);
+        }
+        else if(paramFondoPension.value == ""){
+            paramFondoPension.focus();            
+            const message = "Seleccionar el fondo de pensiones";
+            msgError(message);
+        }
+        else if(paramFkRol.value == ""){
+            paramFkRol.focus();          
+            const message = "Seleccionar el tipo de Rol";
+            msgError(message);
+        }
+        else{
              formIsValid.nombre = true;
              formIsValid.apellido= true;
              formIsValid.correo= true;
@@ -1240,56 +1264,99 @@ if(location.search == '?c=Eventos&m=showEvents')
 
 // ! JS Login Verificacion Modal
 
-    $(document).ready(function()
-    {
-        //? function para limpiar los campos del modal #loginModal
-
-        $("#btn-login").click(function(){
-            $("#nombre_usuario").val("");
-            $("#password").val("");
-        });
+if(location.search == "" || location.search == '?c=All&m=index')
+{ 
     
-        //? function para el login  modal #loginModal
-        $("#login_index").click(function(e){
-    
-            e.preventDefault();
-            if($("#nombre_usuario").val() == ""){
-                const message = "Ingresar correo";
-                msgError(message);
-                $("#nombre_usuario").focus();
-            }
-            else if($("#password").val() == ""){
-                const message = "Ingresar clave";
-                msgError(message);
-                $("#password").focus();
-            }
-            else{
-                const nombre_usuario = $("#nombre_usuario").val();
-                const password = $("#password").val();
-                const datos = new FormData();
-                datos.append('nombre_usuario',nombre_usuario);
-                datos.append('password',password);
-                console.log(datos.append);
-                fetch('?c=Login&m=auth' ,{
-                    method : 'POST',
-                    body : datos
-                }).then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo el login')))      
-                .then(resp => resp.text())
-                .then((data) => {
-                    if(data == ""){
-                                const message = "Datos incorrectos";
-                                msgError(message);
-                            }
-                            else{
-                                location.href="?c=All&m=index";
-    
-                            }
-                })
-            }
-        });
-    
+    //? function para limpiar los campos del modal #loginModal
+    const btnOpenLoginModal= document.getElementById('btn-login');
+    btnOpenLoginModal.addEventListener('click',()=>{
+        const nombre_usuario = document.getElementById('nombre_usuario');
+        const password = document.getElementById('password');
+        nombre_usuario.value="";
+        password.value="";
     })
 
+
+    //? Funcion para validar inputs del LoginModal
+    const validateFormLogin= (user,pass) =>{
+        if(user.value == "")
+        {
+            user.focus();
+            const message = "Ingresar correo";
+            msgError(message);
+        }
+        else if(validateEmail(user.value) != true)
+        {
+            pass.focus();
+            const message = "El Correo ingresado no es valido";
+            msgError(message);
+        }
+        else if(pass.value == "")
+        {
+            pass.focus();
+            const message = "Ingresar clave";
+            msgError(message);
+        }
+        else{
+            return true;
+        }
+    }
+
+    //? function para el login  modal #loginModal
+    const  btnSubmitFormLogin = document.getElementById('loginBtn');
+    btnSubmitFormLogin.addEventListener('click', (e)=>{
+        e.preventDefault();
+        const nombre_usuario = document.getElementById('nombre_usuario');
+        const password = document.getElementById('password');
+        let validar = validateFormLogin(nombre_usuario,password);
+        if(validar == true)
+        {
+            const datos = new FormData();
+            datos.append('nombre_usuario',nombre_usuario.value);
+            datos.append('password',password.value);
+            fetch('?c=Login&m=auth' ,{
+                method : 'POST',
+                body : datos
+            }).then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo el login')))      
+            .then(resp => resp.json())
+            .then((data) => {
+                // console.log(data);
+                if(data == "")
+                {
+                    const message = "Datos incorrectos";
+                    msgError(message);
+                }
+                else if(data.error == 'incorrectoP')
+                {
+                    password.focus();
+                    const message = "Contraseña incorrecta";
+                    msgError(message);
+                }
+                else if(data.error =='incorrectoU&P'){
+                    nombre_usuario.focus();
+                    const message = "El usuario no existe";
+                    msgError(message);
+                    
+                }else if(data.fk_rol)
+                {
+                    if(data.fk_rol == '1')
+                    {
+                        location.href="?c=Administradores&m=index";
+                    }
+                    else if(data.fk_rol =='2')
+                    {
+                        location.href="?c=Empleados&m=index";
+                    }
+                }
+                else{
+                    location.href="?c=All&m=index";
+                }
+            }).catch(console.log);
+        }
+        
+    })
+
+}
 
 // ! End JS Login
 

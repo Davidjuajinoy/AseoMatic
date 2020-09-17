@@ -22,6 +22,7 @@ class AdministradoresController extends Administrador{
         $title = 'Administrador';
         require_once 'views/administrador/index.php';
     }
+
   
 
 
