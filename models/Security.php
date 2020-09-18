@@ -2,7 +2,7 @@
 
 class Security extends DataBase{
 
-
+    //Si intentan acceder a Modulo Administrador sin tener una sesion se redirigira a modulo empleado(si tiene una sesion empleado) o a inicio si no tiene sesion
     public function seguridadAdministrador()
     {
         if(empty($_SESSION['ADMINISTRADOR']) || is_null($_SESSION['ADMINISTRADOR']) )
@@ -18,6 +18,7 @@ class Security extends DataBase{
         
     }
 
+    //Si intentan acceder a Modulo Empleado sin tener una sesion se redirigira a modulo Administrador(si tiene una sesion empleado) o a inicio si no tiene sesion
     public function seguridadEmpleados()
     {
        
@@ -33,6 +34,8 @@ class Security extends DataBase{
         
     }
 
+
+    //Si intentan acceder a el index de la pagina pero si existe una sesion ya sea Empleado o Administrador se redirigira al inicio del modulo segun la sesion
     public function seguridad()
     {
         if(isset($_SESSION['ADMINISTRADOR']))
@@ -45,4 +48,65 @@ class Security extends DataBase{
         }
     }
 
+    static public function htmlChars($value)
+    {
+        return htmlspecialchars($value,ENT_QUOTES);
+    }
+
+
+    //verificar el email recibido del formulario LoginModal
+    static public function verificateEmail($email)
+    {
+        $reGex= preg_match('/^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/',$email);
+
+        $htmlSpecial= Security::htmlChars($email);
+
+        //si $reGex es 1 o true se ejecuta
+            if($reGex) return $htmlSpecial;
+            return false;
+    }
+
+    //verificar nombre 
+
+    static public function verificateName($name)
+    {
+        $reGex = preg_match('/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/', $name);
+        $htmlSpecial= Security::htmlChars($name);
+
+            if($reGex) return $htmlSpecial;
+        return false;
+    }
+
+    //verificar Password al crear un usuarios en ModalAddUser vista Usuarios.php
+   static public function verificatePassword($pass)
+   {
+        // Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.
+        $passwordRegex = preg_match('/(?=(.*[0-9]))((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.{8,}$/',$pass);
+        $htmlSpecial= Security::htmlChars($pass);
+
+            if($passwordRegex) return $htmlSpecial;
+        return false;
+   
+   }
+
+   //verificar que se recibe el valor numerico de los fk
+   static public function verificateInt($int)
+   {
+        $intRegex = preg_match('/^[0-9]{1,11}$/',$int);
+        $htmlSpecial= Security::htmlChars($int);
+
+            if($intRegex) return $htmlSpecial;
+        return false;
+   }
+
+
+   //verificar que se recibe el valor numerico de los fk
+   static public function verificateDocument($document)
+   {
+        $documentRegex = preg_match('/^[0-9]{1,11}$/',$document);
+        $htmlSpecial= Security::htmlChars($document);
+
+            if($documentRegex) return $htmlSpecial;
+        return false;
+   }
 }

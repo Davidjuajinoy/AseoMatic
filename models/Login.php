@@ -16,7 +16,7 @@ class Login extends DataBase{
         }
     }
 
-    public function verificarEmail($email)
+    static public function verificarSiExisteEmail($email)
     {
         try {
             $stm = parent::conectar()->prepare("SELECT correo FROM usuarios WHERE correo= ? ");

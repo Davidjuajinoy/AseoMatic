@@ -25,6 +25,8 @@ const msgSuccess= (message) =>{
 const validateEmail = (email) => {
     const emailRegex = /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
+    
+
     if(emailRegex.test(email)) return true //console.log('email válido')
     else return false
     // console.log('email incorrecto')
@@ -402,8 +404,15 @@ if(location.search == '?c=Usuarios&m=show')
 
             })
             .then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo la insercion')))
-            .then(resp => resp.text())
+            .then(resp => resp.json())
             .then((data)=>{
+                if(data.error == 'correoExistente')
+                {
+                    correo.focus();
+                    const msg ='Ya hay otra persona que tiene esta dirección de correo electrónico.';
+                    msgError(msg);
+                }else if(data.ok){
+
                 $("#ModalAddUser").modal('hide');
                 let message = 'Usuario Agregado Correctamente';
                 // se llama la funcion de !=error
@@ -414,6 +423,7 @@ if(location.search == '?c=Usuarios&m=show')
                 formIsValidReset();
             //  se reinician los  valores de los input solicitados 
                 resetValueFormModal();
+                }
 
             }).catch(console.log);
         }
