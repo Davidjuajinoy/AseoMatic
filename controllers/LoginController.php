@@ -10,13 +10,13 @@ class LoginController extends Login{
         
         if($nombre_usuario)
         {
-            $password = md5($passVerificado);
-            $usuario = parent::verificarLogin($nombre_usuario,$password);
+            $usuario = parent::verificarLogin($nombre_usuario);
+            $password = password_verify($passVerificado, $usuario->clave);
             $verificarEmail  = Login::verificarSiExisteEmail($nombre_usuario);
 
             if($usuario)
             {
-                    if( $nombre_usuario == $usuario->correo  && $password == $usuario->clave){
+                    if( $nombre_usuario == $usuario->correo && $password == true){
                         if( $usuario->fk_rol == 1)
                         {
                             $_SESSION['ADMINISTRADOR'] = $usuario;
@@ -28,7 +28,6 @@ class LoginController extends Login{
                         }
                     }
             }else if($verificarEmail){
-
                 echo json_encode(['error' => 'incorrectoP']); //P password
 
             }else if(!$verificarEmail && !$usuario){

@@ -5,7 +5,7 @@ class Usuario extends DataBase{
     public function allUsers()
     {
         try {
-            $stm = parent::conectar()->prepare("SELECT * FROM usuarios INNER JOIN roles ON usuarios.fk_rol=roles.id_rol ORDER BY apellidos");
+            $stm = parent::conectar()->prepare("SELECT * FROM usuarios INNER JOIN roles ON usuarios.fk_rol=roles.id_rol ORDER BY id_usuario");
             $stm->execute();
             $result = $stm->fetchAll(PDO::FETCH_OBJ);
             return json_encode($result);
@@ -14,10 +14,23 @@ class Usuario extends DataBase{
         }
     }
 
-    public function storeUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps)
+    public function showUser($id,$token)
     {
         try {
-            $stm = parent::conectar()->prepare("INSERT INTO usuarios(nombres,apellidos,correo,clave,numero_documento,fk_rol,fk_fondo_pension,fk_cargo,fk_tipo_documento,fk_eps,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,CURRENT_TIME(),CURRENT_TIME())");
+            $stm = parent::conectar()->prepare("SELECT * FROM usuarios WHERE id_usuario = ? AND token = ? ");
+            $stm->bindParam(1,$id,PDO::PARAM_INT);
+            $stm->bindParam(2,$token,PDO::PARAM_STR);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_OBJ);
+        } catch (Exception $e) {
+            die('Murio ShowUser'.$e->getMessage());
+        }
+    }
+
+    public function storeUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token)
+    {
+        try {
+            $stm = parent::conectar()->prepare("INSERT INTO usuarios(nombres,apellidos,correo,clave,numero_documento,fk_rol,fk_fondo_pension,fk_cargo,fk_tipo_documento,fk_eps,token,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIME(),CURRENT_TIME())");
             $stm->bindParam(1,$nombres,PDO::PARAM_STR);
             $stm->bindParam(2,$apellidos,PDO::PARAM_STR);
             $stm->bindParam(3,$correo,PDO::PARAM_STR);
@@ -28,6 +41,7 @@ class Usuario extends DataBase{
             $stm->bindParam(8,$fk_cargo,PDO::PARAM_INT);
             $stm->bindParam(9,$fk_tipo_documento,PDO::PARAM_INT);
             $stm->bindParam(10,$fk_eps,PDO::PARAM_INT);
+            $stm->bindParam(11,$token,PDO::PARAM_STR);
             $stm->execute();
             
         } catch (Exception $e) {
@@ -35,10 +49,10 @@ class Usuario extends DataBase{
         }
     }
 
-    public function UpdateUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$updated_at,$id)
+    public function UpdateUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token,$updated_at,$id)
     {
         try {
-            $stm = parent::conectar()->prepare("UPDATE usuarios SET nombres=? ,apellidos=? ,correo=?,clave=?,numero_documento=?,fk_rol=?,fk_fondo_pension=?,fk_cargo=?,fk_tipo_documento=?,fk_eps=?,updated_at=? WHERE id_usuario = ?");
+            $stm = parent::conectar()->prepare("UPDATE usuarios SET nombres=? ,apellidos=? ,correo=?,clave=?,numero_documento=?,fk_rol=?,fk_fondo_pension=?,fk_cargo=?,fk_tipo_documento=?,fk_eps=?,token =?,updated_at=? WHERE id_usuario = ?");
             $stm->bindParam(1,$nombres,PDO::PARAM_STR);
             $stm->bindParam(2,$apellidos,PDO::PARAM_STR);
             $stm->bindParam(3,$correo,PDO::PARAM_STR);
@@ -49,8 +63,9 @@ class Usuario extends DataBase{
             $stm->bindParam(8,$fk_cargo,PDO::PARAM_INT);
             $stm->bindParam(9,$fk_tipo_documento,PDO::PARAM_INT);
             $stm->bindParam(10,$fk_eps,PDO::PARAM_INT);
-            $stm->bindParam(11,$updated_at,PDO::PARAM_STR);
-            $stm->bindParam(12,$id,PDO::PARAM_INT);
+            $stm->bindParam(11,$token,PDO::PARAM_STR);
+            $stm->bindParam(12,$updated_at,PDO::PARAM_STR);
+            $stm->bindParam(13,$id,PDO::PARAM_INT);
             $stm->execute();
             
         } catch (Exception $e) {

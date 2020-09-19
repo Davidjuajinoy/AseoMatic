@@ -48,8 +48,9 @@ class UsuariosController extends Usuario{
            {
                if(!Login::verificarSiExisteEmail($correo))
                {
-                   $clave = md5($clave1);
-                   parent::storeUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps);
+                   $token = $this->seguridad->encryptToken(str_replace(' ','',$nombres.$numero_documento.$apellidos));
+                   $clave = password_hash($clave1,PASSWORD_DEFAULT);
+                   parent::storeUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token);
                    echo json_encode(['ok' => 'usuarioCreado']);
 
 
@@ -77,13 +78,36 @@ class UsuariosController extends Usuario{
         $fk_tipo_documento = Security::verificateInt( $_POST['update_tipo_documento']);
         $fk_eps = Security::verificateInt( $_POST['update_eps']);
         $updated_at = Security::verificateDate($_POST['updated_at']);
+        $token =$_POST['token'];
+        // para validar el token con el token de la DB
+        $usuario = parent::showUser($id,$token);
+        // si no quiere actualizar la clave se usa el input hidden
+        $claveAntigua =$_POST['clave_antigua'];
 
-            if($nombres && $apellidos && $correo && $clave1 && $numero_documento && $fk_rol && $fk_fondo_pension && $fk_cargo && $fk_tipo_documento && $fk_eps && $updated_at)
+        //validacion de la clave si no se envia nada en el input update_clave se envia la clave_antigua
+        if(empty($clave1) || $clave1 == false)
+        {
+            //se valida que la clave antigua sea igual a la que esta en la DB
+            if($claveAntigua == $usuario->clave)
             {
+                $clave =$claveAntigua;
+            }
+            else{
+                echo json_encode(['error' => 'errorActualizarUsuario']);
+            }
+
+        }else if($clave1)
+        {
+            $clave =password_hash($clave1,PASSWORD_DEFAULT); 
+        }
+
+            if($nombres && $apellidos && $correo && $numero_documento && $fk_rol && $fk_fondo_pension && $fk_cargo && $fk_tipo_documento && $fk_eps && $updated_at && $usuario->token == $token && isset($clave) )
+            {
+                
                 if(!Login::verificarSiExisteEmail($correo) || Login::verificarSiExisteEmailUpdate($correo,$id))
                 {
-                    $clave = md5($clave1);
-                    parent::UpdateUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$updated_at,$id);
+                    $token1 = $this->seguridad->encryptToken(str_replace(' ','',$nombres.$numero_documento.$apellidos));
+                    parent::UpdateUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token1,$updated_at,$id);
                     echo json_encode(['ok' => 'usuarioActualizado']);
  
  
@@ -101,8 +125,11 @@ class UsuariosController extends Usuario{
        //? Funcion para eliminar un usuario
        public function destroy()
        {
-           
-           parent::deleteUser($_REQUEST['delete_id']);
+           $id=$this->seguridad->verificateInt($_REQUEST['delete_id']);
+           if($id)
+           {
+               parent::deleteUser($id);
+           }
        }
    
     

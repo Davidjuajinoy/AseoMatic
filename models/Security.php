@@ -59,7 +59,8 @@ class Security extends DataBase{
     {
         $reGex= preg_match('/^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/',$email);
 
-        $htmlSpecial= Security::htmlChars($email);
+        $htmlSpecial= self::htmlChars($email);
+       
 
         //si $reGex es 1 o true se ejecuta
             if($reGex) return $htmlSpecial;
@@ -71,7 +72,7 @@ class Security extends DataBase{
     static public function verificateName($name)
     {
         $reGex = preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{1,25}$/', $name);
-        $htmlSpecial= Security::htmlChars($name);
+        $htmlSpecial= self::htmlChars($name);
             if($reGex) return $htmlSpecial;
         return false;
     }
@@ -81,18 +82,23 @@ class Security extends DataBase{
    {
         // Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.
         $passwordRegex = preg_match('/(?=(.*[0-9]))((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.{8,}$/',$pass);
-        $htmlSpecial= Security::htmlChars($pass);
+        $htmlSpecial= self::htmlChars($pass);
 
             if($passwordRegex) return $htmlSpecial;
         return false;
    
    }
 
+   static public function encryptToken($token)
+   {   
+       return crypt($token,'$2a$07$Da22vidJuAjiNoYyZlXGh45HP$');
+   }
+
    //verificar que se recibe el valor numerico de los fk
    static public function verificateInt($int)
    {
         $intRegex = preg_match('/^[0-9]{1,11}$/',$int);
-        $htmlSpecial= Security::htmlChars($int);
+        $htmlSpecial= self::htmlChars($int);
 
             if($intRegex) return $htmlSpecial;
         return false;
@@ -103,7 +109,7 @@ class Security extends DataBase{
    static public function verificateDocument($document)
    {
         $documentRegex = preg_match('/^[0-9]{1,11}$/',$document);
-        $htmlSpecial= Security::htmlChars($document);
+        $htmlSpecial= self::htmlChars($document);
 
             if($documentRegex) return $htmlSpecial;
         return false;
@@ -112,7 +118,7 @@ class Security extends DataBase{
    static public function verificateDate($date)
    {
         $dateRegex = preg_match('/^[0-9-]{1,10}$/',$date);
-        $htmlSpecial= Security::htmlChars($date);
+        $htmlSpecial= self::htmlChars($date);
 
             if($dateRegex) return $htmlSpecial;
         return false;

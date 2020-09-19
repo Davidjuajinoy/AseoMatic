@@ -204,13 +204,16 @@ if(location.search == '?c=Usuarios&m=show')
         const apellidos = document.getElementById("update_apellidos").value=`${user.apellidos}`;
         const correo = document.getElementById("update_correo").value=`${user.correo}`;
         const rol = document.getElementById("update_rol").value=`${user.fk_rol}`;
-        const clave = document.getElementById("update_clave").value=`${user.clave}`;
+        const clave = document.getElementById("update_clave").value=``;
         const tipo_documento = document.getElementById("update_tipo_documento").value=`${user.fk_tipo_documento}`;
         const numero_documento = document.getElementById("update_numero_documento").value=`${user.numero_documento}`;
         const cargo = document.getElementById("update_cargo").value=`${user.fk_cargo}`;
         const eps = document.getElementById("update_eps").value=`${user.fk_eps}`;
         const fondo_pension = document.getElementById("update_fondo_pension").value=`${user.fk_fondo_pension}`;
         const id =document.getElementById('update_id').value=`${user.id_usuario}`;
+        const token =document.getElementById('token').value=`${user.token}`;
+        const clave_antigua =document.getElementById('clave_antigua').value=`${user.clave}`;
+
     }
 
     //? funcion para mostrar los campos en el #ModalShow de Administrador.usuarios
@@ -283,7 +286,7 @@ if(location.search == '?c=Usuarios&m=show')
     }
 
      //? Validacion de alertas de Error de Formulario de Usuarios
-     const validarFormUsers = (paramNombre,paramApellido,paramCorreo,paramClave,paramNumeroDocumento,paramFkRol,paramFondoPension,paramCargo,paramTipoDocumento,paramEps) =>
+     const validarFormUsers = (paramNombre,paramApellido,paramCorreo,paramNumeroDocumento,paramFkRol,paramFondoPension,paramCargo,paramTipoDocumento,paramEps) =>
      {
          // tiene que ser parametro id "#ejemplo"
          if(paramNombre.value == ""){
@@ -317,18 +320,7 @@ if(location.search == '?c=Usuarios&m=show')
              paramCorreo.focus();
              const message = "El Correo Ingresado No es Valido";
              msgError(message);
-         } 
-         else if(paramClave.value == ""){
-             paramClave.focus();
-             const message = "Ingresar clave del usuario";
-             msgError(message);
-         }
-         else if(validatePasswordModerate(paramClave.value) == false)
-         {
-             paramClave.focus();
-            const message = "Clave no valida Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.";
-            msgError(message);
-         }      
+         }   
          else if(paramNumeroDocumento.value == ""){
              paramNumeroDocumento.focus();
              const message = "Ingresar numero documento";
@@ -369,7 +361,6 @@ if(location.search == '?c=Usuarios&m=show')
              formIsValid.nombre = true;
              formIsValid.apellido= true;
              formIsValid.correo= true;
-             formIsValid.clave= true;
              formIsValid.numeroDocumento= true;
              formIsValid.fkRol= true;
              formIsValid.fondoPension= true;
@@ -380,6 +371,24 @@ if(location.search == '?c=Usuarios&m=show')
              return true;
          }
      };
+
+     const validarFormUsersPass= (paramClave) =>
+     {
+        if(paramClave.value == ""){
+            paramClave.focus();
+            const message = "Ingresar clave del usuario";
+            msgError(message);
+        }
+        else if(validatePasswordModerate(paramClave.value) == false)
+        {
+            paramClave.focus();
+           const message = "Clave no valida Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.";
+           msgError(message);
+        }else{
+            formIsValid.clave= true;
+            return true;
+        }    
+     }
 
     //? funcion para guardar el usuario en DB en dashboard-admin : usuarios.php modal #ModalAddUser
     const btnSubmitFormUsers = document.getElementById('GuardarUsuario');
@@ -396,9 +405,11 @@ if(location.search == '?c=Usuarios&m=show')
         const fondo_pension = document.getElementById("fondo_pension");
         const fk_rol = document.getElementById('rol');
 
-        let validar = validarFormUsers(nombres,apellidos,correo,clave,numero_documento,fk_rol,fondo_pension,cargo,tipo_documento,eps);
+        let validar = validarFormUsers(nombres,apellidos,correo,numero_documento,fk_rol,fondo_pension,cargo,tipo_documento,eps);
 
-        if(validar == true && validateForm() == true)
+        let validarPass =validarFormUsersPass(clave);
+
+        if(validar == true && validarPass == true && validateForm() == true)
         {
             const formData = new FormData();
             formData.append('nombres',nombres.value.toLowerCase());
@@ -473,7 +484,16 @@ if(location.search == '?c=Usuarios&m=show')
         const update_fk_rol = document.getElementById('update_rol');
         const update_updated_at = document.getElementById('updated_at');
         const update_id = document.getElementById("update_id");
-        let validar = validarFormUsers(update_nombres,update_apellidos,update_correo,update_clave,update_numero_documento,update_fk_rol,update_fondo_pension,update_cargo,update_tipo_documento,update_eps);
+        const token = document.getElementById("token");
+        const clave_antigua = document.getElementById("clave_antigua");
+        let validar = validarFormUsers(update_nombres,update_apellidos,update_correo,update_numero_documento,update_fk_rol,update_fondo_pension,update_cargo,update_tipo_documento,update_eps);
+
+        if(update_clave.value == '')
+        {
+            formIsValid.clave = true;
+        }else{
+            validarFormUsersPass(update_clave);
+        }
 
         if(validar == true && validateForm() == true)
         {
@@ -490,6 +510,8 @@ if(location.search == '?c=Usuarios&m=show')
             formData.append('update_fondo_pension',update_fondo_pension.value);
             formData.append('update_rol',update_fk_rol.value);
             formData.append('updated_at',update_updated_at.value);
+            formData.append('token',token.value);
+            formData.append('clave_antigua',clave_antigua.value);
     
             fetch('?c=Usuarios&m=update', 
             {

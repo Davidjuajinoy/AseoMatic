@@ -7,7 +7,7 @@
 
        <main class="main">
         <!-- * Cards -->
-        <p class="h3 text-dark text-shadow  font-weight-bold text-center">Bienvenido David </p>
+        <p class="h3 text-dark text-shadow  font-weight-bold text-center text-capitalize">Bienvenido <?php echo $_SESSION['EMPLEADO']->nombres.' '.$_SESSION['EMPLEADO']->apellidos?></p>
           <div class="container mt-5 px-5  ">
            
            

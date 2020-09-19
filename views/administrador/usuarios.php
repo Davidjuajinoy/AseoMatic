@@ -184,6 +184,10 @@
 
                 <input type="hidden" name="update_id" id="update_id">
 
+                <input type="hidden" name="token" id="token">
+                <input type="hidden" name="clave_antigua" id="clave_antigua">
+
+
 
                 <label for="update_nombres" class="text-shadow-1 text-custom">Nombres</label>
                 <input type="text" class="form-control bg-white text-capitalize input-custom" name="update_nombres" id="update_nombres">
@@ -208,7 +212,7 @@
               <input type="email" class="form-control bg-white input-custom" name="update_correo" id="update_correo">
 
               <label for="update_clave" class="text-shadow-1 text-custom">Clave</label>
-              <input type="password" class="form-control bg-white input-custom" name="update_clave" id="update_clave">
+              <input type="password" class="form-control bg-white input-custom" name="update_clave" id="update_clave" placeholder="Escriba si quiere modificar la contraseña si no deje en blanco">
             </div>
 
             <div class="form-group col-md-8 col-sm-12">
