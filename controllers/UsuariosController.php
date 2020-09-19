@@ -2,6 +2,20 @@
 
 class UsuariosController extends Usuario{
 
+        private $seguridad;
+
+        public function __construct()
+        {
+            try
+            {
+                $this->seguridad = new Security();
+                $this->seguridad->seguridadAdministrador();
+            }catch(Exception $e)
+            {
+                die('Error de Instancia');
+            }
+
+        }
        //? trae la informacion en formato JSON
        public function allUsersJson()
        {
