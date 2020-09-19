@@ -36,11 +36,12 @@ class LoginController extends Login{
                 echo json_encode(['error' => 'incorrectoU&P']); // U user & P password
 
             }else{
-
+                echo json_encode(['error'=>'datosIncorrectosAmbos']);
                 header('location:?c=All&m=index');
             }
 
         }else{
+            echo json_encode(['error' => 'nombreUsuarioInvalido']);
             header('location:?c=All&m=index');
         }
 

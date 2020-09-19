@@ -24,32 +24,43 @@ class EventosController extends Evento{
             $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
             //verifica que el archivo tenga dimensiones(w,h) 
             $DimensionesImg =getimagesize($_FILES['event_img']['tmp_name']);
+            //POST
+            $tituloEvento = Security::htmlChars($_POST['titulo_evento']);
+            $descripcionEvento = Security::htmlChars($_POST['descripcion_evento']);
+            $fechaPublicacion = Security::verificateDate($_POST['fecha_evento']);
+            $EventUser = Security::verificateInt($_POST['fk_usuario']);
             
             if($DimensionesImg == true)
             {
                 $tamañoImg = $_FILES['event_img']["size"];
                 if($tamañoImg > 2000000)
                 {
-                    echo "El archivo tiene que ser menor a 2mb";
+                    // echo "El archivo tiene que ser menor a 2mb";
+                    echo json_encode(['error'=>'El<2mb']);
                 }
                 else{
                     if($tipoArchivo == "jpg" || $tipoArchivo == "png" || $tipoArchivo == "jpeg" )
                     {
-                        move_uploaded_file($_FILES["event_img"]["tmp_name"],$archivo);
-                        $tituloEvento = $_POST['titulo_evento'];
-                        $descripcionEvento = $_POST['descripcion_evento'];
-                        $fechaPublicacion = $_POST['fecha_evento'];
-                        $imgEvent = $archivo;
-                        $EventUser = $_POST['fk_usuario'];
-                
-                        parent::storeAddEvent($tituloEvento,$descripcionEvento,$fechaPublicacion,$imgEvent,$EventUser);
+                        if($tituloEvento && $descripcionEvento && $fechaPublicacion && $EventUser)
+                        {
+                            move_uploaded_file($_FILES["event_img"]["tmp_name"],$archivo);
+                            $imgEvent = $archivo;
+                            parent::storeAddEvent($tituloEvento,$descripcionEvento,$fechaPublicacion,$imgEvent,$EventUser);
+                            echo json_encode(['ok'=>'CreadaNoticia']);
+                        }else{
+                            echo json_encode(['error'=>'errorCrearNoticia']);
+                        }
                     }
                     else{
-                        echo "la extension del archivo no es valida";
+                        // echo "la extension del archivo no es valida";
+                        echo json_encode(['error'=>'noImgExtension']);
+                        header('location=?c=All&m=index');
                     }
                 }
             }else{
-                echo "el documento no es una img";
+                echo json_encode(['error'=>'noImg']);
+                // echo "el documento no es una img";
+                header('location=?c=All&m=index');
             }
         
     
@@ -58,55 +69,67 @@ class EventosController extends Evento{
     
         public function updateEvents()
         {
-            $idEvento =$_POST['update_id_evento'];
-            $tituloEvento = $_POST['update_titulo_evento'];
-            $descripcionEvento = $_POST['update_descripcion_evento'];
-            $fechaPublicacion = $_POST['update_fecha_evento'];
-            $idUser = $_POST['update_fk_usuario'];
-            //para la ruta de la imagen 
-            $rutaImg=parent::showImgEvent($idEvento)->imagen_evento;
-            
-            $imgUpdate = '';
-            //? si no se actualiza una img tomara el valor que tenia anteriormente y si actualiza se borrara la anterior
-            if(empty($_POST['update_event_img']))
+            $idEvento =Security::verificateInt($_POST['update_id_evento']);
+            $tituloEvento = Security::htmlChars($_POST['update_titulo_evento']);
+            $descripcionEvento =Security::htmlChars($_POST['update_descripcion_evento']);
+            $fechaPublicacion = Security::verificateDate($_POST['update_fecha_evento']);
+            $idUser = Security::verificateInt($_POST['update_fk_usuario']);
+
+            if($idEvento && $tituloEvento && $descripcionEvento && $fechaPublicacion && $idUser)
             {
-                //? Update Img
-                $fecha = new DateTime();
-                // funcion img
-                $directorio = "assets/uploud/events/";
-                $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["update_event_img"]["name"]);
-                //info de ext(jpg,png,etc)
-                $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
-                //verifica que el archivo tenga dimensiones(w,h) 
-                $DimensionesImg =getimagesize($_FILES['update_event_img']['tmp_name']);
-    
-                if($DimensionesImg == true)
+                //para la ruta de la imagen 
+                $rutaImg=parent::showImgEvent($idEvento)->imagen_evento;
+                $imgUpdate = '';
+                //? si no se actualiza una img tomara el valor que tenia anteriormente y si actualiza se borrara la anterior
+                if(empty($_POST['update_event_img']))
                 {
-                    $tamañoImg = $_FILES['update_event_img']["size"];
-                    if($tamañoImg > 2000000)
+                    //? Update Img
+                    $fecha = new DateTime();
+                    // funcion img
+                    $directorio = "assets/uploud/events/";
+                    $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["update_event_img"]["name"]);
+                    //info de ext(jpg,png,etc)
+                    $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
+                    //verifica que el archivo tenga dimensiones(w,h) 
+                    $DimensionesImg =getimagesize($_FILES['update_event_img']['tmp_name']);
+        
+                    if($DimensionesImg == true)
                     {
-                        echo "El archivo tiene que ser menor a 2mb";
-                    }
-                    else{
-                        if($tipoArchivo == "jpg" || $tipoArchivo == "png" || $tipoArchivo == "jpeg" )
+                        $tamañoImg = $_FILES['update_event_img']["size"];
+                        if($tamañoImg > 2000000)
                         {
-                            //Borra la imagen que tenia antes
-                            unlink($rutaImg);
-                            move_uploaded_file($_FILES["update_event_img"]["tmp_name"],$archivo);
-                            $imgUpdate=$archivo;
+                            // echo "El archivo tiene que ser menor a 2mb";
+                            echo json_encode(['error'=>"El archivo tiene que ser menor a 2mb"]);
                         }
                         else{
-                            echo "la extension del archivo no es valida";
+                            if($tipoArchivo == "jpg" || $tipoArchivo == "png" || $tipoArchivo == "jpeg" )
+                            {
+                                //Borra la imagen que tenia antes
+                                unlink($rutaImg);
+                                move_uploaded_file($_FILES["update_event_img"]["tmp_name"],$archivo);
+                                $imgUpdate=$archivo;
+                            }
+                            else{
+                                // echo "la extension del archivo no es valida";
+                                echo json_encode(['error'=>'a extension del archivo no es valida']);
+
+                            }
                         }
+                    }else{
+                        // echo "el documento no es una img";
+                        echo json_encode(['error'=>"el documento no es una img"]);
                     }
                 }else{
-                    echo "el documento no es una img";
+                    $imgUpdate = $rutaImg;
                 }
-            }else{
-                $imgUpdate = $rutaImg;
-            }
     
-            parent::updateEvent($tituloEvento,$descripcionEvento,$fechaPublicacion,$imgUpdate,$idUser,$idEvento);
+                parent::updateEvent($tituloEvento,$descripcionEvento,$fechaPublicacion,$imgUpdate,$idUser,$idEvento);
+                echo json_encode(['ok'=> 'ActualizacionNoticia']);
+
+            }
+            else{
+                echo json_encode(['error'=> 'FalloActualizacionNoticia']);
+            }
         }
     
         public function destroyEvents()

@@ -70,9 +70,8 @@ class Security extends DataBase{
 
     static public function verificateName($name)
     {
-        $reGex = preg_match('/^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/', $name);
+        $reGex = preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{1,25}$/', $name);
         $htmlSpecial= Security::htmlChars($name);
-
             if($reGex) return $htmlSpecial;
         return false;
     }
@@ -107,6 +106,15 @@ class Security extends DataBase{
         $htmlSpecial= Security::htmlChars($document);
 
             if($documentRegex) return $htmlSpecial;
+        return false;
+   }
+
+   static public function verificateDate($date)
+   {
+        $dateRegex = preg_match('/^[0-9-]{1,10}$/',$date);
+        $htmlSpecial= Security::htmlChars($date);
+
+            if($dateRegex) return $htmlSpecial;
         return false;
    }
 }

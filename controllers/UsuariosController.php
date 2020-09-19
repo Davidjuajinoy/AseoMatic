@@ -51,19 +51,37 @@ class UsuariosController extends Usuario{
        //? Funcion para actualizar un usuario
        public function update()
        {
-           $id = $_POST['update_id'];
-           $nombres = $_POST['update_nombres'];
-           $apellidos = $_POST['update_apellidos'];
-           $correo = $_POST['update_correo'];
-           $clave = md5($_POST['update_clave']);
-           $numero_documento = $_POST['update_numero_documento'];
-           $fk_rol = $_POST['update_rol'];
-           $fk_fondo_pension = $_POST['update_fondo_pension'];
-           $fk_cargo = $_POST['update_cargo'];
-           $fk_tipo_documento = $_POST['update_tipo_documento'];
-           $fk_eps = $_POST['update_eps'];
-           $updated_at = $_POST['updated_at'];
-           parent::UpdateUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$updated_at,$id);
+        $id = Security::verificateInt($_POST['update_id']);
+        $nombres = Security::verificateName( $_POST['update_nombres']);
+        $apellidos = Security::verificateName( $_POST['update_apellidos']);
+        $correo = Security::verificateEmail( $_POST['update_correo']);
+        $clave1 = Security::verificatePassword($_POST['update_clave']);
+        $numero_documento = Security::verificateDocument( $_POST['update_numero_documento']);
+        $fk_rol = Security::verificateInt( $_POST['update_rol']);
+        $fk_fondo_pension = Security::verificateInt( $_POST['update_fondo_pension']);
+        $fk_cargo = Security::verificateInt( $_POST['update_cargo']);
+        $fk_tipo_documento = Security::verificateInt( $_POST['update_tipo_documento']);
+        $fk_eps = Security::verificateInt( $_POST['update_eps']);
+        $updated_at = Security::verificateDate($_POST['updated_at']);
+
+            if($nombres && $apellidos && $correo && $clave1 && $numero_documento && $fk_rol && $fk_fondo_pension && $fk_cargo && $fk_tipo_documento && $fk_eps && $updated_at)
+            {
+                if(!Login::verificarSiExisteEmail($correo) || Login::verificarSiExisteEmailUpdate($correo,$id))
+                {
+                    $clave = md5($clave1);
+                    parent::UpdateUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$updated_at,$id);
+                    echo json_encode(['ok' => 'usuarioActualizado']);
+ 
+ 
+                }else{
+                    echo json_encode(['error' => 'correoExistente']);
+                }
+             
+
+            }else{
+                echo json_encode(['error' => 'errorActualizarUsuario']);
+            }
+
        }
    
        //? Funcion para eliminar un usuario

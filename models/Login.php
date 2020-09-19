@@ -29,5 +29,19 @@ class Login extends DataBase{
         }
     }
 
+    static public function verificarSiExisteEmailUpdate($email,$id)
+    {
+        try {
+            $stm = parent::conectar()->prepare("SELECT correo FROM usuarios WHERE correo= ? AND id_usuario=? ");
+            $stm->bindParam(1 ,$email, PDO::PARAM_STR);
+            $stm->bindParam(2 ,$id, PDO::PARAM_INT);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_OBJ);
+
+        } catch (Exception $e) {
+            die('Error Login F:'.$e->getMessage());
+        }
+    }
+
 
 }

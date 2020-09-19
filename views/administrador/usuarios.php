@@ -329,7 +329,7 @@
 
             </div>
 
-            <div class="form-group col-6">
+            <div class="form-group col-12">
               <label class="text-shadow-1 text-custom">Correo</label>
               <p id="show_correo" class="d-block"></p>
             </div>

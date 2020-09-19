@@ -24,23 +24,24 @@ const msgSuccess= (message) =>{
 //? Funcion de Expresiones Regulares Para Email
 const validateEmail = (email) => {
     const emailRegex = /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
-    
-
     if(emailRegex.test(email)) return true //console.log('email válido')
     else return false
     // console.log('email incorrecto')
 }
-
+const validateName =(name) =>{
+    const nameRegex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{1,25}$/;
+    if(nameRegex.test(name)) return true
+    else return false
+}
 const validatePasswordModerate = (password) => {
     // Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.
-    const passwordRegex = /(?=(.*[0-9]))((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.{8,}$/
+    const passwordRegex = /(?=(.*[0-9]))((?=.*[A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z]))^.{8,}$/;
     if(passwordRegex.test(password)) return true//console.log('password válido')
     else return false //console.log('password incorrecto')
 }
 
 const validateDocumentNumber = (documentNumber) => {
-    const documentNumberRegex = /^((\d{8})|(\d{10}))?$/
+    const documentNumberRegex = /^((\d{8})|(\d{10}))?$/;
     if(documentNumberRegex.test(documentNumber)) return true//console.log('documento válido')
     else return false //console.log('documento incorrecto')
 }
@@ -102,12 +103,14 @@ if(location.search == '?c=Usuarios&m=show')
 
         const td2TableAllUsers =document.createElement('TD');
         td2TableAllUsers.setAttribute('colspan', '2');
+        td2TableAllUsers.classList.add('text-capitalize');
         td2TableAllUsers.textContent = `${datos.nombres}`;
 
         trTableAllUsers.append(td2TableAllUsers);
 
         const td3TableAllUsers =document.createElement('TD');
         td3TableAllUsers.setAttribute('colspan', '2');
+        td3TableAllUsers.classList.add('text-capitalize');
         td3TableAllUsers.textContent = `${datos.apellidos}`;
 
         trTableAllUsers.append(td3TableAllUsers);
@@ -124,6 +127,7 @@ if(location.search == '?c=Usuarios&m=show')
         trTableAllUsers.append(td5TableAllUsers);
 
         const td6TableAllUsers =document.createElement('TD');
+        td6TableAllUsers.classList.add('text-capitalize');
         td6TableAllUsers.textContent = `${datos.nombre_rol}`;
         
         trTableAllUsers.append(td6TableAllUsers);
@@ -287,11 +291,22 @@ if(location.search == '?c=Usuarios&m=show')
              const message = "Ingresar nombres del usuario";
              msgError(message);
          }
+         else if(validateName(paramNombre.value) == false)
+         {
+            paramNombre.focus();
+            const message = "El nombre ingresado no es valido";
+            msgError(message);
+         }
          else if(paramApellido.value == ""){
              paramApellido.focus();
              const message = "Ingresar apellidos del usuario";
              msgError(message);
          }
+         else if(validateName(paramApellido.value) == false){
+            paramApellido.focus();
+            const message = "El apellido ingresado no es valido";
+            msgError(message);
+        }
          else if(paramCorreo.value == ""){
              paramCorreo.focus();
              const message = "Ingresar correo del usuario";
@@ -411,18 +426,24 @@ if(location.search == '?c=Usuarios&m=show')
                     correo.focus();
                     const msg ='Ya hay otra persona que tiene esta dirección de correo electrónico.';
                     msgError(msg);
-                }else if(data.ok){
+                }
+                else if(data.error == 'errorAgregarUsuario')
+                {
+                    const msg ='Fallo la creacion de usuario';
+                    msgError(msg);
+                }
+                else if(data.ok){
 
-                $("#ModalAddUser").modal('hide');
-                let message = 'Usuario Agregado Correctamente';
-                // se llama la funcion de !=error
-                msgSuccess(message);
-                // se llama a la funcion de mostrar usuarios html
-                showAllUsers();
-            //  se reinicia a false el objeto formIsValid
-                formIsValidReset();
-            //  se reinician los  valores de los input solicitados 
-                resetValueFormModal();
+                    $("#ModalAddUser").modal('hide');
+                    let message = 'Usuario Agregado Correctamente';
+                    // se llama la funcion de !=error
+                    msgSuccess(message);
+                    // se llama a la funcion de mostrar usuarios html
+                    showAllUsers();
+                //  se reinicia a false el objeto formIsValid
+                    formIsValidReset();
+                //  se reinician los  valores de los input solicitados 
+                    resetValueFormModal();
                 }
 
             }).catch(console.log);
@@ -477,16 +498,30 @@ if(location.search == '?c=Usuarios&m=show')
                
             })
             .then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo la actualizacion')))
-            // .then(resp => resp.text())
+            .then(resp => resp.json())
             .then((data)=>{
-                $("#ModalUpdateUser").modal('hide');
-                let message = 'Usuario Actualizado Correctamente';
-                // se llama la funcion de !=error
-                msgSuccess(message);
-                // se llama a la funcion de mostrar usuarios html
-                showAllUsers();
-               //  se reinicia a false el objeto formIsValid
-                formIsValidReset();    
+
+                if(data.error == 'correoExistente')
+                {
+                    correo.focus();
+                    const msg ='Ya hay otra persona que tiene esta dirección de correo electrónico.';
+                    msgError(msg);
+                }
+                else if(data.error == 'errorActualizarUsuario')
+                {
+                    const msg ='Fallo la actualizacion del usuario';
+                    msgError(msg);
+                }
+                else if(data.ok){
+                    $("#ModalUpdateUser").modal('hide');
+                    let message = 'Usuario Actualizado Correctamente';
+                    // se llama la funcion de !=error
+                    msgSuccess(message);
+                    // se llama a la funcion de mostrar usuarios html
+                    showAllUsers();
+                //  se reinicia a false el objeto formIsValid
+                    formIsValidReset();  
+                }  
             })
             .catch(console.log);
         }
@@ -795,18 +830,28 @@ if(location.search =='?c=Noticias&m=showNews'){
                    body: data
                })
                .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Fallo la insercion')) )
-               .then( resp => resp.text())
+               .then( resp => resp.json())
                .then(data => {
-   
-                   $("#ModalAddNew").modal('hide');
-                   // se llama la funcion resetear valores del formulario y se les pasa la id
-                   resetValueForm('titulo_noticia','descripcion_noticia','fecha_noticia','fk_usuario','new_img','prev-img');
-                   let message = 'Noticia Agregada Correctamente';
-                   // se llama la funcion de !=error
-                   msgSuccess(message);
-                   // se llama a la funcion de mostrar usuarios html
-                   showAllNews();
+                   if(data.ok)
+                   {
+                        $("#ModalAddNew").modal('hide');
+                        // se llama la funcion resetear valores del formulario y se les pasa la id
+                        resetValueForm('titulo_noticia','descripcion_noticia','fecha_noticia','fk_usuario','new_img','prev-img');
+                        let message = 'Noticia Agregada Correctamente';
+                        // se llama la funcion de !=error
+                        msgSuccess(message);
+                        // se llama a la funcion de mostrar usuarios html
+                        showAllNews();
+                   }else{
+                        const msg ='Error ha modificado el html';
+                        msgError(msg)
+                        setTimeout(() => {
+                            location="?c=All&m=index";
+                        }, 1500);
+                   }
+          
                }).catch(console.log);
+   
            }
         
    
@@ -846,12 +891,21 @@ if(location.search =='?c=Noticias&m=showNews'){
                 body: data
             })
             .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al actualizar noticia')))
-            .then(resp => resp.text())
+            .then(resp => resp.json())
             .then(data => {
-                $("#ModalUpdateNews").modal('hide');
-                const msg ='La noticia se ha actualizado correctamente';
-                msgSuccess(msg);
-                showAllNews();
+                if(data.ok)
+                {
+                    $("#ModalUpdateNews").modal('hide');
+                    const msg ='La noticia se ha actualizado correctamente';
+                    msgSuccess(msg);
+                    showAllNews();
+                }else{
+                    const msg ='Error ha modificado el html';
+                    msgError(msg)
+                    setTimeout(() => {
+                        location="?c=All&m=index";
+                    }, 1500);
+                }
             }).catch(console.log);
         }
     })
@@ -1000,7 +1054,7 @@ if(location.search == '?c=Eventos&m=showEvents')
 
     //? funcion de mostrar datos en la #ModalUpdateEvents
      const showEventId= (evento) => {
-        console.log(evento);
+        // console.log(evento);
         const tituloEvento= document.getElementById('update_titulo_evento').value=`${evento.titulo_evento}`;
         const descripcionEvento= document.getElementById('update_descripcion_evento').textContent=`${evento.descripcion_evento}`;
         const fkUsuario= document.getElementById('update_fk_usuario').value=`${evento.fk_usuario}`;
@@ -1011,7 +1065,7 @@ if(location.search == '?c=Eventos&m=showEvents')
 
     //? funcion de mostrar datos en la #ModalShowEvents
     const showEventIdCard= (evento) => {
-        console.log(evento);
+        // console.log(evento);
         const tituloEvento= document.getElementById('show_titulo_evento').textContent=`${evento.titulo_evento}`;
         const descripcionEvento= document.getElementById('show_descripcion_evento').textContent=`${evento.descripcion_evento}`;
         const fechaEvento= document.getElementById('show_fecha_evento').textContent=`${evento.nombres} ${evento.apellidos} ${evento.fecha_publicado}`;
@@ -1114,7 +1168,7 @@ if(location.search == '?c=Eventos&m=showEvents')
    //? Obtener ID y ejecutar metodos POST para edit y delete
     thBodyEvents.addEventListener('click', (e) =>{
         const id = e.target;
-        console.log(id);
+        // console.log(id);
         if( id.getAttribute('id'))
         {
             const eventId = id.getAttribute('id');
@@ -1168,17 +1222,26 @@ if(location.search == '?c=Eventos&m=showEvents')
                 body: data
             })
             .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Fallo la insercion')) )
-            .then( resp => resp.text())
+            .then( resp => resp.json())
             .then(data => {
 
-                $("#ModalAddEvents").modal('hide');
-                // se llama la funcion resetear valores del formulario y se les pasa la id
-                resetValueForm('titulo_evento','descripcion_evento','fecha_evento','fk_usuario','event_img','prev-img');
-                let message = 'Evento Agregada Correctamente';
-                // se llama la funcion de !=error
-                msgSuccess(message);
-                // se llama a la funcion de mostrar usuarios html
-                showAllEvents();
+                if(data.ok)
+                {
+                    $("#ModalAddEvents").modal('hide');
+                    // se llama la funcion resetear valores del formulario y se les pasa la id
+                    resetValueForm('titulo_evento','descripcion_evento','fecha_evento','fk_usuario','event_img','prev-img');
+                    let message = 'Evento Agregada Correctamente';
+                    // se llama la funcion de !=error
+                    msgSuccess(message);
+                    // se llama a la funcion de mostrar usuarios html
+                    showAllEvents();
+                }else{
+                    const msg ='Error ha modificado el html';
+                    msgError(msg)
+                    setTimeout(() => {
+                        location="?c=All&m=index";
+                    }, 1500);
+                }
             }).catch(console.log);
         }
      
@@ -1218,12 +1281,23 @@ if(location.search == '?c=Eventos&m=showEvents')
                 body: data
             })
             .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al actualizar noticia')))
-            .then(resp => resp.text())
+            .then(resp => resp.json())
             .then(data => {
-                $("#ModalUpdateEvents").modal('hide');
-                const msg ='El Evento se ha actualizado correctamente';
-                msgSuccess(msg);
-                showAllEvents();
+                if(data.ok)
+                {
+                    $("#ModalUpdateEvents").modal('hide');
+                    const msg ='El Evento se ha actualizado correctamente';
+                    msgSuccess(msg);
+                    showAllEvents();
+                }else{
+                    const msg ='Error ha modificado el html';
+                    msgError(msg)
+                    setTimeout(() => {
+                        location="?c=All&m=index";
+                    }, 1500);
+                }
+
+                
             })
         }
 
