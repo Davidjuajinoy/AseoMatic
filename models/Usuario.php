@@ -73,11 +73,12 @@ class Usuario extends DataBase{
         }
     }
 
-    public function deleteUser($id)
+    public function deleteUser($id,$token)
     {
         try {
-            $stm = parent::conectar()->prepare("DELETE FROM usuarios WHERE id_usuario= ?");
+            $stm = parent::conectar()->prepare("DELETE FROM usuarios WHERE id_usuario= ?  AND token = ? ");
             $stm->bindParam(1,$id,PDO::PARAM_INT);
+            $stm->bindParam(2,$token,PDO::PARAM_STR);
             $stm->execute();
         } catch (Exception $e) {
             die('Murio DeleteUser'.$e->getMessage());

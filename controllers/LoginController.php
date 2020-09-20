@@ -14,19 +14,18 @@ class LoginController extends Login{
             $password = password_verify($passVerificado, $usuario->clave);
             $verificarEmail  = Login::verificarSiExisteEmail($nombre_usuario);
 
-            if($usuario)
+            if($usuario && $nombre_usuario == $usuario->correo && $password == true)
             {
-                    if( $nombre_usuario == $usuario->correo && $password == true){
-                        if( $usuario->fk_rol == 1)
-                        {
-                            $_SESSION['ADMINISTRADOR'] = $usuario;
-                            echo json_encode($usuario);
-                        }
-                        else if( $usuario->fk_rol == 2){
-                            $_SESSION['EMPLEADO'] = $usuario;
-                            echo json_encode($usuario);
-                        }
-                    }
+                if( $usuario->fk_rol == 1)
+                {
+                    $_SESSION['ADMINISTRADOR'] = $usuario;
+                    echo json_encode($usuario);
+                }
+                else if( $usuario->fk_rol == 2){
+                    $_SESSION['EMPLEADO'] = $usuario;
+                    echo json_encode($usuario);
+                }
+                    
             }else if($verificarEmail){
                 echo json_encode(['error' => 'incorrectoP']); //P password
 

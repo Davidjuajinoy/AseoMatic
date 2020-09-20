@@ -60,6 +60,7 @@ class UsuariosController extends Usuario{
            }
            else{
                 echo json_encode(['error' => 'errorAgregarUsuario']);
+                return;
            }
        }
    
@@ -93,7 +94,8 @@ class UsuariosController extends Usuario{
                 $clave =$claveAntigua;
             }
             else{
-                echo json_encode(['error' => 'errorActualizarUsuario']);
+                echo json_encode(['error' => 'errorActualizarUsuario1']);
+                return;
             }
 
         }else if($clave1)
@@ -118,6 +120,7 @@ class UsuariosController extends Usuario{
 
             }else{
                 echo json_encode(['error' => 'errorActualizarUsuario']);
+                return;
             }
 
        }
@@ -126,9 +129,10 @@ class UsuariosController extends Usuario{
        public function destroy()
        {
            $id=$this->seguridad->verificateInt($_REQUEST['delete_id']);
-           if($id)
+           $token = $_REQUEST['token'];
+           if($id && $token)
            {
-               parent::deleteUser($id);
+               parent::deleteUser($id,$token);
            }
        }
    
