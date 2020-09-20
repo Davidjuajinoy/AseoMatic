@@ -213,13 +213,13 @@ if(location.search == '?c=Usuarios&m=show')
         const id =document.getElementById('update_id').value=`${user.id_usuario}`;
         const token =document.getElementById('token').value=`${user.token}`;
         const clave_antigua =document.getElementById('clave_antigua').value=`${user.clave}`;
-
+        const updatePrevImgUser=document.getElementById('update_prev_user_img').src=`${user.img_usuario}`;
+    
     }
 
     //? funcion para mostrar los campos en el #ModalShow de Administrador.usuarios
     const showUserInfo = (user)=>{
-        const nombres = document.getElementById("show_nombres").textContent=`${user.nombres}`;
-        const apellidos = document.getElementById("show_apellidos").textContent=`${user.apellidos}`;
+        const nombres = document.getElementById("show_nombres").textContent=`${user.nombres} ${user.apellidos}`;
         const correo = document.getElementById("show_correo").textContent=`${user.correo}`;
         const rol = document.getElementById("show_rol").value=`${user.fk_rol}`;
         const tipo_documento = document.getElementById("show_tipo_documento").value=`${user.fk_tipo_documento}`;
@@ -227,6 +227,7 @@ if(location.search == '?c=Usuarios&m=show')
         const cargo = document.getElementById("show_cargo").value=`${user.fk_cargo}`;
         const eps = document.getElementById("show_eps").value=`${user.fk_eps}`;
         const fondo_pension = document.getElementById("show_fondo_pension").value=`${user.fk_fondo_pension}`;
+        const img_usuario = document.getElementById("show_user_img").src=`${user.img_usuario}`;
     }
 
     //? Funcion de Seguridad del Formulario Show-edit 
@@ -271,6 +272,8 @@ if(location.search == '?c=Usuarios&m=show')
         const eps = document.getElementById("eps").value="";
         const fondo_pension = document.getElementById("fondo_pension").value="";
         const fk_rol = document.getElementById('rol').value="";
+        const prev_user_img = document.getElementById('prev_user_img').src ="";
+        const user_img = document.getElementById('user_img').value="";
     }
 
 
@@ -382,13 +385,65 @@ if(location.search == '?c=Usuarios&m=show')
         else if(validatePasswordModerate(paramClave.value) == false)
         {
             paramClave.focus();
-           const message = "Clave no valida Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.";
-           msgError(message);
+            const message = "Clave no valida Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.";
+            msgError(message);
         }else{
             formIsValid.clave= true;
             return true;
         }    
      }
+
+         //? DOM de visualizar de img  y input file
+    const userImg =document.getElementById('user_img');
+    const prevUserImg =document.getElementById('prev_user_img');
+    const updateImgUser=document.getElementById('update_user_img');
+    const updatePrevImgUser=document.getElementById('update_prev_user_img');
+
+    //? funcion que previsualiza la img selecciona y valida si es formato adecuado require la el INPUT(FILE) y un img(visualizar)
+    const validarImgUsuariosForm= (imgNoticia,prevImgNew) =>{
+        const img=imgNoticia.files[0];
+        if(img["type"] != "image/jpeg" && img["type"] != "image/png" && img["type"] != "image/jpeg")
+        {
+            imgNoticia.value="";
+            const msg ='la imagen debe ser png o jpeg';
+            msgError(msg);
+            prevImgNew.src='';
+            prevImgNew.alt ='image not found';
+            return false;
+        }
+        else if(img["size"] > 2000000)
+        {
+            imgNoticia.value="";
+            const msg='la imagen debe ser menor a 2mb';
+            msgError(msg);
+            prevImgNew.src="";
+            prevImgNew.alt ='image not found';
+            return false;
+        
+        }
+        else{
+                prevImgNew.src='';
+                const datosImagen = new FileReader; 
+                datosImagen.readAsDataURL(img);
+            //  cuando cargue el archivo que lo muestre
+                datosImagen.addEventListener('load', (e) =>{
+                    //obtiene la img en formato base64
+                prevImgNew.src=e.target.result;
+                });
+                return true;         
+        }
+    }
+
+    //? Ejecutar validarImgEventosForm() cuando se cambie de imagen en insertar Evento en #ModalAddEvents 
+    userImg.addEventListener('change', () =>{
+        validarImgUsuariosForm(userImg,prevUserImg);
+
+    })
+
+    //? Ejecutar validarImgEventosForm() cuando se cambie de imagen en actualizar Evento en #ModalUpdateEvents
+    updateImgUser.addEventListener('change', () =>{
+        validarImgUsuariosForm(updateImgUser,updatePrevImgUser,);
+    })
 
     //? funcion para guardar el usuario en DB en dashboard-admin : usuarios.php modal #ModalAddUser
     const btnSubmitFormUsers = document.getElementById('GuardarUsuario');
@@ -397,67 +452,72 @@ if(location.search == '?c=Usuarios&m=show')
         const nombres = document.getElementById("nombres");
         const apellidos = document.getElementById("apellidos");
         const correo = document.getElementById("correo");
-        const clave = document.getElementById("clave");
         const tipo_documento = document.getElementById("tipo_documento");
+        const clave = document.getElementById("clave");
         const numero_documento = document.getElementById("numero_documento");
         const cargo = document.getElementById("cargo");
         const eps = document.getElementById("eps");
         const fondo_pension = document.getElementById("fondo_pension");
         const fk_rol = document.getElementById('rol');
+        const img = userImg.files[0];
+        
+         const validarForm =  validarFormUsers(nombres,apellidos,correo,numero_documento,fk_rol,fondo_pension,cargo,tipo_documento,eps);
 
-        let validar = validarFormUsers(nombres,apellidos,correo,numero_documento,fk_rol,fondo_pension,cargo,tipo_documento,eps);
+         
+         if(validarForm == true )
+         {   
+             const validarClave = validarFormUsersPass(clave);
+             if(validarClave == true && validateForm() == true){
+                const formData = new FormData();
+                formData.append('nombres',nombres.value.toLowerCase());
+                formData.append('apellidos',apellidos.value.toLowerCase());
+                formData.append('correo',correo.value.toLowerCase());
+                formData.append('clave',clave.value);
+                formData.append('tipo_documento',tipo_documento.value);
+                formData.append('numero_documento',numero_documento.value);
+                formData.append('cargo',cargo.value);
+                formData.append('eps',eps.value);
+                formData.append('fondo_pension',fondo_pension.value);
+                formData.append('rol',fk_rol.value);
+                formData.append('user_img',img);
+                
 
-        let validarPass =validarFormUsersPass(clave);
-
-        if(validar == true && validarPass == true && validateForm() == true)
-        {
-            const formData = new FormData();
-            formData.append('nombres',nombres.value.toLowerCase());
-            formData.append('apellidos',apellidos.value.toLowerCase());
-            formData.append('correo',correo.value.toLowerCase());
-            formData.append('clave',clave.value);
-            formData.append('tipo_documento',tipo_documento.value);
-            formData.append('numero_documento',numero_documento.value);
-            formData.append('cargo',cargo.value);
-            formData.append('eps',eps.value);
-            formData.append('fondo_pension',fondo_pension.value);
-            formData.append('rol',fk_rol.value);
-
-            fetch('?c=Usuarios&m=store' , 
-            {
-                method : 'POST',
-                body : formData,
-
-            })
-            .then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo la insercion')))
-            .then(resp => resp.json())
-            .then((data)=>{
-                if(data.error == 'correoExistente')
+                fetch('?c=Usuarios&m=store' , 
                 {
-                    correo.focus();
-                    const msg ='Ya hay otra persona que tiene esta dirección de correo electrónico.';
-                    msgError(msg);
-                }
-                else if(data.error == 'errorAgregarUsuario')
-                {
-                    const msg ='Fallo la creacion de usuario';
-                    msgError(msg);
-                }
-                else if(data.ok){
+                    method : 'POST',
+                    body : formData,
 
-                    $("#ModalAddUser").modal('hide');
-                    let message = 'Usuario Agregado Correctamente';
-                    // se llama la funcion de !=error
-                    msgSuccess(message);
-                    // se llama a la funcion de mostrar usuarios html
-                    showAllUsers();
-                //  se reinicia a false el objeto formIsValid
-                    formIsValidReset();
-                //  se reinician los  valores de los input solicitados 
-                    resetValueFormModal();
-                }
+                })
+                .then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo la insercion')))
+                .then(resp => resp.json())
+                .then((data)=>{
+                    if(data.error == 'correoExistente')
+                    {
+                        correo.focus();
+                        const msg ='Ya hay otra persona que tiene esta dirección de correo electrónico.';
+                        msgError(msg);
+                    }
+                    else if(data.error == 'errorAgregarUsuario')
+                    {
+                        const msg ='Fallo la creacion de usuario';
+                        msgError(msg);
+                    }
+                    else if(data.ok){
 
-            }).catch(console.log);
+                        $("#ModalAddUser").modal('hide');
+                        let message = 'Usuario Agregado Correctamente';
+                        // se llama la funcion de !=error
+                        msgSuccess(message);
+                        // se llama a la funcion de mostrar usuarios html
+                        showAllUsers();
+                    //  se reinicia a false el objeto formIsValid
+                        formIsValidReset();
+                    //  se reinician los  valores de los input solicitados 
+                        resetValueFormModal();
+                    }
+
+                }).catch(console.log);
+            }
         }
     })
 
@@ -486,6 +546,8 @@ if(location.search == '?c=Usuarios&m=show')
         const update_id = document.getElementById("update_id");
         const token = document.getElementById("token");
         const clave_antigua = document.getElementById("clave_antigua");
+        const img = updateImgUser.files[0];
+
         let validar = validarFormUsers(update_nombres,update_apellidos,update_correo,update_numero_documento,update_fk_rol,update_fondo_pension,update_cargo,update_tipo_documento,update_eps);
 
         if(update_clave.value == '')
@@ -512,6 +574,7 @@ if(location.search == '?c=Usuarios&m=show')
             formData.append('updated_at',update_updated_at.value);
             formData.append('token',token.value);
             formData.append('clave_antigua',clave_antigua.value);
+            formData.append('update_user_img',img);
     
             fetch('?c=Usuarios&m=update', 
             {

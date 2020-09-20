@@ -20,8 +20,8 @@
                 <p class="diplay-6  text-white my-3 px-2 size-sm text-center text-capitalize"><?php echo $_SESSION['ADMINISTRADOR']->nombre_rol ?></p>
               <!-- <div class="sidebar-heading text-white text-center">Bienvenido</div> -->
               <div class="img-dashboard d-flex flex-column justify-content-center align-items-center mt-2">
-                <img src="assets/svg/avatarMale.svg" class="img-avatar-male" alt="">
-                <p class="diplay-6  text-white my-3 px-2 size-sm text-center"><?php echo $_SESSION['ADMINISTRADOR']->nombres.' '.$_SESSION['ADMINISTRADOR']->apellidos;?></p>
+                <img src="<?php echo $_SESSION['ADMINISTRADOR']->img_usuario?>" class="img-avatar-male" alt="">
+                <p class="diplay-6  text-white my-3 px-2 size-sm text-center text-capitalize"><?php echo $_SESSION['ADMINISTRADOR']->nombres.' '.$_SESSION['ADMINISTRADOR']->apellidos;?></p>
               </div>
               <div class="menu-settings text-capitalize">
                 <a href="?c=Usuarios&m=show" class="list-group-item list-group-item-action bg-dark text-white">Administrar Usuarios</a>

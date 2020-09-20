@@ -54,6 +54,10 @@
   height: 120px !important;
   width: 200px !important;
 }
+.size-img_user_form
+{
+  height: 200px !important;
+}
 
 
 .img-profile__input-file,

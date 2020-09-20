@@ -33,6 +33,8 @@ class UsuariosController extends Usuario{
        //? funcion para crear un usuario
        public function store()
        {
+   
+            //POST
            $nombres = Security::verificateName( $_POST['nombres']);
            $apellidos = Security::verificateName( $_POST['apellidos']);
            $correo = Security::verificateEmail( $_POST['correo']);
@@ -46,11 +48,57 @@ class UsuariosController extends Usuario{
            
            if($nombres && $apellidos && $correo && $clave1 && $numero_documento && $fk_rol && $fk_fondo_pension && $fk_cargo && $fk_tipo_documento && $fk_eps)
            {
+
                if(!Login::verificarSiExisteEmail($correo))
                {
+                    //? img si no se pone una img tomara el valor por defecto empty(si esta undefined da false)
+                    if(empty($_POST['user_img']))
+                    {
+                        //? Update Img
+                        $fecha = new DateTime();
+                        // funcion img
+                        $directorio = "assets/uploud/profile/";
+                        $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["user_img"]["name"]);
+                        //info de ext(jpg,png,etc)
+                        $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
+                        //verifica que el archivo tenga dimensiones(w,h) 
+                        $DimensionesImg =getimagesize($_FILES['user_img']['tmp_name']);
+        
+                        if($DimensionesImg == true)
+                        {
+                            $tamañoImg = $_FILES['user_img']["size"];
+                            if($tamañoImg > 2000000)
+                            {
+                                // echo "El archivo tiene que ser menor a 2mb";
+                                echo json_encode(['error'=>"El archivo tiene que ser menor a 2mb"]);
+                                return;
+                            }
+                            else{
+                                if($tipoArchivo == "jpg" || $tipoArchivo == "png" || $tipoArchivo == "jpeg" )
+                                {
+                                    move_uploaded_file($_FILES["user_img"]["tmp_name"],$archivo);
+                                    $img_usuario=$archivo;
+                                }
+                                else{
+                                    // echo "la extension del archivo no es valida";
+                                    echo json_encode(['error'=>'a extension del archivo no es valida']);
+                                    return;
+                                }
+                            }
+                        }else
+                        {
+                            // echo "el documento no es una img";
+                                echo json_encode(['error'=> 'el documento no es una img']);
+                                return;
+        
+                        }
+                    }else{
+                        $img_usuario = 'assets/uploud/profile/default.svg';
+                    }
+
                    $token = $this->seguridad->encryptToken(str_replace(' ','',$nombres.$numero_documento.$apellidos));
                    $clave = password_hash($clave1,PASSWORD_DEFAULT);
-                   parent::storeUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token);
+                   parent::storeUser($nombres,$apellidos,$correo,$clave,$img_usuario,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token);
                    echo json_encode(['ok' => 'usuarioCreado']);
 
 
@@ -103,25 +151,77 @@ class UsuariosController extends Usuario{
             $clave =password_hash($clave1,PASSWORD_DEFAULT); 
         }
 
-            if($nombres && $apellidos && $correo && $numero_documento && $fk_rol && $fk_fondo_pension && $fk_cargo && $fk_tipo_documento && $fk_eps && $updated_at && $usuario->token == $token && isset($clave) )
+        if($nombres && $apellidos && $correo && $numero_documento && $fk_rol && $fk_fondo_pension && $fk_cargo && $fk_tipo_documento && $fk_eps && $updated_at && $usuario->token == $token && isset($clave) )
+        {
+            
+            if(!Login::verificarSiExisteEmail($correo) || Login::verificarSiExisteEmailUpdate($correo,$id))
             {
-                
-                if(!Login::verificarSiExisteEmail($correo) || Login::verificarSiExisteEmailUpdate($correo,$id))
-                {
-                    $token1 = $this->seguridad->encryptToken(str_replace(' ','',$nombres.$numero_documento.$apellidos));
-                    parent::UpdateUser($nombres,$apellidos,$correo,$clave,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token1,$updated_at,$id);
-                    echo json_encode(['ok' => 'usuarioActualizado']);
- 
- 
-                }else{
-                    echo json_encode(['error' => 'correoExistente']);
-                }
-             
+                //img uploud
+                 //? img si no se pone una img tomara el valor por defecto empty(si esta undefined da false)
+                 if(empty($_POST['update_user_img']))
+                 {
+                     //? Update Img
+                     $fecha = new DateTime();
+                     // funcion img
+                     $directorio = "assets/uploud/profile/";
+                     $archivo= $directorio.basename($fecha->getTimeStamp().$_FILES["update_user_img"]["name"]);
+                     //info de ext(jpg,png,etc)
+                     $tipoArchivo =strtolower(pathinfo($archivo,PATHINFO_EXTENSION));
+                     //verifica que el archivo tenga dimensiones(w,h) 
+                     $DimensionesImg =getimagesize($_FILES['update_user_img']['tmp_name']);
+     
+                     if($DimensionesImg == true)
+                     {
+                         $tamañoImg = $_FILES['update_user_img']["size"];
+                         if($tamañoImg > 2000000)
+                         {
+                             // echo "El archivo tiene que ser menor a 2mb";
+                             echo json_encode(['error'=>"El archivo tiene que ser menor a 2mb"]);
+                             return;
+                         }
+                         else{
+                             if($tipoArchivo == "jpg" || $tipoArchivo == "png" || $tipoArchivo == "jpeg" )
+                             {
+                                 //borra la img que tenia si actualiza
+                                if($usuario->img_usuario != 'assets/uploud/profile/default.svg')
+                                {
+                                     unlink($usuario->img_usuario);
+
+                                }
+                                 move_uploaded_file($_FILES["update_user_img"]["tmp_name"],$archivo);
+                                 $img_usuario=$archivo;
+                             }
+                             else{
+                                 // echo "la extension del archivo no es valida";
+                                 echo json_encode(['error'=>'a extension del archivo no es valida']);
+                                 return;
+                             }
+                         }
+                     }else
+                     {
+                         // echo "el documento no es una img";
+                             echo json_encode(['error'=> 'el documento no es una img']);
+                             return;
+     
+                     }
+                 }else{
+                     $img_usuario = $usuario->img_usuario;
+                 }
+
+                $token1 = $this->seguridad->encryptToken(str_replace(' ','',$nombres.$numero_documento.$apellidos));
+                parent::UpdateUser($nombres,$apellidos,$correo,$clave,$img_usuario,$numero_documento,$fk_rol,$fk_fondo_pension,$fk_cargo,$fk_tipo_documento,$fk_eps,$token1,$updated_at,$id);
+                echo json_encode(['ok' => 'usuarioActualizado']);
+
 
             }else{
-                echo json_encode(['error' => 'errorActualizarUsuario']);
-                return;
+                echo json_encode(['error' => 'correoExistente']);
             }
+            
+
+        }else{
+            echo json_encode(['error' => 'errorActualizarUsuario']);
+            return;
+        }
 
        }
    
@@ -130,9 +230,14 @@ class UsuariosController extends Usuario{
        {
            $id=$this->seguridad->verificateInt($_REQUEST['delete_id']);
            $token = $_REQUEST['token'];
+           $usuario = parent::showImgUser($id);
            if($id && $token)
            {
-               parent::deleteUser($id,$token);
+                if($usuario->img_usuario != 'assets/uploud/profile/default.svg')
+                {
+                    unlink($usuario->img_usuario);
+                }
+                parent::deleteUser($id,$token);
            }
        }
    
