@@ -179,6 +179,192 @@ if(location.search == '?c=Usuarios&m=show' )
 
     }
 
+    //? Paginacion 
+
+    let pagina = {
+        pagina: 1,
+        usuariosFila : 3
+    }
+
+
+    function pagination(pagina,usuariosFila,datos)
+    {
+        const trimStart =(pagina-1) * usuariosFila;
+        const trimEnd =trimStart + usuariosFila;
+        const datosRecortados = datos.slice(trimStart,trimEnd);
+
+        const numeroPaginas = Math.ceil(datos.length / usuariosFila);
+
+        renderizarHtml(datosRecortados);
+
+        return{
+            datosRecortados : datosRecortados,
+            numeroPaginas : numeroPaginas
+        }
+    }
+
+    const renderizarHtml=(datos )=> {
+        const fragment = document.createDocumentFragment();
+        let count= 0;
+        for (const user of datos) {
+            count++;
+            fragment.append(createAllUsersTable(user,count));
+        }
+        thBody.innerHTML='';
+        thBody.append(fragment);
+    }
+
+    const searchName = document.getElementById('buscador');
+    searchName.addEventListener('keyup', function(e)
+    {
+        let value=searchName.value.toLowerCase();
+
+        if(value.trim() != '')
+        {
+            for (const name of allUsersData) {
+                let nombre = `${name.nombres} ${name.apellidos}`;
+                let documento = `${name.numero_documento}`;
+                if(nombre.indexOf(value) != -1 || documento.indexOf(value) != -1)
+                {
+                    thBody.innerHTML = '';
+                    thBody.appendChild(createAllUsersTable(name,1));
+                }
+        
+            }
+            
+        }
+
+        if( value.trim() == '')
+        {
+            showAllUsers();
+        }
+
+    })
+
+
+    function numbersButtoms(page)
+    {
+        const liMostrar =document.getElementById('pagination_users');
+        liMostrar.innerHTML='';
+
+        const liPrev = document.createElement('LI');
+        liPrev.id="pagination-prev";
+        liPrev.classList.add('page-item');
+        const liPrevBtn = document.createElement('BUTTON');
+        liPrevBtn.classList.add('page-link');
+        liPrevBtn.textContent="Anterior";
+        liPrev.append(liPrevBtn);
+        liMostrar.append(liPrev)
+        
+    //   console.log(liMostrar.children[0]);
+        for (let i = 1; i <= page; i++) {
+            liMostrar.append(paginationHtml(i)); 
+        }
+
+        const liNext = document.createElement('LI');
+        liNext.id="pagination-next";
+        liNext.classList.add('page-item','xd');
+        const liNextBtn = document.createElement('BUTTON');
+        liNextBtn.classList.add('page-link');
+        liNextBtn.textContent="Siguiente";
+        liNext.append(liNextBtn);
+        liMostrar.append(liNext)
+
+
+        const classActives = document.querySelectorAll('.page-item ');
+        classActives[pagina.pagina].classList.add('active');
+
+        if(pagina.pagina = 1) classActives[0].classList.add('disabled');
+        
+        
+                    
+
+        liMostrar.addEventListener('click',function(e)
+        {
+            const classActive = document.querySelector('.page-item + .active');
+            if(e.target.localName == 'button')
+            {
+      
+                
+                if(e.target.textContent != 'Siguiente' && e.target.textContent != 'Anterior')
+                {
+                    let numero = e.target.textContent;
+                    pagina.pagina =(Number(numero));
+                    pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
+                }
+                else if(e.target.textContent == 'Siguiente')
+                {
+                    if(pagina.pagina < page)
+                    {
+                        pagina.pagina+=1;
+                        pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
+                        classActive.classList.remove('active');
+                        classActives[pagina.pagina].classList.add('active');
+                    }
+                    
+          
+                }
+                else if(e.target.textContent == 'Anterior'  && pagina.pagina > 1 )
+                {
+                    pagina.pagina-=1;
+                    pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
+                    classActive.classList.remove('active');
+                    classActives[pagina.pagina].classList.add('active');
+                }
+
+                if(e.target.textContent == pagina.pagina)
+                {
+                        classActive.classList.remove('active');
+                        e.target.parentElement.classList.add('active');
+            
+                }
+
+                if(pagina.pagina > 1 && classActives[0].classList.contains('disabled')) 
+                {
+                    classActives[0].classList.remove('disabled');
+                }
+                else if( pagina.pagina == 1)
+                {
+                    classActives[0].classList.add('disabled');
+                }
+
+                if(pagina.pagina == (page))
+                {
+                    classActives[(page+1)].classList.add('disabled');
+
+                }else if(pagina.pagina < (page))
+                {
+                    classActives[(page+1)].classList.remove('disabled');
+                }
+                
+                    
+                
+            }
+         
+        })
+
+      
+        
+
+    }
+
+    const paginationHtml = (count) =>{
+
+        const fragment = document.createDocumentFragment();
+
+        const liBtnPagination = document.createElement('LI');
+        liBtnPagination.classList.add('page-item');
+
+        const liBtnPaginationButtom = document.createElement('BUTTON');
+        liBtnPaginationButtom.classList.add('page-link');
+        liBtnPaginationButtom.textContent=`${count}`;
+        liBtnPagination.append(liBtnPaginationButtom);
+
+        fragment.append(liBtnPagination);
+
+        return fragment;
+    }
+
     //? Peticion Ajax de usuarios de DB Admin.usuarios.php
     const showAllUsers = ()=> {
        
@@ -190,14 +376,11 @@ if(location.search == '?c=Usuarios&m=show' )
             //? se guardar los datos en el array (esto es para detalles y actualizar)
             allUsersData = data;
             // console.log(allUsersData);
-            const fragment = document.createDocumentFragment();
-            let count= 0;
-            for (const user of data) {
-                count++;
-                fragment.append(createAllUsersTable(user,count));
-            }
-            thBody.innerHTML='';
-            thBody.append(fragment);
+            const paginationC=pagination(pagina.pagina, pagina.usuariosFila,data);
+
+            numbersButtoms(paginationC.numeroPaginas)
+
+           
         })
         .catch( error => console.log(error));
     }
