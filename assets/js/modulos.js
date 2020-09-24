@@ -236,7 +236,7 @@ if(location.search == '?c=Usuarios&m=show' )
 
         if( value.trim() == '')
         {
-            showAllUsers();
+            pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
         }
 
     })
