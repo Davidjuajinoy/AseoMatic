@@ -21,6 +21,7 @@ const msgSuccess= (message) =>{
       });
 }
 
+
 //? Funcion de Expresiones Regulares Para Email
 const validateEmail = (email) => {
     const emailRegex = /^(([^<>()\[\]\\.,:\s@"]+(\.[^<>()\[\]\\.,:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -49,8 +50,10 @@ const validateDocumentNumber = (documentNumber) => {
 
 //! JS Modulo Administrar Usuarios
 
-if(location.search == '?c=Usuarios&m=show')
+if(location.search == '?c=Usuarios&m=show' )
+// || location.search == 'Usuarios/show' || location.pathname =='/AseoMatic/AseoMatic/Usuarios/show
 {
+    console.log('usuarios');
 
     //? Guarda todos los datos de la tabla Usuarios (DB) 
     let allUsersData= [];
@@ -178,8 +181,9 @@ if(location.search == '?c=Usuarios&m=show')
 
     //? Peticion Ajax de usuarios de DB Admin.usuarios.php
     const showAllUsers = ()=> {
-
-        fetch('?c=Usuarios&m=allUsersJson')
+       
+        // fetch( `${url}Usuarios/allUsersJson`)
+        fetch( `?c=Usuarios&m=allUsersJson`)
         .then(resp => resp.ok  ? Promise.resolve(resp)  : Promise.reject(new Error('Fallos la consulta')))
         .then(response => response.json())
         .then( data => {
@@ -657,6 +661,8 @@ if(location.search == '?c=Usuarios&m=show')
 //! JS Modulo Administrar Noticias
 
 if(location.search =='?c=Noticias&m=showNews'){
+    console.log('news');
+
 
     //? Guarda todos los datos de la tabla noticias (DB) 
     let allNewsData = [];
@@ -1043,6 +1049,8 @@ if(location.search =='?c=Noticias&m=showNews'){
 //! JS Modulo Administrar Eventos
 if(location.search == '?c=Eventos&m=showEvents')
 {
+    console.log('eventos');
+
     //? Guarda todos los datos de la tabla Eventos (DB) 
     let allEventsData = [];
 
@@ -1432,8 +1440,11 @@ if(location.search == '?c=Eventos&m=showEvents')
 
 // ! JS Login Verificacion Modal
 
-if(location.search == "" || location.search == '?c=All&m=index')
+if(  location.search == '' || location.search == '?c=All&m=index')
+
 { 
+    console.log('login');
+
     
     //? function para limpiar los campos del modal #loginModal
     const btnOpenLoginModal= document.getElementById('btn-login');
@@ -1529,7 +1540,7 @@ if(location.search == "" || location.search == '?c=All&m=index')
 // ! End JS Login
 
 
-
+console.log(location);
 
 
 
