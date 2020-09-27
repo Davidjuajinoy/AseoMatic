@@ -9,7 +9,7 @@ class LoginController extends Login{
         $passVerificado = Security::htmlChars($_POST['password']);
         $usuario = parent::verificarLogin($nombre_usuario);
         
-        if($nombre_usuario && $usuario)
+        if($nombre_usuario && $usuario && $passVerificado)
         {
             $password = password_verify($passVerificado, $usuario->clave);
             $verificarEmail  = Login::verificarSiExisteEmail($nombre_usuario);
@@ -29,24 +29,15 @@ class LoginController extends Login{
             }else if($verificarEmail){
                 echo json_encode(['error' => 'incorrectoP']); //P password
 
-            }else if(!$verificarEmail && !$usuario){
-
-                echo json_encode(['error' => 'incorrectoU&P']); // U user & P password
-
-            }else{
-                echo json_encode(['error'=>'datosIncorrectosAmbos']);
-                // header('location:?c=All&m=index');
             }
 
-        }else if($nombre_usuario)
+        }else if($nombre_usuario && $passVerificado)
         {
-            echo json_encode(['error' => 'incorrectoU&P']);
-            // header('location:?c=All&m=index');
-        }
+            echo json_encode(['error' => 'incorrectoU&P']); // U user & P password
+        } 
         else{
-            echo json_encode(['error'=>'datosIncorrectosAmbos']);
-            return;
-            // header('location:?c=All&m=index');
+            
+            header('location:?c=All&m=index');
         }
 
  
