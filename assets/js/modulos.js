@@ -703,7 +703,7 @@ if(location.search == '?c=Usuarios&m=show' )
                         resetValueFormModal();
                     }
 
-                }).catch(console.log);
+                }).catch(error => console.log(error));
             }
         }
     })
@@ -844,8 +844,6 @@ if(location.search == '?c=Usuarios&m=show' )
 //! JS Modulo Administrar Noticias
 
 if(location.search =='?c=Noticias&m=showNews'){
-    console.log('news');
-
 
     //? Guarda todos los datos de la tabla noticias (DB) 
     let allNewsData = [];
@@ -1232,7 +1230,6 @@ if(location.search =='?c=Noticias&m=showNews'){
 //! JS Modulo Administrar Eventos
 if(location.search == '?c=Eventos&m=showEvents')
 {
-    console.log('eventos');
 
     //? Guarda todos los datos de la tabla Eventos (DB) 
     let allEventsData = [];
@@ -1681,7 +1678,7 @@ if(  location.search == '' || location.search == '?c=All&m=index')
             }).then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al Login')))
             .then(resp => resp.json())
             .then((data) => {
-                console.log(data);
+                
                 if(data == "")
                 {
                     const message = "Datos incorrectos";
@@ -1712,7 +1709,7 @@ if(  location.search == '' || location.search == '?c=All&m=index')
                 else{
                     location.href="?c=All&m=index";
                 }
-            });
+            }).catch(console.log);
         }
         
     })

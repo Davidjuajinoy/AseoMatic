@@ -14,7 +14,7 @@ class LoginController extends Login{
             $password = password_verify($passVerificado, $usuario->clave);
             $verificarEmail  = Login::verificarSiExisteEmail($nombre_usuario);
 
-            if($usuario && $nombre_usuario == $usuario->correo && $password == true)
+            if($nombre_usuario == $usuario->correo && $password == true)
             {
                 if( $usuario->fk_rol == 1)
                 {
