@@ -1626,7 +1626,6 @@ if(location.search == '?c=Eventos&m=showEvents')
 if(  location.search == '' || location.search == '?c=All&m=index')
 
 { 
-    console.log('login');
 
     
     //? function para limpiar los campos del modal #loginModal
@@ -1679,10 +1678,10 @@ if(  location.search == '' || location.search == '?c=All&m=index')
             fetch('?c=Login&m=auth' ,{
                 method : 'POST',
                 body : datos
-            }).then(resp => (resp.ok) ? Promise.resolve(resp) : Promise.reject(new Error('fallo el login')))      
+            }).then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al Login')))
             .then(resp => resp.json())
             .then((data) => {
-                // console.log(data);
+                console.log(data);
                 if(data == "")
                 {
                     const message = "Datos incorrectos";
@@ -1698,8 +1697,8 @@ if(  location.search == '' || location.search == '?c=All&m=index')
                     nombre_usuario.focus();
                     const message = "El usuario no existe";
                     msgError(message);
-                    
-                }else if(data.fk_rol)
+                }
+                else if(data.fk_rol)
                 {
                     if(data.fk_rol == '1')
                     {
@@ -1713,7 +1712,7 @@ if(  location.search == '' || location.search == '?c=All&m=index')
                 else{
                     location.href="?c=All&m=index";
                 }
-            }).catch(console.log);
+            });
         }
         
     })
@@ -1723,7 +1722,6 @@ if(  location.search == '' || location.search == '?c=All&m=index')
 // ! End JS Login
 
 
-console.log(location);
 
 
 
