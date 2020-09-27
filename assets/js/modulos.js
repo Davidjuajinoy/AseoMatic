@@ -215,7 +215,7 @@ if(location.search == '?c=Usuarios&m=show' )
     }
 
     const searchName = document.getElementById('buscador');
-    searchName.addEventListener('keyup', function(e)
+    searchName.addEventListener('input', function(e)
     {
         let value=searchName.value.toLowerCase();
 

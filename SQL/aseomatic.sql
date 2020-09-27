@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-09-2020 a las 23:23:34
+-- Tiempo de generación: 27-09-2020 a las 17:34:26
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.4
 
@@ -180,12 +180,14 @@ CREATE TABLE `usuarios` (
   `apellidos` varchar(25) DEFAULT NULL,
   `correo` varchar(35) DEFAULT NULL,
   `clave` longtext DEFAULT NULL,
+  `img_usuario` text NOT NULL,
   `numero_documento` varchar(20) DEFAULT NULL,
   `fk_rol` int(11) DEFAULT NULL,
   `fk_fondo_pension` int(11) DEFAULT NULL,
   `fk_cargo` int(11) DEFAULT NULL,
   `fk_tipo_documento` int(11) DEFAULT NULL,
   `fk_eps` int(11) DEFAULT NULL,
+  `token` text NOT NULL,
   `created_at` date DEFAULT NULL,
   `updated_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -194,13 +196,13 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nombres`, `apellidos`, `correo`, `clave`, `numero_documento`, `fk_rol`, `fk_fondo_pension`, `fk_cargo`, `fk_tipo_documento`, `fk_eps`, `created_at`, `updated_at`) VALUES
-(1, 'Alexx', 'Ramos', 'alexx@mail.com', '827ccb0eea8a706c4c34a16891f84e7b', '1233890166', 1, 1, 1, 1, 1, '2020-07-29', '0000-00-00'),
-(2, 'Alexx', 'Ramos', 'alexx16@mail.com', '827ccb0eea8a706c4c34a16891f84e7b', '1233890166', 2, 1, 1, 1, 1, '2020-07-29', '0000-00-00'),
-(3, 'david', 'hernandez', 'david@mail.com', '1f32aa4c9a1d2ea010adcf2348166a04', '4848948484', 1, 1, 1, 1, 1, '2020-07-29', '2020-09-10'),
-(7, 'vane', 'vega', 'vane@mail.com', 'fcea920f7412b5da7be0cf42b8c93759', '44564', 1, 1, 1, 1, 1, '2020-08-01', '2020-08-01'),
-(8, 'Juan', 'david', 'juan@mail.com', '71b3b26aaa319e0cdf6fdb8429c112b0', '4564564', 2, 1, 1, 1, 1, '2020-08-01', '2020-08-01'),
-(9, 'Felipe ', 'Hernandes', 'felipe@mail.com', 'c4ded2b85cc5be82fa1d2464eba9a7d3', '1233456', 2, 1, 1, 1, 1, '2020-08-01', '2020-08-01');
+INSERT INTO `usuarios` (`id_usuario`, `nombres`, `apellidos`, `correo`, `clave`, `img_usuario`, `numero_documento`, `fk_rol`, `fk_fondo_pension`, `fk_cargo`, `fk_tipo_documento`, `fk_eps`, `token`, `created_at`, `updated_at`) VALUES
+(1, 'david andres', 'hernandez juajinoy', 'david22@mail.com', '$2y$10$eSK8U.C54AnstHeeNNW0D.Zn3JehTwqJ90D1xTDZBMcuyoA2T.w.G', 'assets/uploud/profile/1600640609evento7.jpg', '1234567891', 1, 1, 1, 1, 1, '$2a$07$Da22vidJuAjiNoYyZlXGhuVQMplmBYGVLwggskr3EnUqNBxdpBp6y', '2020-09-20', '2020-09-23'),
+(2, 'fabian ricardo', 'aldana garay', 'fabian@mail.com', '$2y$10$gJwdz8k2lXxgAe0uAf2v0.GTYLtOL89UbdZQJMEVPJHuRFlO1V4BS', 'assets/uploud/profile/default.svg', '1233905589', 1, 3, 1, 1, 6, '$2a$07$Da22vidJuAjiNoYyZlXGhunYyXVZ1lVA7pBzaZUSmqTBlz621Aeme', '2020-09-23', '2020-09-23'),
+(3, 'dashell alexander', 'carrero fuentes', 'dashel@mail.com', '$2y$10$SqQk2oahlcx1oa29W1nmRufafqyZwi54T8NKmljBc6ofTz0t.g9M6', 'assets/uploud/profile/default.svg', '1018516607', 1, 2, 1, 1, 2, '$2a$07$Da22vidJuAjiNoYyZlXGhu8sX/l5I13uTBMdSAsYrz4b88PO6B/72', '2020-09-23', '2020-09-23'),
+(4, 'andres felipe', 'chacon cifuentes', 'andres@mail.com', '$2y$10$bd/oXVxVJj.cw58jECgwp.Tsfa9pdZIo/S8TlKcIEX/9x0tV3g5Ei', 'assets/uploud/profile/default.svg', '1005813772', 1, 1, 1, 1, 2, '$2a$07$Da22vidJuAjiNoYyZlXGhuspify4MH6zZ5zPJcZoW84yUdlw9eSnm', '2020-09-23', '2020-09-23'),
+(5, 'vanesa', 'vega santa', 'vanesa@mail.com', '$2y$10$1t/ND7gnTzLpxn1MWUbboOgLO4tji6rRUdwwaXsR6TuHhke8SCsY2', 'assets/uploud/profile/default.svg', '1006093649', 1, 1, 1, 1, 2, '$2a$07$Da22vidJuAjiNoYyZlXGhuZKRrFl7EKnNfTHoMhZjN6JcFEFWwThS', '2020-09-23', '2020-09-23'),
+(6, 'jhon alexander', 'ramos vides', 'alex@mail.com', '$2y$10$a6lhpwQLCF2akcv4QpCMze3eIlVivXxKYmKFEx8o2VCl.Pdy3rmai', 'assets/uploud/profile/default.svg', '1233890166', 1, 1, 1, 1, 2, '$2a$07$Da22vidJuAjiNoYyZlXGhuvwi5OH4NMElrfPb0eq.h7XsWf2KpW1q', '2020-09-23', '2020-09-23');
 
 --
 -- Índices para tablas volcadas
@@ -323,7 +325,7 @@ ALTER TABLE `tipos_documentos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Restricciones para tablas volcadas
