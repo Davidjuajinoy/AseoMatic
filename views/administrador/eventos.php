@@ -26,6 +26,11 @@
 
           </tbody>
         </table>
+         <!-- Paginacion -->
+            <nav >
+              <ul class="pagination d-flex justify-content-end" id="pagination">
+              </ul>
+            </nav>
       </div>
     </div>
   </div>

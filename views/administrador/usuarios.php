@@ -34,13 +34,10 @@
 
  
         </table>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination d-flex justify-content-end" id="pagination_users">
-                <!-- <li class="page-item" id="pagination-prev" ><button class="page-link"  >Anterior</button></li> -->
-                
-                <!-- <li class="page-item" id="pagination-next" ><button class="page-link">Siguiente</button></li> -->
+            <nav >
+              <ul class="pagination d-flex justify-content-end" id="pagination">
               </ul>
-          </nav>
+            </nav>
       </div>
     </div>
   </div>
