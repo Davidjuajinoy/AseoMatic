@@ -183,7 +183,8 @@ if(location.search == '?c=Usuarios&m=show' )
 
     let pagina = {
         pagina: 1,
-        usuariosFila : 3
+        usuariosFila : 3,
+        btnFila : 5
     }
 
 
@@ -196,11 +197,7 @@ if(location.search == '?c=Usuarios&m=show' )
         const numeroPaginas = Math.ceil(datos.length / usuariosFila);
 
         renderizarHtml(datosRecortados);
-
-        return{
-            datosRecortados : datosRecortados,
-            numeroPaginas : numeroPaginas
-        }
+        numbersButtoms(numeroPaginas,pagina);
     }
 
     const renderizarHtml=(datos )=> {
@@ -240,66 +237,87 @@ if(location.search == '?c=Usuarios&m=show' )
         }
 
     })
+    
+    
+    const liMostrar =document.getElementById('pagination_users');
 
-
-    function numbersButtoms(page)
+    function numbersButtoms(page,pageBtn)
     {
-        const liMostrar =document.getElementById('pagination_users');
         liMostrar.innerHTML='';
 
         const liPrev = document.createElement('LI');
         liPrev.id="pagination-prev";
-        liPrev.classList.add('page-item');
+        if(pageBtn == 1)
+        {
+            liPrev.classList.add('page-item','disabled');
+        }else{
+            liPrev.classList.add('page-item');
+        }
         const liPrevBtn = document.createElement('BUTTON');
         liPrevBtn.classList.add('page-link');
         liPrevBtn.textContent="Anterior";
         liPrev.append(liPrevBtn);
         liMostrar.append(liPrev)
+
+
+        //? Numero de Btn paginacion
+        let maxLeft = (pagina.pagina - Math.floor(pagina.btnFila / 2))
+        let maxRight = (pagina.pagina + Math.floor(pagina.btnFila / 2))
+    
+        if (maxLeft < 1) {
+            maxLeft = 1;
+            maxRight = pagina.btnFila;
+        }
+    
+        if (maxRight > page) {
+            maxLeft = page - (pagina.btnFila - 1)
+            
+            if (maxLeft < 1){
+                maxLeft = 1
+            }
+            maxRight = page;
+        }
         
-    //   console.log(liMostrar.children[0]);
-        for (let i = 1; i <= page; i++) {
-            liMostrar.append(paginationHtml(i)); 
+        for (let i = maxLeft; i <= maxRight; i++) {
+            liMostrar.append(paginationHtml(i,pageBtn)); 
         }
 
         const liNext = document.createElement('LI');
         liNext.id="pagination-next";
-        liNext.classList.add('page-item','xd');
+        if(pageBtn == page)
+        {
+            liNext.classList.add('page-item','disabled');
+        }else{
+            liNext.classList.add('page-item');
+        }
         const liNextBtn = document.createElement('BUTTON');
         liNextBtn.classList.add('page-link');
         liNextBtn.textContent="Siguiente";
         liNext.append(liNextBtn);
-        liMostrar.append(liNext)
+        liMostrar.append(liNext)  
 
+    }
 
-        const classActives = document.querySelectorAll('.page-item ');
-        classActives[pagina.pagina].classList.add('active');
-
-        if(pagina.pagina = 1) classActives[0].classList.add('disabled');
-        
-        
-                    
-
-        liMostrar.addEventListener('click',function(e)
+    liMostrar.addEventListener('click',function(e)
         {
-            const classActive = document.querySelector('.page-item + .active');
+            
             if(e.target.localName == 'button')
             {
-      
-                
                 if(e.target.textContent != 'Siguiente' && e.target.textContent != 'Anterior')
                 {
                     let numero = e.target.textContent;
                     pagina.pagina =(Number(numero));
                     pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
                 }
+                
                 else if(e.target.textContent == 'Siguiente')
                 {
+                    let page =Math.ceil(allUsersData.length / pagina.usuariosFila);
+                    
                     if(pagina.pagina < page)
                     {
                         pagina.pagina+=1;
                         pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
-                        classActive.classList.remove('active');
-                        classActives[pagina.pagina].classList.add('active');
                     }
                     
           
@@ -308,52 +326,26 @@ if(location.search == '?c=Usuarios&m=show' )
                 {
                     pagina.pagina-=1;
                     pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
-                    classActive.classList.remove('active');
-                    classActives[pagina.pagina].classList.add('active');
                 }
 
-                if(e.target.textContent == pagina.pagina)
-                {
-                        classActive.classList.remove('active');
-                        e.target.parentElement.classList.add('active');
-            
-                }
-
-                if(pagina.pagina > 1 && classActives[0].classList.contains('disabled')) 
-                {
-                    classActives[0].classList.remove('disabled');
-                }
-                else if( pagina.pagina == 1)
-                {
-                    classActives[0].classList.add('disabled');
-                }
-
-                if(pagina.pagina == (page))
-                {
-                    classActives[(page+1)].classList.add('disabled');
-
-                }else if(pagina.pagina < (page))
-                {
-                    classActives[(page+1)].classList.remove('disabled');
-                }
-                
-                    
+     
                 
             }
          
         })
 
-      
-        
-
-    }
-
-    const paginationHtml = (count) =>{
+    const paginationHtml = (count,pageBtn) =>{
 
         const fragment = document.createDocumentFragment();
 
         const liBtnPagination = document.createElement('LI');
-        liBtnPagination.classList.add('page-item');
+        if(count == pageBtn)
+        {
+            liBtnPagination.classList.add('page-item','active');
+
+        }else{
+            liBtnPagination.classList.add('page-item');
+        }
 
         const liBtnPaginationButtom = document.createElement('BUTTON');
         liBtnPaginationButtom.classList.add('page-link');
@@ -376,9 +368,9 @@ if(location.search == '?c=Usuarios&m=show' )
             //? se guardar los datos en el array (esto es para detalles y actualizar)
             allUsersData = data;
             // console.log(allUsersData);
-            const paginationC=pagination(pagina.pagina, pagina.usuariosFila,data);
+            pagination(pagina.pagina, pagina.usuariosFila,data);
 
-            numbersButtoms(paginationC.numeroPaginas)
+            
 
            
         })
