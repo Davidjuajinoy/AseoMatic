@@ -67,7 +67,24 @@
                 </div>
               
 
-                <div class="form-group">
+              
+
+              </div>
+
+            <div class="col-md-6 col-sm-12">
+                <div class="card bg-dark border-0 text-white "  >
+                  <img  id="prev-img" class="card-img rounded-circle size-img_user_form"   alt="">
+
+                  <div class="card-img-overlay d-flex justify-content-center align-items-center ">
+                          <label data-hover="Seleccionar Img" for="new_img" class="w-100 text-center text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg text-capitalize">Seleccionar Imagen</label>
+                          <input type="file" name="new_img" id="new_img" class="img-profile__input-file">
+                  </div>
+                </div>
+            </div>
+
+
+     
+            <div class="form-group col-md-6 col-sm-12">
                   <label for="fk_usuario" class="text-shadow-1 text-custom text-capitalize">Autor</label>
                   <select name="fk_usuario" id="fk_usuario" class="form-control ">
                     <option value="" selected="true">-- Seleccione --</option>
@@ -75,17 +92,8 @@
                       <option value="<?php echo $user->id_usuario ?>"><?php echo $user->nombres." ".$user->apellidos ?></option>
                     <?php } ?>
                   </select>
-                </div>
-
-            </div>
-            <div class="form-group col-5 d-flex align-items-center">
-                  <label data-hover="Seleccionar Img" for="new_img" class="w-100 text-center text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg text-capitalize">Seleccionar Imagen</label>
-                   <input type="file" name="new_img" id="new_img" class="img-profile__input-file">
             </div>
 
-            <div class="form-group col-7 text-center">
-                 <img  id="prev-img" class="img-fluid img-thumbnail" >
-            </div>
 
             <input type="hidden" name="fecha_noticia" id="fecha_noticia"value="<?php echo date("Y-m-d") ?>">
 
@@ -110,7 +118,7 @@
     <div class="modal-content  bg-dark text-white">
       <div class="modal-header border-0 b-custom">
         <h5 class="modal-title text-center h4 font-weight-bold text-shadow-1
-        text-white" id="UpdateNewModal">Actualizar Usuario</h5>
+        text-white" id="UpdateNewModal">Actualizar Noticia</h5>
         <button type="button" id="cerrarModalUpdateNew" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -131,25 +139,33 @@
                 </div>
               
 
-                <div class="form-group">
-                  <label for="update_fk_usuario" class="text-shadow-1 text-custom text-capitalize">Autor</label>
-                  <select name="update_fk_usuario" id="update_fk_usuario" class="form-control ">
-                    <?php foreach (Administrador::allTable('usuarios') as $user) { ?>
-                      <option value="<?php echo $user->id_usuario ?>"><?php echo $user->nombres." ".$user->apellidos ?></option>
-                    <?php } ?>
-                  </select>
+           
+
+            </div>
+
+
+            
+            
+              <div class="col-md-6 col-sm-12">
+                <div class="card bg-dark border-0 text-white "  >
+                      <img  id="update_prev-img" class="card-img rounded-circle size-img_user_form"   alt="">
+                      <div class="card-img-overlay d-flex justify-content-center align-items-center ">
+                        <label data-hover="Seleccionar Img" for="update_new_img" class="w-100 text-center text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg text-capitalize">Seleccionar Imagen</label>
+                        <input type="file" name="update_new_img" id="update_new_img" class="img-profile__input-file">
+                      </div>
                 </div>
+              </div>
 
-            </div>
-            <div class="form-group col-5 d-flex align-items-center">
-                  <label data-hover="Seleccionar Img" for="update_new_img" class="w-100 text-center text-decoration-none button--scale-text-1  font-weight-bold  b-custom text-white rounded-lg text-capitalize">Seleccionar Imagen</label>
-                   <input type="file" name="update_new_img" id="update_new_img" class="img-profile__input-file">
-            </div>
 
-            <div class="form-group col-7 text-center">
-                 <img  id="update_prev-img" class="img-fluid img-thumbnail" alt="">
-            </div>
-
+              <div class="form-group col-md-6 col-sm-12">
+                    <label for="update_fk_usuario" class="text-shadow-1 text-custom text-capitalize">Autor</label>
+                    <select name="update_fk_usuario" id="update_fk_usuario" class="form-control ">
+                      <?php foreach (Administrador::allTable('usuarios') as $user) { ?>
+                        <option value="<?php echo $user->id_usuario ?>"><?php echo $user->nombres." ".$user->apellidos ?></option>
+                      <?php } ?>
+                    </select>
+              </div>
+              
             <input type="hidden" name="update_fecha_noticia" id="update_fecha_noticia"value="<?php echo date("Y-m-d") ?>">
 
           </div>
@@ -185,10 +201,12 @@
           <div class="card mb-3">
             <img  id="show_prev_img" class="card-img-top" alt="...">
             <div class="card-body">
-              <h5 class="card-title text-body font-weight-bold" id="show_titulo_noticia"></h5>
+              <h5 class="card-title text-body font-weight-bold text-capitalize" id="show_titulo_noticia"></h5>
+      
               <p class="card-text text-secondary" id="show_descripcion_noticia"></p>
               
-              <small class="text-muted" id="show_fecha_noticia"></small>
+              
+              <small class="text-muted text-capitalize" id="show_fecha_noticia"></small>
             </div>
           </div>
 

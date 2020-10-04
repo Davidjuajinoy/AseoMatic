@@ -133,250 +133,87 @@
                     <div class="col m-0 p-0">
                         <h2 class="text-center font-weight-bold display-4">Noticias</h2>
                         <div class="owl-carousel owl-theme breadcrumb">
-                            <div class="card item">
-                                <img src="assets/img/noticia1.jpg" class="card-img-top" alt="...">
+                        <?php 
+                            foreach(Administrador::allTable('noticias') as $noticia){ ?>
+                            <div class="card item ">
+                                <img src="<?php echo $noticia->imagen_noticia?>" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
+                                    <h5 class="card-title font-weight-bold"><?php echo $noticia->titulo_noticia?></h5>
+                                    <p class="card-subtitle"><?php echo Login::limitar_cadena($noticia->descripcion_noticia,80,'...')?></p>
+                                    <a href="?id=<?php echo $noticia->id_noticia?>" data-toggle="modal" data-target="#ModalNews" class="btn btn-grow">Leer Mas</a>
                                 </div>
                             </div>
 
-                            <div class="card item">
-                                <img src="assets/img/noticia0.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
+                            <?php }?> 
 
-
-                            <div class="card item">
-                                <img src="assets/img/noticia3.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/noticia4.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/noticia5.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/noticia6.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/noticia7.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/noticia8.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-                            <div class="card item">
-                                <img src="assets/img/noticia9.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/noticia10.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </section>
             <!-- ? End Section Notices -->
 
+
+            <!-- ? Modal Show-->
+<div class="modal fade w-100" id="ModalNews" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<div class="modal-dialog   modal-dialog-scrollable">
+
+  <div class="modal-content  bg-dark text-white">
+    <div class="modal-header border-0 b-custom">
+      <h5 class="modal-title text-center h4 font-weight-bold text-shadow-1
+      text-white" id="showModal">Noticia</h5>
+      <button type="button" id="cerrarModalShowUsuario" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+                    
+       
+        <div class="card mb-3">
+          <img  id="show_prev_img" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title text-body font-weight-bold text-capitalize" ></h5>
+    
+            <p class="card-text text-secondary" ></p>
+            
+            
+            <small class="text-muted text-capitalize" ></small>
+          </div>
+        </div>
+
+
+
+        <div class="d-flex justify-content-end align-items-center">
+              <button type="button"  class="btn-custom b-r-custom text-decoration-none font-weight-bold b-custom text-white rounded-lg" data-dismiss="modal">Cerrar</button>
+        </div>
+
+
+    </div>
+  </div>
+</div>
+</div>
+  <!-- ? Modal End Show-->
+
             <!-- ? Section Events -->
             <section class="eventos">
                 <div class="row m-0 p-0">
                     <div class="col m-0 p-0">
                         <h2 class="text-center font-weight-bold display-4">Eventos</h2>
-                        <div class="owl-carousel owl-theme breadcrumb">
-                            <div class="card item">
-                                <img src="assets/img/evento0.jpg" class="card-img-top" alt="...">
+                        <div class="owl-carousel owl-theme breadcrumb ">
+                            <?php 
+                            foreach(Administrador::allTable('eventos') as $evento){ ?>
+                            <div class="card item ">
+                                <img src="<?php echo $evento->imagen_evento?>" class="card-img-top" alt="...">
                                 <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
+                                    <h5 class="card-title font-weight-bold"><?php echo $evento->titulo_evento?></h5>
+                                    <p class="card-subtitle"><?php echo Login::limitar_cadena($evento->descripcion_evento,100,'...')?></p>
                                     <a href="#" class="btn btn-grow">Leer Mas</a>
                                 </div>
                             </div>
 
-                            <div class="card item">
-                                <img src="assets/img/evento1.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
+                            <?php }?> 
 
-
-                            <div class="card item">
-                                <img src="assets/img/evento3.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/evento4.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/evento5.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/evento6.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/evento7.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/evento8.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-                            <div class="card item">
-                                <img src="assets/img/evento9.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
-
-
-                            <div class="card item">
-                                <img src="assets/img/evento10.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title font-weight-bold">title</h5>
-                                    <p class="card-text">Some quick example text to build on the card title and make up
-                                        the
-                                        bulk of the card's content.</p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
-                                </div>
-                            </div>
+                         
                         </div>
                     </div>
                 </div>

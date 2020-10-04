@@ -43,4 +43,14 @@ class Login extends DataBase{
     }
 
 
+
+    static public function limitar_cadena($texto, $largoTexto, $complementoTexto){
+        if(strlen($texto) > $largoTexto){
+            return substr($texto, 0, $largoTexto) . $complementoTexto;
+        }
+        return $texto;
+    }
+
+
+
 }

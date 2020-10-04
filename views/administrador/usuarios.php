@@ -384,7 +384,7 @@
               <div class="col-md-6 col-6">
 
               <div class="d-flex justify-content-center align-items-center ">
-                      <img src="" alt="" class="rounded-circle border-0 img-fluid" id="show_user_img">
+                      <img src="" alt="" class="rounded-circle border-0 img-avatar-male" id="show_user_img">
               </div>
 
               </div>

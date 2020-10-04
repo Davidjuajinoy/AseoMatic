@@ -54,7 +54,7 @@ const liMostrar =document.getElementById('pagination');
 
 let pagina = {
     pagina: 1,
-    usuariosFila : 3,
+    usuariosFila : 5,
     btnFila : 5
 }
 
@@ -905,6 +905,7 @@ if(location.search =='?c=Noticias&m=showNews'){
 
         const td4TableAllNews =document.createElement('TD');
         td4TableAllNews.textContent = `${datos.nombres} ${datos.apellidos}`;
+        td4TableAllNews.classList.add('text-capitalize');
 
         trTableAllNews.append(td4TableAllNews);
 
@@ -1017,7 +1018,6 @@ if(location.search =='?c=Noticias&m=showNews'){
 
     //? funcion de mostrar datos en la #ModalShowNews
     const showNewIdCard= (noticia) => {
-        console.log(noticia);
         const tituloNoticia= document.getElementById('show_titulo_noticia').textContent=`${noticia.titulo_noticia}`;
         const descripcionNoticia= document.getElementById('show_descripcion_noticia').textContent=`${noticia.descripcion_noticia}`;
         const fechaNoticia= document.getElementById('show_fecha_noticia').textContent=`${noticia.nombres} ${noticia.apellidos} ${noticia.fecha_publicado}`;
@@ -1106,7 +1106,7 @@ if(location.search =='?c=Noticias&m=showNews'){
     const resetValueForm= (titulo_noticia,descripcion_noticia,fecha_noticia,fk_usuario,img_noticia,prev_img_noticia) =>{
         const tituloNoticia= document.getElementById(titulo_noticia).value="";
         const descripcionNoticia= document.getElementById(descripcion_noticia).value="";
-        const fechaNoticia= document.getElementById(fecha_noticia).value="";
+        // const fechaNoticia= document.getElementById(fecha_noticia).value="";
         const fkUsuario= document.getElementById(fk_usuario).value="";
         const imgNoticia= document.getElementById(img_noticia).value="";
         const PrevimgNoticia= document.getElementById(prev_img_noticia).src="";
@@ -1152,9 +1152,9 @@ if(location.search =='?c=Noticias&m=showNews'){
                    }else{
                         const msg ='Error ha modificado el html';
                         msgError(msg)
-                        setTimeout(() => {
-                            location="?c=All&m=index";
-                        }, 1500);
+                        // setTimeout(() => {
+                        //     location="?c=All&m=index";
+                        // }, 1500);
                    }
           
                }).catch(console.log);
@@ -1301,6 +1301,7 @@ if(location.search == '?c=Eventos&m=showEvents')
 
         const td4TableAllEvents =document.createElement('TD');
         td4TableAllEvents.textContent = `${datos.nombres} ${datos.apellidos}`;
+        td4TableAllEvents.classList.add('text-capitalize');
 
         trTableAllEvents.append(td4TableAllEvents);
 
@@ -1450,11 +1451,12 @@ if(location.search == '?c=Eventos&m=showEvents')
 
     }
 
+
     //? Resetear valores en #ModalAddEvents
     const resetValueForm= (titulo_evento,descripcion_evento,fecha_evento,fk_usuario,img_evento,prev_img_evento) =>{
         const tituloEvento= document.getElementById(titulo_evento).value="";
         const descripcionEvento= document.getElementById(descripcion_evento).value="";
-        const fechaEvento= document.getElementById(fecha_evento).value="";
+        // const fechaEvento= document.getElementById(fecha_evento).value="";
         const fkUsuario= document.getElementById(fk_usuario).value="";
         const imgEvento= document.getElementById(img_evento).value="";
         const PrevimgEvento= document.getElementById(prev_img_evento).src="";

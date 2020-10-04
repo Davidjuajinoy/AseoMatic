@@ -60,6 +60,7 @@ class NoticiasController extends Noticia
                     
                     if($tituloNoticia && $descripcionNoticia && $fechaPublicacion && $newUser)
                     {
+                      
                         move_uploaded_file($_FILES["new_img"]["tmp_name"],$archivo);
                         $imgNew = $archivo;
                         parent::storeAddNew($tituloNoticia,$descripcionNoticia,$fechaPublicacion,$imgNew,$newUser);

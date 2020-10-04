@@ -24,6 +24,7 @@ class AllController{
         require_once 'views/all/index.php';
     }
 
+
     
 
 }
