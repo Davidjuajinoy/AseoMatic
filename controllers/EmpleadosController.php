@@ -39,16 +39,13 @@ class EmpleadosController extends Empleado{
     {
         $title = 'Empleado Perfil';
         require_once 'views/empleado/perfil.php';
-    }
-
-    public function create()
-    {
         
     }
 
-    public function stored()
+    public function show()
     {
-
+        $token = $_SESSION['EMPLEADO']->token;
+        echo parent::showProfile($token);
     }
 
     public function edit()
