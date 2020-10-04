@@ -357,7 +357,7 @@ if(location.search == '?c=Usuarios&m=show' )
 
         if( value.trim() == '')
         {
-            pagination(pagina.pagina,pagina.usuariosFila,allUsersData);
+            TableAndpagination(pagina.pagina,pagina.usuariosFila,allUsersData,renderizarHtml);
         }
 
     })
