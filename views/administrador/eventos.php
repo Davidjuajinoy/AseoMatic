@@ -8,6 +8,7 @@
 
       <div class="col-12 ">
         <table class="table  w-100  table-responsive-lg">
+        <input type="text" id="buscador" class="form-control text-white bg-dark " placeholder="Buscador">
           <thead class="thead-dark">
             <tr>
               <th colspan="1">#</th>

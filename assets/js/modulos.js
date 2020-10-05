@@ -895,6 +895,8 @@ if(location.search =='?c=Noticias&m=showNews'){
         const td2TableAllNews =document.createElement('TD');
         td2TableAllNews.setAttribute('colspan', '2');
         td2TableAllNews.textContent = `${datos.titulo_noticia}`;
+        td2TableAllNews.classList.add('text-capitalize');
+
 
         trTableAllNews.append(td2TableAllNews);
 
@@ -1008,7 +1010,6 @@ if(location.search =='?c=Noticias&m=showNews'){
 
     //? funcion de mostrar datos en la #ModalUpdateNews
     const showNewId= (noticia) => {
-        console.log(noticia);
         const tituloNoticia= document.getElementById('update_titulo_noticia').value=`${noticia.titulo_noticia}`;
         const descripcionNoticia= document.getElementById('update_descripcion_noticia').textContent=`${noticia.descripcion_noticia}`;
         const fkUsuario= document.getElementById('update_fk_usuario').value=`${noticia.fk_usuario}`;
@@ -1026,6 +1027,35 @@ if(location.search =='?c=Noticias&m=showNews'){
         // const idNoticia= document.getElementById('show_id_noticia').value=`${noticia.id_noticia}`;
 
     }
+
+    const searchName = document.getElementById('buscador');
+    searchName.addEventListener('input', function(e)
+    {
+        let value=searchName.value.toLowerCase();
+
+        if(value.trim() != '')
+        {
+            for (const name of allNewsData) {
+                let nombre = `${name.titulo_noticia}`;
+                // let documento = `${name.nombres}`;
+                if(nombre.indexOf(value) != -1 )
+                {
+                    thBodyNews.innerHTML = '';
+                    thBodyNews.appendChild(createAllNewsTable(name,1));
+                }
+        
+            }
+            
+        }
+
+        if( value.trim() == '')
+        {
+            TableAndpagination(pagina.pagina,pagina.usuariosFila,allNewsData,renderizarHtmlNews);
+        }
+
+    })
+
+
     //? DOM de visualizar de img  y input file
     const imgNew =document.getElementById('new_img');
     const prevImg =document.getElementById('prev-img');
@@ -1127,7 +1157,7 @@ if(location.search =='?c=Noticias&m=showNews'){
            if(validar ===  true)
            {
                const data = new FormData();
-               data.append('titulo_noticia',tituloNoticia.value);
+               data.append('titulo_noticia',tituloNoticia.value.toLowerCase());
                data.append('descripcion_noticia',descripcionNoticia.value);
                data.append('fecha_noticia',fechaNoticia.value);
                data.append('new_img',img);
@@ -1188,7 +1218,7 @@ if(location.search =='?c=Noticias&m=showNews'){
         {
             const data = new FormData();
             data.append('update_id_noticia',idNoticia.value);
-            data.append('update_titulo_noticia',tituloNoticia.value);
+            data.append('update_titulo_noticia',tituloNoticia.value.toLowerCase());
             data.append('update_descripcion_noticia',descripcionNoticia.value);
             data.append('update_fecha_noticia',fechaNoticia.value);
             data.append('update_fk_usuario',fkUsuario.value);
@@ -1291,6 +1321,8 @@ if(location.search == '?c=Eventos&m=showEvents')
         const td2TableAllEvents =document.createElement('TD');
         td2TableAllEvents.setAttribute('colspan', '2');
         td2TableAllEvents.textContent = `${datos.titulo_evento}`;
+        td2TableAllEvents.classList.add('text-capitalize');
+
 
         trTableAllEvents.append(td2TableAllEvents);
 
@@ -1424,6 +1456,34 @@ if(location.search == '?c=Eventos&m=showEvents')
         // const idevento= document.getElementById('show_id_evento').value=`${evento.id_evento}`;
 
     }
+
+
+    const searchName = document.getElementById('buscador');
+    searchName.addEventListener('input', function(e)
+    {
+        let value=searchName.value.toLowerCase();
+
+        if(value.trim() != '')
+        {
+            for (const name of allEventsData) {
+                let nombre = `${name.titulo_evento}`;
+                // let documento = `${name.nombres}`;
+                if(nombre.indexOf(value) != -1 )
+                {
+                    thBodyEvents.innerHTML = '';
+                    thBodyEvents.appendChild(createAllEventsTable(name,1));
+                }
+        
+            }
+            
+        }
+
+        if( value.trim() == '')
+        {
+            TableAndpagination(pagina.pagina,pagina.usuariosFila,allEventsData,renderizarHtmlEvents);
+        }
+
+    })
 
 
     //? Validacion de alertas de Error de Formulario de Eventos
@@ -1563,7 +1623,7 @@ if(location.search == '?c=Eventos&m=showEvents')
         {
           
             const data = new FormData();
-            data.append('titulo_evento',tituloEvento.value);
+            data.append('titulo_evento',tituloEvento.value.toLowerCase());
             data.append('descripcion_evento',descripcionEvento.value);
             data.append('fecha_evento',fechaEvento.value);
             data.append('event_img',img);
@@ -1622,7 +1682,7 @@ if(location.search == '?c=Eventos&m=showEvents')
         {
             const data = new FormData();
             data.append('update_id_evento',idEvento.value);
-            data.append('update_titulo_evento',tituloEvento.value);
+            data.append('update_titulo_evento',tituloEvento.value.toLowerCase());
             data.append('update_descripcion_evento',descripcionEvento.value);
             data.append('update_fecha_evento',fechaEvento.value);
             data.append('update_fk_usuario',fkUsuario.value);
@@ -1950,7 +2010,7 @@ if( location.search == '?c=Empleados&m=showPerfil')
                     else if(data.ok){
 
                         let message = 'Contraseña Actualizada';
-                        
+
                         msgSuccess(message);
                         ShowProfile();
                         passPerfil.value="";
@@ -1974,4 +2034,6 @@ if( location.search == '?c=Empleados&m=showPerfil')
 
     ShowProfile();
 }
+
+
 
