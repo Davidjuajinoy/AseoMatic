@@ -20,12 +20,12 @@
                                 <div class="row text-white  mt-3 ">
                                     <div class="col-6 text-center">
                                         <p class="h5 font-weight-bold text-shadow-1 ">Nombres</p>
-                                        <p class="h7 ">David Andres</p>
+                                        <p class="h7 text-capitalize "><?php echo $_SESSION['EMPLEADO']->nombres?></p>
                                     </div>
 
                                     <div class="col-6 text-center">
                                         <p class="h5 font-weight-bold text-shadow-1">Apellidos</p>
-                                        <p class="h7 ">Hernandez Juajinoy</p>
+                                        <p class="h7 text-capitalize "><?php echo $_SESSION['EMPLEADO']->apellidos?></p>
                                     </div>
  
                                 </div>
@@ -33,12 +33,12 @@
                                 <div class="row text-white ">
                                     <div class="col-6 text-center">
                                         <p class="h5 font-weight-bold text-shadow-1">Direccion</p>
-                                        <p class="h7">Calle 74A sur N88 D 36</p>
+                                        <p class="h7 text-capitalize">Calle 74A sur N88 D 36</p>
                                     </div>
 
                                     <div class="col-6 text-center">
-                                        <p class="h5 font-weight-bold text-shadow-1">C.C</p>
-                                        <p class="h7">1000000000</p>
+                                        <p class="h5 font-weight-bold text-shadow-1"><?php echo $_SESSION['EMPLEADO']->tipo_documento ?></p>
+                                        <p class="h7 text-capitalize"><?php echo $_SESSION['EMPLEADO']->numero_documento?></p>
                                     </div>
  
                                 </div>

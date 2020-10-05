@@ -4,8 +4,8 @@ class Login extends DataBase{
     public function verificarLogin($email)
     {
         try {
-            // $stm = parent::conectar()->prepare("SELECT * FROM usuarios INNER JOIN roles WHERE usuarios.fk_rol= roles.id_rol AND usuarios.correo=? AND usuarios.clave=?");
-            $stm = parent::conectar()->prepare("SELECT nombres,apellidos,correo,fk_rol,clave,nombre_rol,img_usuario,token FROM usuarios INNER JOIN roles WHERE usuarios.fk_rol= roles.id_rol AND usuarios.correo=?");
+          
+            $stm = parent::conectar()->prepare("SELECT nombres,apellidos,correo,fk_rol,clave,nombre_rol,img_usuario,numero_documento,fk_tipo_documento,tipo_documento,token FROM usuarios INNER JOIN roles ON usuarios.fk_rol= roles.id_rol INNER JOIN tipos_documentos ON usuarios.fk_tipo_documento=tipos_documentos.id_tipo_documento AND usuarios.correo=? ");
             $stm->bindParam(1,$email,PDO::PARAM_STR);
             $stm->execute();
             return $stm->fetch(PDO::FETCH_OBJ);

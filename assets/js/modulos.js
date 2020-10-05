@@ -1,3 +1,4 @@
+'use strict';
 // ? Modal for Error and Success
 const msgError =(message) => {
     Swal.fire({
@@ -1811,7 +1812,6 @@ if( location.search == '?c=Empleados&m=showPerfil')
         .then( (response) => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error Show Empleado')))
         .then(resp => resp.json())
         .then(data =>  {
-            console.log(data);
             ShowVista(data);
         })
     }
@@ -1823,6 +1823,8 @@ if( location.search == '?c=Empleados&m=showPerfil')
         const emailPerfil = document.getElementById('email_perfil').value=`${datos.correo}`;
         const tokenPerfil = document.getElementById('token_perfil').value=`${datos.token}`;
         const imgPerfil = document.getElementById('img_perfil').src=`${datos.img_usuario}`;
+        const imgHeaderProfile = document.getElementById('imgAvatarProfile').src=`${datos.img_usuario}`;
+
     }
 
 
@@ -1840,7 +1842,7 @@ if( location.search == '?c=Empleados&m=showPerfil')
                const msg ='la imagen debe ser png o jpeg';
                msgError(msg);
                prevImgNew.src='';
-            //    prevImgNew.alt ='image not found';
+               prevImgNew.alt ='image not found';
                return false;
            }
            else if(img["size"] > 2000000)
@@ -1849,7 +1851,7 @@ if( location.search == '?c=Empleados&m=showPerfil')
                const msg='la imagen debe ser menor a 2mb';
                msgError(msg);
                prevImgNew.src="";
-            //    prevImgNew.alt ='image not found';
+               prevImgNew.alt ='image not found';
                return false;
            
            }
@@ -1871,6 +1873,104 @@ if( location.search == '?c=Empleados&m=showPerfil')
            validarImgPerfil(imgNew,prevImg);
    
        })
+
+
+       const validatePassProfile= (paramClave,passConfirm,img) =>
+       {
+            if(paramClave.value == ""){
+                paramClave.focus();
+                const message = "Ingresar la contraseña";
+                msgError(message);
+            }
+            else if(validatePasswordModerate(paramClave.value) == false)
+            {
+                paramClave.focus();
+                const message = "Clave no valida Debe tener 1 letra minúscula, 1 letra mayúscula, 1 número y tener al menos 8 caracteres.";
+                msgError(message);
+            }
+            else if(passConfirm.value == "")
+            {
+                passConfirm.focus();
+                const message = "Ingresar la Confirmacion de contraseña";
+                msgError(message);
+            }
+            else if(passConfirm.value != paramClave.value)
+            {
+                passConfirm.focus();
+                const message = "Las contraseñas no coinciden ";
+                msgError(message);
+            } 
+            else if(img.src =='' || img.alt == 'image not found'){
+                const msg = 'Ingrese la imagen del Evento';
+                
+                msgError(msg);
+            }
+            else{
+                return true;
+            }    
+       }
+
+
+   
+
+
+       const btnSubmitProfile = document.getElementById('updateProfile');
+
+
+
+       const updateProfile  = () =>{
+
+            const tokenPerfil = document.getElementById('token_perfil');
+            const passPerfil = document.getElementById('password_perfil');
+            const ConfirmPerfil = document.getElementById('confirm_password_perfil');
+            const imgProfile=imgNew.files[0];
+
+            const validate = validatePassProfile(passPerfil,ConfirmPerfil,prevImg)
+        
+
+            if(validate == true)
+            {
+                const data = new FormData();
+                data.append('token_perfil', tokenPerfil.value);
+                data.append('password_perfil', passPerfil.value);
+                data.append('confirm_password_perfil', ConfirmPerfil.value);
+                data.append('change_img', imgProfile);
+                fetch('?c=Empleados&m=update',{
+                    method: 'POST',
+                    body : data
+                })
+                .then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('fallo actualizacion Profile')))
+                .then(data => data.json())
+                .then(data => {
+
+                    if(data.error){ 
+                        const msg ='Fallo la actualizacion del usuario';
+                        msgError(msg);
+                    }
+                    else if(data.ok){
+
+                        let message = 'Contraseña Actualizada';
+                        
+                        msgSuccess(message);
+                        ShowProfile();
+                        passPerfil.value="";
+                        ConfirmPerfil.value="";
+                        
+                        
+                    }  
+                })
+            }
+
+       }
+
+       btnSubmitProfile.addEventListener('click',(e)=>{
+           e.preventDefault();
+           updateProfile();
+
+       })
+
+
+       
 
     ShowProfile();
 }
