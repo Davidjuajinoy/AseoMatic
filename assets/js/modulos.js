@@ -48,6 +48,12 @@ const validateDocumentNumber = (documentNumber) => {
     else return false //console.log('documento incorrecto')
 }
 
+const validateAsunto =(asunto) =>{
+    const asuntoRegex = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{1,100}$/;
+    if(asuntoRegex.test(asunto)) return true
+    else return false
+}
+
 
 //? paginacion
 
@@ -1854,6 +1860,143 @@ if(  location.search == '' || location.search == '?c=All&m=index')
         
     })
 
+
+
+    //! Index Form Contact
+
+    const validateFormContact= (nombre_contact,apellido_contact,email_contact,asunto_contact,message_contact,terminos_contact) =>{
+
+        if(nombre_contact.value == "")
+        {
+            nombre_contact.focus();
+            const message = "Ingresar Nombre";
+            msgError(message);
+        }
+        else if(validateName(nombre_contact.value) != true)
+        {
+            nombre_contact.focus();
+            const message = "El Nombre ingresado no es valido";
+            msgError(message);
+        }
+        else if(apellido_contact.value == "")
+        {
+            apellido_contact.focus();
+            const message = "Ingresar Apellido";
+            msgError(message);
+        }
+        else if(validateName(apellido_contact.value) == "")
+        {
+            apellido_contact.focus();
+            const message = "El Apellido ingresado no es valido";
+            msgError(message);
+        }
+        else if(email_contact.value == "")
+        {
+            email_contact.focus();
+            const message = "Ingresar Correo";
+            msgError(message);
+        }
+        else if(validateEmail(email_contact.value) == "")
+        {
+            email_contact.focus();
+            const message = "El Correo ingresado no es valido";
+            msgError(message);
+        }
+        else if(asunto_contact.value == "")
+        {
+            asunto_contact.focus();
+            const message = "Ingresar Asunto";
+            msgError(message);
+        }
+        else if(validateAsunto(asunto_contact.value) == "")
+        {
+            asunto_contact.focus();
+            const message = "El Asunto ingresado no es valido";
+            msgError(message);
+        }
+        else if(message_contact.value == "")
+        {
+            message_contact.focus();
+            const message = "Ingresar Mensaje";
+            msgError(message);
+        }
+        else if(!document.querySelector('input[name="genero_contact"]:checked'))
+        {
+            document.querySelector('input[name="genero_contact"]').focus();
+            const message = "Ingresar genero";
+            msgError(message);
+        }
+        else if(!document.querySelector('input[name="terminos_contact"]:checked'))
+        {
+            terminos_contact.focus();
+            const message = "Acepte los terminos y condiciones";
+            msgError(message);
+        }   
+        else{
+            return true;
+        }
+
+    }
+
+    const btnSubmitFormContact = document.getElementById('form_contacto');
+
+    btnSubmitFormContact.addEventListener('click',(e)=>{
+        
+        e.preventDefault();
+        const nombre_contact = document.getElementById('nombre_contact');
+        const apellido_contact = document.getElementById('apellido_contact');
+        const email_contact = document.getElementById('email_contact');
+        const asunto_contact = document.getElementById('asunto_contact');
+        const message_contact = document.getElementById('message_contact');
+        const terminos_contact = document.getElementById('terminos_contact');
+       
+
+        const validate = validateFormContact(nombre_contact,apellido_contact,email_contact,asunto_contact,message_contact,terminos_contact);
+
+        if(validate)
+        {
+            const datos = new FormData();
+            const genero_contact =document.querySelector('input[name="genero_contact"]:checked');
+            datos.append('nombre_contact',nombre_contact.value);
+            datos.append('apellido_contact',apellido_contact.value);
+            datos.append('email_contact',email_contact.value);
+            datos.append('asunto_contact',asunto_contact.value);
+            datos.append('message_contact',message_contact.value);
+            datos.append('terminos_contact',terminos_contact.value);
+            datos.append('genero_contact',genero_contact.value);
+            fetch('?c=All&m=formContact' ,{
+                method : 'POST',
+                body : datos
+            }).then( response => (response.ok) ? Promise.resolve(response) : Promise.reject(new Error('Error al Login')))
+            .then((data) => {
+
+                if(data.ok)
+                {
+                    const msg = "Enviado Correctamente";
+                    msgSuccess(msg)
+                    resetValueFormContact(nombre_contact,apellido_contact,email_contact,asunto_contact,message_contact,terminos_contact);
+                }else{
+                    const message = "Error No se puedo enviar";
+                    msgError(message);
+                }
+                
+            
+            }).catch(console.log);
+
+        }
+
+    })
+
+    const resetValueFormContact = (nombre_contact,apellido_contact,email_contact,asunto_contact,message_contact,terminos_contact)=>{
+        nombre_contact.value='';
+        apellido_contact.value='';
+        email_contact.value='';
+        asunto_contact.value='';
+        message_contact.value='';
+        // terminos_contact.value='';
+        // genero_contact.value='';
+    }
+    
 }
 
 

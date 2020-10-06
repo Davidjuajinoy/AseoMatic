@@ -1,7 +1,7 @@
 <?php
-// const BASE_URL ="http://localhost/AseoMatic/AseoMatic/";
-// Cambiar la url dependiendo del directorio
-session_start();
+
+
+
 date_default_timezone_set('America/Bogota');
 require_once 'models/DataBase.php';
 require_once 'models/Administrador.php';

@@ -1,4 +1,5 @@
 <?php 
+
 require_once 'core/core.php';
 
 $controller = isset($_GET['c']) ? $_GET['c'] : 'All';

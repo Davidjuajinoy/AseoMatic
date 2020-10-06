@@ -269,17 +269,17 @@
             <div class="container ">
             	    <h2 class="text-center display-4 font-weight-bold">Formulario de Contacto</h2>
             
-            	    <form action="" class="my-5" >
+            	    <form method="POST" class="my-5" >
             	          <div class="form-group row m-3">
             	             <div class="col-12 col-md-6">
-            	                <label for="nombre" class="ml-2" >Nombre</label>
-            	                <input type="text" id="nombre" name="nombre"class="form-control" placeholder="pepito.">
+            	                <label for="nombre_contact" class="ml-2" >Nombre</label>
+            	                <input type="text" id="nombre_contact" name="nombre_contact"class="form-control" placeholder="pepito.">
             	            </div>
             	          
               
             	             <div class="col-12 col-md-6">
-            	                <label for="apellido" class="ml-2" >Apellido</label>
-            	                <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Gonzales...">
+            	                <label for="apellido_contact" class="ml-2" >Apellido</label>
+            	                <input type="text" id="apellido_contact" name="apellido_contact" class="form-control" placeholder="Gonzales...">
             	            </div>
               
             	          </div>
@@ -287,33 +287,32 @@
             	            <div class="form-group row m-3">
               
             	              <div class="col-12 col-md-6">
-            	                <label for="email" >Correo</label>
-            	                <input type="text" name="email" id="email" class="form-control" placeholder="pepitoMan@example.com.-.">
+            	                <label for="email_contact" >Correo</label>
+            	                <input type="text" name="email_contact" id="email_contact" class="form-control" placeholder="pepitoMan@example.com.-.">
             	              </div>
               
             	              <div class="col-12 col-md-6">
-            	                <label for="asunto" >Asunto</label>
-            	                <input type="text" name="asunto" id="asunto" class="form-control" placeholder="Escriba su asunto ..">
+            	                <label for="asunto_contact" >Asunto</label>
+            	                <input type="text" name="asunto_contact" id="asunto_contact" class="form-control" placeholder="Escriba su asunto ..">
             	              </div>
             	               
             	            </div>
               
             	            <div class="form-group row m-3">
             	              <div class="col-12  col-md-6">
-            	                 <label for="message"  >Mensaje</label>
-            	                  <textarea name="message" id="message"  class="form-control form_contact_textarea"></textarea>
+            	                 <label for="message_contact"  >Mensaje</label>
+            	                  <textarea name="message_contact" id="message_contact"  class="form-control form_contact_textarea"></textarea>
             	              </div>
             	                <div class="col-5 m-3">
             	                    <label for="">Sexo</label>
             	                      <div class="form-check">
             	                        <div class="form-check-label ">
-            	                         <input class="form-check-input " name="sexo"  type="radio"> Hombre
-            	                         
+            	                         <input class="form-check-input " name="genero_contact"  type="radio">Hombre
             	                        </div>
             	                      </div>
             	                      <div class="form-check">
             	                        <label class="form-check-label ">
-            	                          <input class="form-check-input " name="sexo"type="radio">Mujer
+            	                          <input class="form-check-input " name="genero_contact" type="radio">Mujer
             	                        </div>        
             	               </div>
             	             </div>
@@ -321,8 +320,8 @@
             	              <div class="form-group row">
             	                <div class="col-12 text-center">
             	                    <div class="custom-control custom-checkbox my-1 mr-sm-2">
-            	                        <input type="checkbox" class="custom-control-input" id="terminos">
-            	                        <label class="custom-control-label" for="terminos">Acepto Terminos y Condiciones</label>
+            	                        <input type="checkbox" class="custom-control-input" name="terminos_contact" id="terminos_contact">
+            	                        <label class="custom-control-label"  for="terminos_contact">Acepto Terminos y Condiciones</label>
             	                    </div>
             	                 </div>
             	                    
