@@ -1955,6 +1955,7 @@ if(  location.search == '' || location.search == '?c=All&m=index')
 
         if(validate)
         {
+            btnSubmitFormContact.setAttribute('disabled','');
             const datos = new FormData();
             const genero_contact =document.querySelector('input[name="genero_contact"]:checked');
             datos.append('nombre_contact',nombre_contact.value);
@@ -1975,6 +1976,7 @@ if(  location.search == '' || location.search == '?c=All&m=index')
                     const msg = "Enviado Correctamente";
                     msgSuccess(msg)
                     resetValueFormContact(nombre_contact,apellido_contact,email_contact,asunto_contact,message_contact,terminos_contact);
+                    btnSubmitFormContact.removeAttribute('disabled');
                 }else{
                     const message = "Error No se puedo enviar";
                     msgError(message);
