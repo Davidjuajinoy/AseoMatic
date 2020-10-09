@@ -90,6 +90,11 @@ class AllController{
 
     }
 
+    public function showModal()
+    {
+        
+        echo json_encode(Administrador::allTableId($_REQUEST['tabla'],$_REQUEST['campo'],$_REQUEST['tipo'],$_REQUEST['id']));
+    }
 
     
 

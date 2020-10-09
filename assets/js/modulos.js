@@ -165,7 +165,6 @@ function TableAndpagination(pagina,usuariosFila,datos,functionHtml)
 if(location.search == '?c=Usuarios&m=show' )
 // || location.search == 'Usuarios/show' || location.pathname =='/AseoMatic/AseoMatic/Usuarios/show
 {
-    console.log('usuarios');
 
     //? Guarda todos los datos de la tabla Usuarios (DB) 
     let allUsersData= [];
@@ -1998,6 +1997,49 @@ if(  location.search == '' || location.search == '?c=All&m=index')
         // terminos_contact.value='';
         // genero_contact.value='';
     }
+
+
+    // show news and events
+    
+
+    const noticiasRow= document.getElementById('noticias_row');
+    noticiasRow.addEventListener('click',(e)=>{
+
+        const id=e.target.getAttribute('data-id');
+        if( id && e.target.getAttribute('data-tipo')=='noticia')
+        {
+            showModal('noticias','id_noticia','noticia',id)
+        }
+      
+    })
+
+    const eventosRow =document.getElementById('eventos_row');
+    eventosRow.addEventListener('click',(e)=>{
+        const id=e.target.getAttribute('data-id');
+        if( id && e.target.getAttribute('data-tipo')=='evento')
+        {
+            showModal('eventos','id_evento','evento',id)
+        }
+    })
+
+    const showModalEN = (data)=>{
+        const showModal = document.getElementById('showModal').textContent=`${(data.titulo_noticia) ? 'Noticias':'Eventos'}`;
+        const showTitle = document.getElementById('show_title').textContent=`${(data.titulo_noticia) ? data.titulo_noticia : data.titulo_evento}`;
+        const showDescription = document.getElementById('show_description').textContent=`${(data.descripcion_noticia) ? data.descripcion_noticia : data.descripcion_evento}`;
+        const showDate = document.getElementById('show_date').textContent=`${data.nombres} ${data.apellidos} ${data.fecha_publicado}`;
+        const showImg = document.getElementById('show_prev_img').src=`${(data.imagen_noticia)? data.imagen_noticia : data.imagen_evento}`;
+    }
+
+    const showModal = (tabla,campo,tipo,id) =>{
+        fetch(`?c=All&m=showModal&tabla=${tabla}&campo=${campo}&tipo=${tipo}&id=${id}`)
+        .then(response => response.ok ? Promise.resolve(response) : Promise.reject(new Error('Fallo la consulta News')))
+        .then(response => response.json())
+        .then(data => {
+ 
+        showModalEN(data);
+   
+        }).catch( console.log);
+    }
     
 }
 
@@ -2008,6 +2050,7 @@ if(  location.search == '' || location.search == '?c=All&m=index')
 
 
 
+//! Show Perfil
 
 if( location.search == '?c=Empleados&m=showPerfil')
 {
@@ -2173,6 +2216,8 @@ if( location.search == '?c=Empleados&m=showPerfil')
            updateProfile();
 
        })
+
+  
 
 
        

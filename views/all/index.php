@@ -132,7 +132,7 @@
                 <div class="row m-0 p-0">
                     <div class="col m-0 p-0">
                         <h2 class="text-center font-weight-bold display-4">Noticias</h2>
-                        <div class="owl-carousel owl-theme breadcrumb">
+                        <div class="owl-carousel owl-theme breadcrumb" id="noticias_row">
                         <?php 
                             foreach(Administrador::allTable('noticias') as $noticia){ ?>
                             <div class="card item ">
@@ -140,7 +140,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title font-weight-bold"><?php echo $noticia->titulo_noticia?></h5>
                                     <p class="card-subtitle"><?php echo Login::limitar_cadena($noticia->descripcion_noticia,80,'...')?></p>
-                                    <a href="?id=<?php echo $noticia->id_noticia?>" data-toggle="modal" data-target="#ModalNews" class="btn btn-grow">Leer Mas</a>
+                                    <a data-id="<?php echo $noticia->id_noticia?>" data-tipo="noticia"data-toggle="modal" data-target="#ModalNews" class="btn btn-grow">Leer Mas</a>
                                 </div>
                             </div>
 
@@ -161,7 +161,7 @@
   <div class="modal-content  bg-dark text-white">
     <div class="modal-header border-0 b-custom">
       <h5 class="modal-title text-center h4 font-weight-bold text-shadow-1
-      text-white" id="showModal">Noticia</h5>
+      text-white" id="showModal"></h5>
       <button type="button" id="cerrarModalShowUsuario" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -172,12 +172,12 @@
         <div class="card mb-3">
           <img  id="show_prev_img" class="card-img-top" alt="...">
           <div class="card-body">
-            <h5 class="card-title text-body font-weight-bold text-capitalize" ></h5>
+            <h5 class="card-title text-body font-weight-bold text-capitalize" id="show_title" ></h5>
     
-            <p class="card-text text-secondary" ></p>
+            <p class="card-text text-secondary" id="show_description"></p>
             
             
-            <small class="text-muted text-capitalize" ></small>
+            <small class="text-muted text-capitalize" id="show_date" ></small>
           </div>
         </div>
 
@@ -199,7 +199,7 @@
                 <div class="row m-0 p-0">
                     <div class="col m-0 p-0">
                         <h2 class="text-center font-weight-bold display-4">Eventos</h2>
-                        <div class="owl-carousel owl-theme breadcrumb ">
+                        <div class="owl-carousel owl-theme breadcrumb " id="eventos_row">
                             <?php 
                             foreach(Administrador::allTable('eventos') as $evento){ ?>
                             <div class="card item ">
@@ -207,7 +207,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title font-weight-bold"><?php echo $evento->titulo_evento?></h5>
                                     <p class="card-subtitle"><?php echo Login::limitar_cadena($evento->descripcion_evento,100,'...')?></p>
-                                    <a href="#" class="btn btn-grow">Leer Mas</a>
+                                    <a data-id="<?php echo $evento->id_evento?>" data-tipo="evento"data-toggle="modal" data-target="#ModalNews" class="btn btn-grow">Leer Mas</a>
                                 </div>
                             </div>
 
