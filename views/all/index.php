@@ -269,7 +269,7 @@
             <div class="container ">
             	    <h2 class="text-center display-4 font-weight-bold">Formulario de Contacto</h2>
             
-            	    <form method="POST" class="my-5" >
+            	    <form method="POST" id="form_contact"class="my-5" >
             	          <div class="form-group row m-3">
             	             <div class="col-12 col-md-6">
             	                <label for="nombre_contact" class="ml-2" >Nombre</label>
